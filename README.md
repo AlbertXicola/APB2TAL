@@ -4,19 +4,19 @@
 
 PAU, MAX, ALBERT
 
-============
+
 Requeriments
 ============
 
 
-pip install django
-pip install djongo
-pip install pymongo django-mongodb-engine
-pip install requests
-pip install django-admin-tools
+-  pip install django
+-  pip install djongo
+-  pip install pymongo django-mongodb-engine
+-  pip install requests
+-  pip install django-admin-tools
 
 
-=======
+
 Activar
 =======
 cd .\Desktop\
