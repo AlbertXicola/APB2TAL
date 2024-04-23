@@ -1,0 +1,29 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+<main class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="text-center display-4 py-4">Tasks</h1>
+
+            <div class="list-group">
+                {% for task in tasks %}
+                <a href="{% url 'task_detail' task.id %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex justify-content-between">
+                        {% if task.important %}
+                        <h2 class="fw-bold text-success">{{ task.title }}</h2>
+                        {% else %}
+                        <h2>{{ task.title }}</h2>
+                        {% endif %}
+                        <p>{{ task.user.username }}</p>
+                    </div>
+                    <p class="mb-1">Descripción: {{ task.description }}</p>
+                    <p class="mb-1">Importante: {% if task.important %} Sí {% else %} No {% endif %}</p>
+                    <p class="mb-1">Completada: {% if task.completed %} Sí {% else %} No {% endif %}</p>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

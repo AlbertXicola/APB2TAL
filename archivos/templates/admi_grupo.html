@@ -1,0 +1,130 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="container">
+  <h2 class="text-center display-4 py-4">Administrar el Grupo {{ grupo.name }}</h2>
+
+  <a href="/administrar/grupos/" class="btn btn-secondary mb-1">Volver</a>
+
+  <div class="user-details">
+        
+    <p><strong>ID:</strong> {{ grupo.id }}</p>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="nombre">Nombre:</label>
+      <input type="text" class="form-control" id="nombre" name="nombre" value="{{ grupo.name }}"><br>
+      <label for="nombre">Descripción:</label>
+      <input type="text" class="form-control" id="description" name="description" value="{{ grupo.description }}"><br>
+
+      <input type="text" id="search" placeholder="Buscar usuario..."><br><br>
+      <div id="user-list-container" class="user-list-container">
+        <div id="user-list">
+          {% for usuario in usuarios %}
+          <div class="user-item">
+            {% if usuario in grupo.user_set.all %}
+            <button type="button" class="btn btn-danger btn-sm delete-user-btn" data-user-id="{{ usuario.id }}"><i class="fas fa-minus"></i></button>
+            {% else %}
+            <button type="button" class="btn btn-success btn-sm add-user-btn" data-user-id="{{ usuario.id }}"><i class="fas fa-plus"></i></button>
+            
+            {% endif %}
+            <span class="username">{{ usuario.username }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <br>
+
+      <button type="submit" class="btn btn-success" name="guardar">Guardar Cambios</button>
+      <button type="submit" class="btn btn-danger" name="eliminar">Eliminar Grupo</button><br><br>
+    </form>
+  </div>
+</div>
+
+<style>
+  .user-list-container {
+    max-height: 200px; /* Adjust the height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  .user-item {
+    margin-bottom: 10px;
+  }
+  .username {
+    font-size: larger;
+    margin-left: 10px;
+  }
+  
+  /* Estilos para la barra de búsqueda */
+  #search {
+    width: 25%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+  }
+
+
+  /* Estilos para el contenedor de la lista de usuarios */
+  .user-list-container {
+    max-height: 200px; /* Ajusta la altura según sea necesario */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+</style>
+
+<script>
+  // JavaScript for filtering users and adding/removing them from the group
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search');
+    const userList = document.getElementById('user-list');
+    const addButtons = document.querySelectorAll('.add-user-btn');
+    const deleteButtons = document.querySelectorAll('.delete-user-btn');
+
+    searchInput.addEventListener('input', function() {
+      const searchTerm = searchInput.value.toLowerCase();
+      Array.from(userList.getElementsByClassName('user-item')).forEach(function(userItem) {
+        const username = userItem.getElementsByClassName('username')[0].textContent.toLowerCase();
+        if (username.includes(searchTerm)) {
+          userItem.style.display = 'block';
+        } else {
+          userItem.style.display = 'none';
+        }
+      });
+    });
+
+    addButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        const userId = button.getAttribute('data-user-id');
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'usuarios_no_grupo';
+        input.value = userId;
+        document.querySelector('form').appendChild(input);
+        button.disabled = true;
+      });
+    });
+
+    deleteButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        const userId = button.getAttribute('data-user-id');
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'usuarios_a_eliminar';
+        input.value = userId;
+        document.querySelector('form').appendChild(input);
+        button.parentElement.remove(); // Remove the user from the UI
+      });
+    });
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<style>
+
+    .sidebar ul li.perfil1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+</style>
+
+<main class="container">
+    <div class="row">
+        <section class="col-md-4 offset-md-4 mt-5">  
+            
+            <h1 class="text-center display-4 py-4"> {{user.username}} Profile</h1>
+
+            {% if user.is_accepted %}
+
+
+            {% else %}
+            <h3 class="text-center display-6 py-5">Esperando a que un administrador accepte tu perfil.</h3>
+
+            {% endif %}
+
+
+
+        </section>
+    </div>
+</main>
+{% endblock %}
+

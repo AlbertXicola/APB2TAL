@@ -1,0 +1,43 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 mt-5">
+            <h2 class="text-center display-4 py-4">Datos del usuario actual</h2>
+            <div>
+                <p>El archivo es del usuario {{ usuario_actual.username }}</p> 
+                <h2>Datos del archivo seleccionado:</h2>
+                <p>Nombre: {{ archivo.nombre_archivo }}</p>
+                <!-- Asegúrate de que current_time esté definido correctamente en tu modelo Archivo -->
+                <!-- <p>Fecha de creación: {{ archivo.current_time }}</p> -->
+                <h2>COMPARTIR ARCHIVO CON</h2>
+                <h2>Lista de usuarios:</h2>
+                <form id="compartir-form" method="post" action="{% url 'compartir_archivo' archivo.id %}">
+                    {% csrf_token %}
+                    <ul>
+                        {% for usuario in usuarios %}
+                            <li>
+                                <input type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
+                                {{ usuario.username }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <h2>Lista de grupos:</h2>
+                    <ul>
+                        {% for grupo in grupos %}
+                            <li>
+                                <input type="checkbox" name="grupos" value="{{ grupo.id }}" {% if grupo.id in grupos_compartidos %}checked{% endif %}>
+                                {{ grupo.name }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <button type="submit">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

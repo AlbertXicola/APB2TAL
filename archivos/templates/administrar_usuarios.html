@@ -1,0 +1,50 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center display-4 py-4 mt-5">Administración de Usuarios</h2>
+            <a href="/administrar/" class="btn btn-secondary mb-3">Volver</a>
+
+            <div class="user-list">
+                <h3 class="text-left display-6 py-3">Usuarios Aceptados</h3>
+                <ul class="list-group">
+
+
+                    {% for usuario in usuarios %}
+                        {% if usuario.is_accepted %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="{% url 'admi_usuario' usuario.id %}" class="username">{{ usuario.username }}</a>
+                                <span class="badge bg-info rounded-pill">Aceptado</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="user-list">
+                <h3 class="text-left display-6 py-4">Usuarios No Aceptados</h3>
+                <ul class="list-group">
+                    {% for usuario in usuarios %}
+                        {% if not usuario.is_accepted %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="{% url 'admi_usuario' usuario.id %}" class="username">{{ usuario.username }}</a>
+                                <span class="badge bg-danger rounded-pill">No Aceptado</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+

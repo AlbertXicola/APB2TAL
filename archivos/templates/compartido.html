@@ -1,0 +1,25 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Archivos compartidos al usuario</h2>
+            <ul>
+                {% for archivo, usuario_propietario in archivos_compartidos_al_usuario %}
+                <li>{{ archivo.nombre_archivo }} compartido por {{ usuario_propietario.username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2>Archivos compartidos por el usuario</h2>
+            <ul>
+                {% for archivo, usuario_destinatario in archivos_compartidos_por_usuario %}
+                <li>{{ archivo.nombre_archivo }} compartido al usuario  {{ usuario_destinatario.username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

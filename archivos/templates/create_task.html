@@ -1,0 +1,42 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 ">
+            <h1 class="text-center display-4 py-4">Create Task</h1>
+            
+            <form action="/tasks/create/" method="POST" class="card card-body">
+
+                {{ error }} 
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Title:</label>
+                    {{ form.title }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description:</label>
+                    {{ form.description }}
+                </div>
+
+                <div class="form-group form-check">
+                    {{ form.important }}
+                    <label class="form-check-label" for="{{ form.important.id_for_label }}">Important</label>
+                </div>
+
+                <div class="form-group form-check">
+                    {{ form.completed }}
+                    <label class="form-check-label" for="{{ form.completed.id_for_label }}">Completed</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

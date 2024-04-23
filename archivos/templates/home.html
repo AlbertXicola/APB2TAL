@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main class="container py-5">
+
+        <section class="card card-body">
+           
+            <h1 class="">APB2TAL</h1>
+            <br>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum unde at sequi sed neque dignissimos fugit voluptates. Voluptatem consequuntur iure animi dignissimos quo sit magnam totam temporibus ex, tempora culpa aliquid, corrupti eligendi quisquam vero ea assumenda doloribus repellat ab eaque. Itaque harum, natus consequuntur vitae at similique fuga explicabo consequatur ab asperiores ratione totam vero consectetur voluptatum perspiciatis quae expedita eum veritatis, voluptate numquam? Iste exercitationem enim optio fugit? Soluta, velit! Veritatis pariatur exercitationem aspernatur animi, inventore nesciunt! Nam veritatis quam odit, quis provident doloribus! Molestias voluptate perspiciatis dolor eum autem! Quasi corporis reiciendis dolores amet praesentium cupiditate. Nulla.</p>
+            <br>
+
+            
+            <div class="text-center">
+                {% if user.is_authenticated %}
+
+                {% else %}
+                    <a class="btn btn-secondary" href="/signin/">
+                        Signin
+                    </a>
+                    <a class="btn btn-secondary" href="/signup/">
+                        Signup
+                    </a>
+                {% endif %}
+            </div>
+
+        </section>
+
+    </main>
+
+{% endblock %}

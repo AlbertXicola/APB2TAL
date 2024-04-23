@@ -1,0 +1,34 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<style>
+
+    .sidebar ul li.contacta1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+</style>
+
+    <div class="container text-center ">
+        <h2 class="text-center display-4 py-4 mt-5">Mensajes</h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/contacta/" class="btn btn-primary btn-block">Contacta con Administración</a>
+            </div>
+            <div class="col-md-6">
+                <a href="/contacta/" class="btn btn-primary btn-block">Contacta  con Usuarios</a>
+            </div>
+
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-90">
+                <a href="/contacta" class="btn btn-success btn-block">Buzón</a>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

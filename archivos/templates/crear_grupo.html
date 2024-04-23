@@ -1,0 +1,27 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center display-4 py-4">Crear Grupos</h2>
+            <a href="/administrar/grupos" class="btn btn-secondary mb-3">Volver</a>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nombre">Nombre del Grupo:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Crear Grupo</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

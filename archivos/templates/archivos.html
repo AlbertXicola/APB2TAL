@@ -1,0 +1,70 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<style>
+
+    .sidebar ul li.archivos1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+</style>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 mt-5">
+            <h2 class="text-center display-4 py-4">Archivos de {{ user.username }} </h2>
+
+            <table class="table table-striped">
+                <thead >
+                    <tr>
+                        <th>Nombre del Archivo</th>
+                        <th>Positivos</th>
+                        <th>Fecha de Análisis</th>
+                        <th ></th> <!-- Nueva columna para los botones -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro in registros %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'archivos_manage' archivo_id=registro.id %}">
+                                {{ registro.nombre_archivo }}
+                            </a>
+                        </td>
+                        <td>{{ registro.positivos }}</td>
+                        <td>{{ registro.current_time }}</td>
+                        
+                        <td class="text-right"> <!-- Columna para los botones -->
+                            <div class="btn-group" role="group" aria-label="Botones de archivo">
+                                <!-- Icono de descarga -->
+                                <a href="{% url 'descargar_archivo' registro.id %}" class="btn btn-primary" style="border-radius: 5px;">
+                                    <i class="fas fa-download"></i> 
+                                </a>   
+                                
+                                            
+                                <!-- Icono de basura -->
+                                <form action="{% url 'eliminar_archivo' registro.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger" style="border-radius: 5px; margin-left: 5px;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+{% endblock %}

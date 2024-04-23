@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-5">
+            <form id="signupForm" action="/signup/" method="POST" class="card card-body" onsubmit="return validateForm()">
+                <h1 class="text-center">Signup</h1>
+                <span class="text-danger" style="font-weight: bold;">{{ error }}</span>
+
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Write your username" required>
+                    <span id="username-error" class="text-danger"></span>
+                    <span id="username-warning" class="text-danger" style="display:none;">Special characters are not allowed except underscore (_)</span>
+                </div>
+                <div class="mb-3">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Write your email" required>
+                    <span id="email-error" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="first_name">First name:</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Write your First name" required>
+                    <span id="first-name-error" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="last_name">Last name:</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Write your last name" required>
+                    <span id="last-name-error" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="password1">Password:</label>
+                    <div class="input-group">
+                        <input type="password" name="password1" id="password1" class="form-control" placeholder="Write your password" required>
+                        <button type="button" class="btn btn-outline-secondary" id="showPassword1">Show</button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password2">Confirm your password:</label>
+                    <div class="input-group">
+                        <input type="password" name="password2" id="password2" class="form-control" placeholder="Confirm your password" required>
+                        <button type="button" class="btn btn-outline-secondary" id="showPassword2">Show</button>
+                    </div>
+                </div>
+                <div id="error-msg" class="alert alert-danger" style="display:none;"></div>
+                <button type="submit" class="btn btn-primary">Signup</button>
+            </form>   
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#username').keyup(function(){
+            var username = $(this).val();
+            $.ajax({
+                url: '/validar_username/',
+                data: {
+                    'username': username
+                },
+                dataType: 'json',
+                success: function(data){
+                    if(data.is_taken){
+                        $('#username-error').html('This username is not allowed.');
+                    } else {
+                        $('#username-error').html('');
+                    }
+                }
+            });
+        });
+
+        $('#username').on('input', function(){
+            var username = $(this).val();
+            var warning = $('#username-warning');
+            if (username.match(/[^\w]/)) {
+                warning.css('display', 'block');
+            } else {
+                warning.css('display', 'none');
+            }
+        });
+
+        $('#email').keyup(function(){
+            var email = $(this).val();
+            if(email.endsWith('.com')) {
+                $('#email-error').html('');
+            } else {
+                $('#email-error').html('Email must end with .com');
+            }
+        });
+
+        $('#first_name, #last_name').keyup(function(){
+            var value = $(this).val();
+            if (value.includes(' ')) {
+                $(this).next('.text-danger').html('Name cannot contain spaces');
+            } else {
+                $(this).next('.text-danger').html('');
+            }
+        });
+    });
+   
+    $(document).ready(function(){
+        $('#showPassword1').click(function(){
+            var passwordField = $('#password1');
+            var passwordFieldType = passwordField.attr('type');
+            if (passwordFieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $(this).text('Hide');
+            } else {
+                passwordField.attr('type', 'password');
+                $(this).text('Show');
+            }
+        });
+
+        $('#showPassword2').click(function(){
+            var passwordField = $('#password2');
+            var passwordFieldType = passwordField.attr('type');
+            if (passwordFieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $(this).text('Hide');
+            } else {
+                passwordField.attr('type', 'password');
+                $(this).text('Show');
+            }
+        });
+    });
+
+    function validateForm() {
+        var username = document.getElementById("username").value;
+        var password1 = document.getElementById("password1").value;
+        var password2 = document.getElementById("password2").value;
+        var errorMsg = document.getElementById("error-msg");
+        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (username.match(/[^\w]/)) {
+            document.getElementById("username-warning").style.display = "block";
+            setTimeout(function(){ document.getElementById("username-warning").style.display = "none"; }, 5000); // Ocultar el mensaje después de 5 segundos
+            return false;
+        }
+        if (!passwordRegex.test(password1)) {
+            errorMsg.innerHTML = "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long";
+            errorMsg.style.display = "block";
+            setTimeout(function(){ errorMsg.style.display = "none"; }, 8000); // Ocultar el mensaje después de 3 segundos
+            return false;
+        }
+        if (password1 !== password2) {
+            errorMsg.innerHTML = "Passwords do not match";
+            errorMsg.style.display = "block";
+            setTimeout(function(){ errorMsg.style.display = "none"; }, 3000); // Ocultar el mensaje después de 3 segundos
+            return false;
+        }
+        var email = document.getElementById("email").value;
+        if (!email.endsWith('.com')) {
+            errorMsg.innerHTML = "Email must end with .com";
+            errorMsg.style.display = "block";
+            setTimeout(function(){ errorMsg.style.display = "none"; }, 3000); // Ocultar el mensaje después de 3 segundos
+            return false;
+        }
+        var firstName = document.getElementById("first_name").value;
+        var lastName = document.getElementById("last_name").value;
+        if (firstName.includes(' ') || lastName.includes(' ')) {
+            errorMsg.innerHTML = "Name and Last Name cannot contain spaces";
+            errorMsg.style.display = "block";
+            setTimeout(function(){ errorMsg.style.display = "none"; }, 3000); // Ocultar el mensaje después de 3 segundos
+            return false;
+        }
+        return true;
+    }
+</script>
+
+{% endblock %}

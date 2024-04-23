@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="row">
+        <section class="col-md-4 offset-md-4 mt-5">  
+            <form action="/signin/" method="POST" class="card card-body" id="signin-form">
+               
+                <h1 class="text-center">Signin</h1>
+                
+                <small id="error-message" class='error' style='color: red; font-weight: bold;'>{{ error }}</small>
+
+
+                {% csrf_token %}
+             
+                <div class="mb-3">
+                
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Write your username">
+                    <small id="username-error" class="text-danger"></small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Write your password">
+                </div>
+
+                <button class="btn btn-primary" id="signin-button">
+                    Signin
+                </button>
+            </form>
+        </section>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const usernameInput = document.getElementById('username');
+        const usernameError = document.getElementById('username-error');
+        const signinButton = document.getElementById('signin-button');
+        const errorMessage = document.getElementById('error-message');
+
+        usernameInput.addEventListener('input', function () {
+            const username = usernameInput.value.trim();
+            if (/[^\w]/.test(username)) {
+                usernameError.textContent = 'Special characters are not allowed except underscore (_).';
+                signinButton.disabled = true;
+            } else {
+                usernameError.textContent = '';
+                signinButton.disabled = false;
+            }
+        });
+
+        // Ocultar el mensaje de error después de 5 segundos
+        setTimeout(function () {
+            errorMessage.style.display = 'none';
+        }, 4000);
+    });
+</script>
+
+{% endblock %}
