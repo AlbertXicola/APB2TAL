@@ -2,42 +2,65 @@
 
 {% block content %}
 
+<style>
+
+    .sidebar ul li.archivos1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+</style>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2 mt-5">
-            <h2 class="text-center display-4 py-4">Datos del usuario actual</h2>
-            <div>
-                <p>El archivo es del usuario {{ usuario_actual.username }}</p> 
-                <h2>Datos del archivo seleccionado:</h2>
-                <p>Nombre: {{ archivo.nombre_archivo }}</p>
+            <h2 class="text-center display-4 py-4">Datos de <strong>{{ archivo.nombre_archivo }}</strong> actual</h2>
+            <a href="/archivos/" class="btn btn-secondary mb-3">Volver</a>
+
+            <div class="card p-4">
+                <p class="mb-0">El archivo pertenece al usuario {{ usuario_actual.username }}</p>
+                <hr>
+                <h2 class="mb-4">Datos del archivo seleccionado:</h2>
+                <p><strong>Nombre:</strong> {{ archivo.nombre_archivo }}</p>
+                <p><strong>Hash AVT:</strong> {{ archivo.archivo_hash }}</p>
+                <p><strong>Hash APB2TAL:</strong> {{ archivo.id_APB2TAL }}</p>
+                <p><strong>Positivos:</strong> {{ archivo.positivos }}</p>
+                <p><strong>Fecha de análisis:</strong> {{ archivo.current_time }}</p>
+
                 <!-- Asegúrate de que current_time esté definido correctamente en tu modelo Archivo -->
                 <!-- <p>Fecha de creación: {{ archivo.current_time }}</p> -->
-                <h2>COMPARTIR ARCHIVO CON</h2>
-                <h2>Lista de usuarios:</h2>
+
+                <h2 class="mt-4">COMPARTIR ARCHIVO CON</h2>
+                <hr>
+                <h3>Lista de usuarios:</h3>
                 <form id="compartir-form" method="post" action="{% url 'compartir_archivo' archivo.id %}">
                     {% csrf_token %}
-                    <ul>
+                    <ul class="list-unstyled">
                         {% for usuario in usuarios %}
-                            <li>
-                                <input type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
-                                {{ usuario.username }}
-                            </li>
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
+                                <label class="form-check-label">{{ usuario.username }}</label>
+                            </div>
+                        </li>
                         {% endfor %}
                     </ul>
-                    <h2>Lista de grupos:</h2>
-                    <ul>
+
+                    <h3 class="mt-4">Lista de grupos:</h3>
+                    <ul class="list-unstyled">
                         {% for grupo in grupos %}
-                            <li>
-                                <input type="checkbox" name="grupos" value="{{ grupo.id }}" {% if grupo.id in grupos_compartidos %}checked{% endif %}>
-                                {{ grupo.name }}
-                            </li>
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="grupos" value="{{ grupo.id }}" {% if grupo.id in grupos_compartidos %}checked{% endif %}>
+                                <label class="form-check-label">{{ grupo.name }}</label>
+                            </div>
+                        </li>
                         {% endfor %}
                     </ul>
-                    <button type="submit">Guardar</button>
+                    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

@@ -39,6 +39,12 @@ urlpatterns = [
     path('compartir_archivo/<int:archivo_id>/', views.compartir_archivo, name='compartir_archivo'),
     path('eliminar-compartido/', views.eliminar_compartido, name='eliminar_compartido'),
 
+
+    path('compartido/descargar/<int:archivo_id>/', views.descargar_archivo_compartido, name='descargar_archivo_compartido'),
+    path('compartido/eliminar/<int:archivo_id>/', views.eliminar_archivo_compartido, name='eliminar_archivo_compartido'),
+    path('compartido/archivo/<int:archivo_id>/', views.compartido_archivo_info, name='compartido_archivo_info'),
+
+
     path('compartido/', views.compartido, name='compartido'),
     path('administrar/grupos/', views.administrar_grupos, name='administrar_grupos'),
     path('administrar/grupos/create', views.crear_grupo, name='crear_grupo'),

@@ -21,6 +21,20 @@ import hashlib
 import shutil
 import time
 import os
+from django.http import HttpResponse
+import os
+from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, Group
+from .models import Archivo, Compartido, adquisicion
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from .models import Archivo
+from django.shortcuts import get_object_or_404, redirect
+from .models import Compartido
+from django.http import JsonResponse
 
 
 def home(request):
@@ -493,26 +507,31 @@ def archivos(request):
     
     return render(request, 'archivos.html', {'registros': registros})
 
-
+from .models import  *
 @accepted_user_required
 @login_required
 def eliminar_archivo(request, archivo_id):
     # Obtener el archivo de la tabla de adquisiciones por su ID
     try:
+        compartidos = Compartido.objects.filter(archivo_id=archivo_id, usuario_propietario=request.user)
         registro_adquisicion = adquisicion.objects.get(archivo_id=archivo_id, user=request.user)
+        
     except adquisicion.DoesNotExist:
         # Manejar el caso en el que no se encuentra el registro de adquisición
         # Redireccionar a donde corresponda, por ejemplo, a una página de error
         return redirect('archivos')  # Redirigir a la página de archivos
 
     # Si se encontró el registro de adquisición, eliminarlo
+    for compartido in compartidos:
+        compartido.delete()
     registro_adquisicion.delete()
+    
+    
 
     # Después de eliminar, redirigir a la página de archivos
     return redirect('archivos')
 
-from django.http import HttpResponse
-import os
+
 
 
 @accepted_user_required
@@ -544,24 +563,23 @@ def mis_grupos(request):
 
 
 
-# Asegúrate de importar las funciones y clases necesarias correctamente
-from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, Group
-from .models import Archivo, Compartido, adquisicion
 
+
+@accepted_user_required
 @login_required
 def archivos_manage(request, archivo_id):
     usuario_actual = request.user
     archivo = get_object_or_404(Archivo, pk=archivo_id)
-    usuarios = User.objects.all()
-    grupos = Group.objects.all()
+    usuarios = User.objects.all().exclude(id=usuario_actual.id)
+    grupos = usuario_actual.groups.all()
+
+
 
     # Obtener los usuarios y grupos con los que se ha compartido el archivo
-    usuarios_compartidos = [compartido.usuario_destinatario_id for compartido in Compartido.objects.filter(archivo=archivo, usuario_destinatario__isnull=False)]
-    grupos_compartidos = [compartido.grupo_destinatario_id for compartido in Compartido.objects.filter(archivo=archivo, grupo_destinatario__isnull=False)]
+    usuarios_compartidos = [compartido.usuario_destinatario_id for compartido in Compartido.objects.filter(archivo=archivo, usuario_destinatario__isnull=False, usuario_propietario=usuario_actual)]
+    grupos_compartidos = [compartido.grupo_destinatario_id for compartido in Compartido.objects.filter(archivo=archivo, grupo_destinatario__isnull=False, usuario_propietario=usuario_actual)]
 
+    
     return render(request, 'archivos_manage.html', {
         'usuario_actual': usuario_actual,
         'usuarios': usuarios,
@@ -572,6 +590,8 @@ def archivos_manage(request, archivo_id):
     })
 
 
+
+@accepted_user_required
 @login_required
 def compartir_archivo(request, archivo_id):
     if request.method == 'POST':
@@ -581,7 +601,7 @@ def compartir_archivo(request, archivo_id):
         
         # Buscar la adquisición del archivo para determinar el propietario
         adquisicion1 = adquisicion.objects.filter(archivo=archivo).first()
-        usuario_propietario = adquisicion1.user if adquisicion1 else None
+        usuario_propietario = request.user
         grupo_propietario = adquisicion1.group if adquisicion1 else None
         
         # Obtener los registros compartidos existentes para el archivo
@@ -628,8 +648,8 @@ def compartir_archivo(request, archivo_id):
         pass
 
 
-from django.http import JsonResponse
-
+@accepted_user_required
+@login_required
 def eliminar_compartido(request):
     if request.method == 'POST' and request.is_ajax():
         tipo = request.POST.get('tipo')
@@ -648,8 +668,9 @@ def eliminar_compartido(request):
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST y AJAX.'}, status=400)
 
 
-from django.db.models import Q
 
+
+@accepted_user_required
 @login_required
 def compartido(request):
     # Obtener el usuario actual
@@ -664,4 +685,58 @@ def compartido(request):
         'archivos_compartidos_al_usuario': archivos_compartidos_al_usuario,
         'archivos_compartidos_por_usuario': archivos_compartidos_por_usuario
     })
+
+
+
+@accepted_user_required
+@login_required
+def descargar_archivo_compartido(request, archivo_id):
+    # Obtener el objeto Archivo basado en su ID
+    archivo = get_object_or_404(Archivo, pk=archivo_id)
+    
+    # Aquí debes implementar la lógica para obtener la ruta del archivo en tu sistema de archivos
+    # Supongamos que la ruta del archivo se almacena en el atributo 'ruta' del modelo Archivo
+    ruta_archivo = os.path.join(settings.MEDIA_ROOT2, archivo.id_APB2TAL, archivo.nombre_archivo)
+    
+    # Abrir el archivo para lectura en modo binario
+    with open(ruta_archivo, 'rb') as file:
+        # Leer el contenido del archivo
+        contenido_archivo = file.read()
+    
+    # Configurar la respuesta HTTP con el contenido del archivo
+    response = HttpResponse(contenido_archivo, content_type='application/octet-stream')
+    
+    # Configurar las cabeceras HTTP para la descarga del archivo
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(archivo.nombre_archivo)
+    
+    return response
+
+@accepted_user_required
+@login_required
+def eliminar_archivo_compartido(request, archivo_id):
+    # Obtener el archivo de la tabla de adquisiciones por su ID
+    try:
+        compartidos = Compartido.objects.filter(archivo_id=archivo_id, usuario_propietario=request.user) 
+    except adquisicion.DoesNotExist:
+        # Manejar el caso en el que no se encuentra el registro de adquisición
+        # Redireccionar a donde corresponda, por ejemplo, a una página de error
+        return redirect('archivos')  # Redirigir a la página de archivos
+    # Si se encontró el registro de adquisición, eliminarlo
+    for compartido in compartidos:
+        compartido.delete()
+    # Después de eliminar, redirigir a la página de archivos
+    return redirect('compartido')
+
+
+def compartido_archivo_info(request, archivo_id):
+
+    archivo = get_object_or_404(Archivo, pk=archivo_id)
+
+    return render(request, 'compartido_archivo_info.html', {
+
+        'archivo': archivo,
+
+    })
+
+
 

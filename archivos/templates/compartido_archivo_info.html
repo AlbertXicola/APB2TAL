@@ -1,0 +1,32 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 mt-5">
+            <h2 class="text-center display-4 py-4">{{ archivo.nombre_archivo }} compartido</h2>
+            <a href="/compartido/" class="btn btn-secondary mb-3">Volver</a>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="card-title">Detalles del archivo</h4>
+                    <div class="card mb-1" style="width: 700px;">
+                        <div class="card-body">
+                    
+                            <p class="card-text" style="font-size: 18px;"><strong>Nombre:</strong> {{ archivo.nombre_archivo }}</p>
+                            <p class="card-text" style="font-size: 18px;"><strong>Hash AVT:</strong> {{ archivo.archivo_hash }}</p>
+                            <p class="card-text" style="font-size: 18px;"><strong>Hash APB2TAL:</strong> {{ archivo.id_APB2TAL }}</p>
+                            <p class="card-text" style="font-size: 18px;"><strong>Positivos:</strong> {{ archivo.positivos }}</p>
+                            <p class="card-text" style="font-size: 18px;"><strong>Fecha de análisis:</strong> {{ archivo.current_time }}</p>
+                    
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
