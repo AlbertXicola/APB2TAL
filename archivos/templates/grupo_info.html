@@ -1,0 +1,34 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<style>
+    .sidebar ul li.misgrupos1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+</style>
+
+<h1 class="text-center display-4 py-4 mt-5">{{ group_name }}</h1>
+<div class="col-md-8">
+    <div class="card-body">
+        <ul class="list-group">
+
+            {% for compartido in archivos_compartidos_al_grupo %}
+                {% if group == compartido.grupo_destinatario %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">{{ compartido.archivo.nombre_archivo }}</h5>
+                            <p class="card-text">Compartido por: <strong>{{ compartido.usuario_propietario.username }}</strong></p>
+                        </div>
+                    </div>
+                    <br>
+                {% endif %}
+            {% endfor %}
+
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

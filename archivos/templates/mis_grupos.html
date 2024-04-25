@@ -3,7 +3,6 @@
 {% block content %}
 
 <style>
-
     .sidebar ul li.misgrupos1 {
         color: #dee2e6;
         background-color: #6c757d;
@@ -11,21 +10,15 @@
     }
 </style>
 
-
-    <h1 class="text-center display-4 py-4 mt-5"> Mis Grupos</h1>
-    <div class="col-md-4">
-
-        <div class="card-body">
-            <ul class="list-group">
-                {% for group in usuario.groups.all %}
-                <li class="list-group-item">{{ group.name }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
+<h1 class="text-center display-4 py-4 mt-5"> Mis Grupos</h1>
+<div class="col-md-4">
+    <div class="card-body">
+        <ul class="list-group">
+            {% for group in usuario.groups.all %}
+                <a href="{% url 'grupo_info' group.name %}" class="list-group-item">{{ group.name }}</a>
+            {% endfor %}
+        </ul>
     </div>
+</div>
 
-    
 {% endblock %}
-
-

@@ -2,38 +2,49 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 mt-5">
             <h2 class="text-center display-4 py-4">Archivos Compartidos</h2>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4 overflow-auto"> <!-- Agregada la clase overflow-auto -->
                     <h3>Te han compartido</h3>
                     {% for archivo, usuario_propietario in archivos_compartidos_al_usuario %}
                     <div class="card mb-3">
                         <div class="card-body">
-                            <a href="{% url 'compartido_archivo_info' archivo_id=archivo.id %}" class="card-title" style="font-weight: bold; font-size: 1.2em;">{{ archivo.nombre_archivo }}</a>
-                            <h6 class="card-title">positivos: {{ archivo.positivos }}</h6>
-                            
-
+                            <h5 class="card-title font-weight-bold">{{ archivo.nombre_archivo }}</h5>
                             <p class="card-text">Compartido por: <strong>{{ usuario_propietario.username }}</strong></p>
-                            <a href="{% url 'descargar_archivo' archivo.id %}" class="btn btn-primary" download>Descargar</a>
+                            <p class="card-text">Positivos: {{ archivo.positivos }}</p>
+                            <a href="{% url 'compartido_archivo_info' archivo_id=archivo.id %}" class="btn btn-primary">Detalles</a>
+                            <a href="{% url 'descargar_archivo' archivo.id %}" class="btn btn-success" download>Descargar</a>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
-                <div class="col-md-6">
-                    <h3>Has compartido</h3>
-                    {% for archivo, usuario_destinatario in archivos_compartidos_por_usuario %}
+                
+                <div class="col-md-4 overflow-auto"> <!-- Agregada la clase overflow-auto -->
+                    <h3>Compartido a Usuarios</h3>
+                    {% for compartido in archivos_compartidos_por_usuario %}
                     <div class="card mb-3">
                         <div class="card-body">
-                            <a href="{% url 'archivos_manage' archivo_id=archivo.id %}" class="card-title" style="font-weight: bold; font-size: 1.2em;">{{ archivo.nombre_archivo }}</a>
-                            <br>
-                            <br>
-                            <h6 class="card-title">  </h6>
-                            <p class="card-text">Compartido al usuario: <strong>{{ usuario_destinatario.username }}</strong></p>
-                            <a href="{% url 'eliminar_archivo_compartido' archivo.id %}" class="btn btn-danger" >Eliminar</a>
-
+                            <h5 class="card-title" style="font-weight: bold; font-size: 1.2em;">{{ compartido.archivo.nombre_archivo }}</h5>
+                            <p class="card-text">Compartido al usuario: <strong>{{ compartido.usuario_destinatario.username }}</strong></p>
+                            <a href="{% url 'archivos_manage' archivo_id=compartido.archivo.id %}" class="btn btn-primary">Detalles</a>
+                            <a href="{% url 'eliminar_archivo_compartido' compartido.id %}" class="btn btn-danger">Eliminar</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-4 overflow-auto"> <!-- Agregada la clase overflow-auto -->
+                    <h3>Compartido a Grupos</h3>
+                    {% for compartido in archivos_compartidos_por_grupo %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-weight: bold; font-size: 1.2em;">{{ compartido.archivo.nombre_archivo }}</h5>
+                            <p class="card-text">Compartido al grupo: <strong>{{ compartido.grupo_destinatario.name }}</strong></p>
+                            <a href="{% url 'archivos_manage' archivo_id=compartido.archivo.id %}" class="btn btn-primary">Detalles</a>
+                            <a href="{% url 'eliminar_archivo_compartido' compartido.id %}" class="btn btn-danger">Eliminar</a>
                         </div>
                     </div>
                     {% endfor %}
@@ -43,4 +54,3 @@
     </div>
 </div>
 {% endblock %}
-

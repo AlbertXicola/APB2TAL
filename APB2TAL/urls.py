@@ -59,7 +59,7 @@ urlpatterns = [
     path('perfil/<str:username>/', views.perfil, name= 'perfil'),
     
     path('grupos/', views.mis_grupos, name= 'mis_grupos'),
-
+    path('grupos/<str:name>/', views.grupo_info, name='grupo_info'),
     
     path('signup/', views.signup, name='signup'),
     path('validar_username/', views.validar_username, name='validar_username'),

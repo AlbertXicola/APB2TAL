@@ -1,9 +1,7 @@
 {% extends 'baseusuario.html' %}
 {% block content %}
 
-
 <style>
-
     .sidebar ul li.analizar1 {
         color: #dee2e6;
         background-color: #6c757d;
@@ -13,19 +11,18 @@
 
 <body>
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2 mt-5">
             <h2 class="text-center display-4 py-4">Análisis de Archivos</h2>
     
-            <form action="{% url 'archivos_analiz' %}" method="post" enctype="multipart/form-data">
+            <form id="archivoForm" action="{% url 'archivos_analiz' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="archivos" name="archivos" multiple>
                     <label class="custom-file-label" for="archivos">Seleccionar archivos</label>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Analizar</button>
+                <button id="analizarBtn" type="submit" class="btn btn-primary mt-3">Analizar</button>
             </form>
         </div>
     </div>
@@ -35,8 +32,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<script>
+    document.getElementById('archivoForm').addEventListener('submit', function() {
+        document.getElementById('analizarBtn').setAttribute('disabled', 'disabled');
+    });
+</script>
+
 </body>
-
-
 
 {% endblock %}

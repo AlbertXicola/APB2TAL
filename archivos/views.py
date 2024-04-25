@@ -555,15 +555,6 @@ def descargar_archivo(request, archivo_id):
         # Manejar el caso en el que el archivo no existe en la base de datos
         return HttpResponse("El archivo no existe.")
 
-@accepted_user_required
-@login_required
-def mis_grupos(request):
-    usuario = request.user  # Obtener el usuario actual
-    return render(request, 'mis_grupos.html', {'usuario': usuario})
-
-
-
-
 
 @accepted_user_required
 @login_required
@@ -594,6 +585,8 @@ def archivos_manage(request, archivo_id):
 @accepted_user_required
 @login_required
 def compartir_archivo(request, archivo_id):
+    usuario_propietario = request.user
+
     if request.method == 'POST':
         usuarios_seleccionados = request.POST.getlist('usuarios')
         grupos_seleccionados = request.POST.getlist('grupos')
@@ -633,7 +626,7 @@ def compartir_archivo(request, archivo_id):
         for grupo_id in grupos_seleccionados:
             grupo_destinatario = Group.objects.get(pk=grupo_id)
             Compartido.objects.get_or_create(
-                grupo_propietario=grupo_propietario,
+                usuario_propietario=usuario_propietario,
                 grupo_destinatario=grupo_destinatario,
                 archivo=archivo
             )
@@ -679,12 +672,20 @@ def compartido(request):
     # Obtener archivos compartidos al usuario actual
     archivos_compartidos_al_usuario = [(compartido.archivo, compartido.usuario_propietario) for compartido in Compartido.objects.filter(usuario_destinatario=usuario_actual)]
     
-    archivos_compartidos_por_usuario = [(compartido.archivo, compartido.usuario_destinatario) for compartido in Compartido.objects.filter(usuario_propietario=usuario_actual)]
+    
+    archivos_compartidos_por_grupo =  Compartido.objects.filter(usuario_propietario=usuario_actual, grupo_destinatario__isnull = False)
+    
+    archivos_compartidos_por_usuario = Compartido.objects.filter(usuario_propietario=usuario_actual, grupo_destinatario__isnull = True )
+    
     
     return render(request, 'compartido.html', {
         'archivos_compartidos_al_usuario': archivos_compartidos_al_usuario,
-        'archivos_compartidos_por_usuario': archivos_compartidos_por_usuario
+        'archivos_compartidos_por_usuario': archivos_compartidos_por_usuario,
+        'archivos_compartidos_por_grupo': archivos_compartidos_por_grupo
     })
+
+
+
 
 
 
@@ -714,20 +715,22 @@ def descargar_archivo_compartido(request, archivo_id):
 @accepted_user_required
 @login_required
 def eliminar_archivo_compartido(request, archivo_id):
-    # Obtener el archivo de la tabla de adquisiciones por su ID
+    # Obtener el archivo compartido por su ID y el usuario actual
     try:
-        compartidos = Compartido.objects.filter(archivo_id=archivo_id, usuario_propietario=request.user) 
-    except adquisicion.DoesNotExist:
-        # Manejar el caso en el que no se encuentra el registro de adquisición
+        compartido = Compartido.objects.get(id=archivo_id, usuario_propietario=request.user)
+    except Compartido.DoesNotExist:
+        # Manejar el caso en el que no se encuentra el archivo compartido
         # Redireccionar a donde corresponda, por ejemplo, a una página de error
-        return redirect('archivos')  # Redirigir a la página de archivos
-    # Si se encontró el registro de adquisición, eliminarlo
-    for compartido in compartidos:
-        compartido.delete()
-    # Después de eliminar, redirigir a la página de archivos
+        return redirect('compartido')  # Redirigir a la página de archivos compartidos
+    
+    # Eliminar el archivo compartido
+    compartido.delete()
+    
+    # Después de eliminar, redirigir a la página de archivos compartidos
     return redirect('compartido')
 
-
+@accepted_user_required
+@login_required
 def compartido_archivo_info(request, archivo_id):
 
     archivo = get_object_or_404(Archivo, pk=archivo_id)
@@ -740,3 +743,31 @@ def compartido_archivo_info(request, archivo_id):
 
 
 
+
+@accepted_user_required
+@login_required
+def mis_grupos(request):
+    
+    usuario = request.user  # Obtener el usuario actual
+
+
+
+    return render(request, 'mis_grupos.html', {'usuario': usuario})
+
+
+@login_required
+def grupo_info(request, name):
+    # Lógica de la vista
+    usuario = request.user  # Obtener el usuario actual
+
+    # Filtrar los archivos compartidos solo para el grupo específico seleccionado
+    grupo_seleccionado = Group.objects.get(name=name)  # Obtener el grupo por su nombre
+    archivos_compartidos_al_grupo = Compartido.objects.filter(grupo_destinatario=grupo_seleccionado)
+    
+    return render(request, 'grupo_info.html', {
+        'usuario': usuario,
+        'group_name': name,
+        'group': grupo_seleccionado,  # Pasar el objeto grupo_seleccionado
+        'archivos_compartidos_al_grupo': archivos_compartidos_al_grupo,
+        # Otros contextos que necesites pasar a la plantilla
+    })
