@@ -790,3 +790,47 @@ def grupo_info(request, name):
         'group': grupo_seleccionado,
         'archivos_compartidos_al_grupo': archivos_compartidos_al_grupo,
     })
+
+from django.contrib.auth.models import Group
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
+from .models import Compartido, Archivo
+import os
+from django.conf import settings
+
+# Tus decoradores personalizados si los tienes
+# ...
+
+@accepted_user_required
+@login_required
+def descargar_archivo_grupo(request, group_name, archivo_id):
+    # Obtener el archivo
+    archivo = get_object_or_404(Archivo, pk=archivo_id)
+    
+    # Obtener el grupo
+    grupo = get_object_or_404(Group, name=group_name)
+    
+    # Verificar si el usuario actual pertenece al grupo
+    if not request.user.groups.filter(name=group_name).exists():
+        raise Http404("No tienes permiso para acceder a este archivo.")
+
+    # Verificar si el archivo pertenece al grupo
+    if not Compartido.objects.filter(grupo_destinatario=grupo, archivo=archivo).exists():
+        raise Http404("El archivo no está compartido en este grupo.")
+
+    # Construir la ruta completa al archivo
+    ruta_archivo = os.path.join(settings.MEDIA_ROOT2, str(archivo.id_APB2TAL), archivo.nombre_archivo)
+
+    # Verificar si el archivo existe en el sistema de archivos
+    if not os.path.exists(ruta_archivo):
+        raise Http404("El archivo no existe.")
+
+    # Abrir el archivo y leer su contenido
+    with open(ruta_archivo, 'rb') as f:
+        contenido_archivo = f.read()
+
+    # Crear una respuesta HTTP con el contenido del archivo
+    response = HttpResponse(contenido_archivo, content_type='application/octet-stream')
+    response['Content-Disposition'] = f'attachment; filename="{archivo.nombre_archivo}"'
+
+    return response
