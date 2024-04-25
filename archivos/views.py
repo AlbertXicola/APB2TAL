@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User, Group
 from django.db import IntegrityError
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.http import JsonResponse
 from django.contrib import messages
 from django.utils import timezone
@@ -85,10 +85,6 @@ def validar_username(request):
     }
     return JsonResponse(data)
 
-@login_required
-def perfil(request):
-
-    return render(request, 'perfil.html')
 
 def accepted_user_required(view_func):
     decorated_view_func = user_passes_test(
@@ -96,6 +92,16 @@ def accepted_user_required(view_func):
         login_url='/perfil'  # Redirige a la página de perfil si el usuario no tiene is_accepted
     )(view_func)
     return decorated_view_func
+
+
+
+@login_required
+def perfil(request):
+
+    return render(request, 'perfil.html')
+
+
+
 
 
 @login_required
@@ -554,23 +560,25 @@ def descargar_archivo(request, archivo_id):
     except Archivo.DoesNotExist:
         # Manejar el caso en el que el archivo no existe en la base de datos
         return HttpResponse("El archivo no existe.")
-
+from django.http import Http404
 
 @accepted_user_required
 @login_required
 def archivos_manage(request, archivo_id):
     usuario_actual = request.user
     archivo = get_object_or_404(Archivo, pk=archivo_id)
+
+    # Verificar si el usuario actual tiene adquisición de este archivo
+    if not adquisicion.objects.filter(user=usuario_actual, archivo=archivo).exists():
+        raise Http404("No tienes permiso para acceder a este archivo.")
+
     usuarios = User.objects.all().exclude(id=usuario_actual.id)
     grupos = usuario_actual.groups.all()
-
-
 
     # Obtener los usuarios y grupos con los que se ha compartido el archivo
     usuarios_compartidos = [compartido.usuario_destinatario_id for compartido in Compartido.objects.filter(archivo=archivo, usuario_destinatario__isnull=False, usuario_propietario=usuario_actual)]
     grupos_compartidos = [compartido.grupo_destinatario_id for compartido in Compartido.objects.filter(archivo=archivo, grupo_destinatario__isnull=False, usuario_propietario=usuario_actual)]
 
-    
     return render(request, 'archivos_manage.html', {
         'usuario_actual': usuario_actual,
         'usuarios': usuarios,
@@ -579,8 +587,6 @@ def archivos_manage(request, archivo_id):
         'usuarios_compartidos': usuarios_compartidos,
         'grupos_compartidos': grupos_compartidos,
     })
-
-
 
 @accepted_user_required
 @login_required
@@ -729,18 +735,22 @@ def eliminar_archivo_compartido(request, archivo_id):
     # Después de eliminar, redirigir a la página de archivos compartidos
     return redirect('compartido')
 
+from django.http import Http404
+
 @accepted_user_required
 @login_required
 def compartido_archivo_info(request, archivo_id):
-
+    usuario_actual = request.user
     archivo = get_object_or_404(Archivo, pk=archivo_id)
 
+    # Verificar si el usuario actual tiene acceso compartido a este archivo
+    if not Compartido.objects.filter(usuario_destinatario=usuario_actual, archivo=archivo).exists():
+        raise Http404("No tienes permiso para acceder a este archivo compartido.")
+
     return render(request, 'compartido_archivo_info.html', {
-
+        'usuario_actual': usuario_actual,
         'archivo': archivo,
-
     })
-
 
 
 
@@ -754,20 +764,27 @@ def mis_grupos(request):
 
     return render(request, 'mis_grupos.html', {'usuario': usuario})
 
+from django.http import Http404
 
+@accepted_user_required
 @login_required
 def grupo_info(request, name):
-    # Lógica de la vista
-    usuario = request.user  # Obtener el usuario actual
+    # Obtener el usuario actual
+    usuario_actual = request.user
+
+    # Obtener el grupo por su nombre
+    grupo_seleccionado = Group.objects.get(name=name)
+
+    # Verificar si el usuario actual pertenece al grupo seleccionado
+    if not usuario_actual.groups.filter(name=name).exists():
+        raise Http404("No tienes permiso para acceder a este grupo.")
 
     # Filtrar los archivos compartidos solo para el grupo específico seleccionado
-    grupo_seleccionado = Group.objects.get(name=name)  # Obtener el grupo por su nombre
     archivos_compartidos_al_grupo = Compartido.objects.filter(grupo_destinatario=grupo_seleccionado)
-    
+
     return render(request, 'grupo_info.html', {
-        'usuario': usuario,
+        'usuario_actual': usuario_actual,
         'group_name': name,
-        'group': grupo_seleccionado,  # Pasar el objeto grupo_seleccionado
+        'group': grupo_seleccionado,
         'archivos_compartidos_al_grupo': archivos_compartidos_al_grupo,
-        # Otros contextos que necesites pasar a la plantilla
     })
