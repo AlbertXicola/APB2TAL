@@ -37,6 +37,7 @@ from .models import Compartido
 from django.http import JsonResponse
 
 
+
 def home(request):
     return render(request, 'home.html')
 
@@ -765,6 +766,7 @@ def mis_grupos(request):
     return render(request, 'mis_grupos.html', {'usuario': usuario})
 
 from django.http import Http404
+
 
 @accepted_user_required
 @login_required
