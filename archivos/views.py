@@ -35,6 +35,19 @@ from .models import Archivo
 from django.shortcuts import get_object_or_404, redirect
 from .models import Compartido
 from django.http import JsonResponse
+from django.contrib.auth.models import Group
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
+from .models import Compartido, Archivo
+import os
+from django.conf import settings
+from django.http import Http404
+from django.http import Http404
+from django.http import HttpResponse, Http404
+from django.shortcuts import get_object_or_404
+from .models import Archivo, Compartido
+from django.http import Http404
+from .models import  *
 
 
 
@@ -93,6 +106,8 @@ def accepted_user_required(view_func):
         login_url='/perfil'  # Redirige a la página de perfil si el usuario no tiene is_accepted
     )(view_func)
     return decorated_view_func
+
+
 
 
 
@@ -514,7 +529,7 @@ def archivos(request):
     
     return render(request, 'archivos.html', {'registros': registros})
 
-from .models import  *
+
 @accepted_user_required
 @login_required
 def eliminar_archivo(request, archivo_id):
@@ -561,7 +576,7 @@ def descargar_archivo(request, archivo_id):
     except Archivo.DoesNotExist:
         # Manejar el caso en el que el archivo no existe en la base de datos
         return HttpResponse("El archivo no existe.")
-from django.http import Http404
+
 
 @accepted_user_required
 @login_required
@@ -693,14 +708,15 @@ def compartido(request):
 
 
 
-
-
-
 @accepted_user_required
 @login_required
 def descargar_archivo_compartido(request, archivo_id):
     # Obtener el objeto Archivo basado en su ID
     archivo = get_object_or_404(Archivo, pk=archivo_id)
+    
+    # Verificar si el usuario tiene permisos para acceder al archivo compartido
+    if not Compartido.objects.filter(usuario_destinatario=request.user, archivo=archivo).exists():
+        raise Http404("No tienes permiso para acceder a este archivo.")
     
     # Aquí debes implementar la lógica para obtener la ruta del archivo en tu sistema de archivos
     # Supongamos que la ruta del archivo se almacena en el atributo 'ruta' del modelo Archivo
@@ -736,7 +752,6 @@ def eliminar_archivo_compartido(request, archivo_id):
     # Después de eliminar, redirigir a la página de archivos compartidos
     return redirect('compartido')
 
-from django.http import Http404
 
 @accepted_user_required
 @login_required
@@ -765,7 +780,6 @@ def mis_grupos(request):
 
     return render(request, 'mis_grupos.html', {'usuario': usuario})
 
-from django.http import Http404
 
 
 @accepted_user_required
@@ -791,15 +805,7 @@ def grupo_info(request, name):
         'archivos_compartidos_al_grupo': archivos_compartidos_al_grupo,
     })
 
-from django.contrib.auth.models import Group
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
-from .models import Compartido, Archivo
-import os
-from django.conf import settings
 
-# Tus decoradores personalizados si los tienes
-# ...
 
 @accepted_user_required
 @login_required

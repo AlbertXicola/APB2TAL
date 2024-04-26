@@ -1,34 +1,32 @@
 {% extends 'baseusuario.html' %}
 
 {% block content %}
-
-<style>
-
-    .sidebar ul li.perfil1 {
-        color: #dee2e6;
-        background-color: #6c757d;
-        border-radius: 0px;
-    }
-</style>
-
 <main class="container">
-    <div class="row">
-        <section class="col-md-4 offset-md-4 mt-5">  
-            
-            <h1 class="text-center display-4 py-4"> {{user.username}} Profile</h1>
-
-            {% if user.is_accepted %}
-
-
-            {% else %}
-            <h3 class="text-center display-6 py-5">Esperando a que un administrador accepte tu perfil.</h3>
-
-            {% endif %}
-
-
-
-        </section>
+    <div class="row justify-content-center">
+        <div class="col-md-8 mt-5">  
+            <div class="card">
+                <div class="card-header bg-dark text-light">
+                    <h1 class="text-center mb-0">{{ user.username }} Profile</h1>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5><strong>Nombre:</strong> {{ user.first_name }}</h5>
+                            <h5><strong>Apellido:</strong> {{ user.last_name }}</h5>
+                            <h5><strong>Correo:</strong> {{ user.email }}</h5>
+                            <h5><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</h5>
+                        </div>
+                        <div class="col-md-6 text-center">
+                        </div>
+                    </div>
+                </div>
+                {% if not user.is_accepted %}
+                    <div class="card-footer bg-warning text-dark text-center">
+                        <h4 class="mb-0">Esperando a que un administrador acepte tu perfil.</h4>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </main>
 {% endblock %}
-

@@ -16,7 +16,7 @@
                             <p class="card-text">Compartido por: <strong>{{ usuario_propietario.username }}</strong></p>
                             <p class="card-text">Positivos: {{ archivo.positivos }}</p>
                             <a href="{% url 'compartido_archivo_info' archivo_id=archivo.id %}" class="btn btn-primary">Detalles</a>
-                            <a href="{% url 'descargar_archivo' archivo.id %}" class="btn btn-success" download>Descargar</a>
+                            <a href="{% url 'descargar_archivo_compartido' archivo.id %}" class="btn btn-success" download>Descargar</a>
                         </div>
                     </div>
                     {% endfor %}

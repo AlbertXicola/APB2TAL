@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'archivos',
+    'avatar',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,7 @@ LOGIN_URL = '/signin'
 
 MEDIA_URL = '/data/'
 
+#AVATAR_STORAGE_DIR = 'avatars/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
 MEDIA_ROOT2 = os.path.join(BASE_DIR, 'hecho')
 
