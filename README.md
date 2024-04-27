@@ -14,7 +14,7 @@ Requeriments
 -  pip install pymongo django-mongodb-engine
 -  pip install requests
 -  pip install django-admin-tools
-
+-  pip install django-avatar
 
 
 Activar
