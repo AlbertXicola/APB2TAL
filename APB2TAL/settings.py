@@ -129,13 +129,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
 
 LOGIN_URL = '/signin'
 
 MEDIA_URL = '/data/'
 
+
 #AVATAR_STORAGE_DIR = 'avatars/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
 MEDIA_ROOT2 = os.path.join(BASE_DIR, 'hecho')
 

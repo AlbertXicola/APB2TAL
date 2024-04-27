@@ -1,12 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+    .red-background {
+        background-color: rgba(255, 255, 255, 0.089);
+        color: white; /* Cambiar el color del texto a blanco */
+    }
 
+    /* Estilos para el cuadro de registro */
+    .signup-form {
+        background-color: rgba(255, 255, 255, 0.089); /* Mismo fondo que el formulario */
+        color: white; /* Cambiar el color del texto a blanco */
+    }
+
+    /* Estilo para los términos y condiciones */
+    #acceptTerms {
+        color: white; /* Cambiar el color del texto a blanco */
+    }
+</style>
 <main class="container">
     <div class="row">
         <div class="col-md-4 offset-md-4 mt-5">
-            <form id="signupForm" action="/signup/" method="POST" class="card card-body" onsubmit="return validateForm()">
-                <h1 class="text-center">Signup</h1>
+            <form id="signupForm" action="/signup/" method="POST" class="card card-body signup-form" onsubmit="return validateForm()">
+                <h1 class="text-center">Sign up</h1>
                 <span class="text-danger" style="font-weight: bold;">{{ error }}</span>
 
                 {% csrf_token %}
@@ -45,12 +61,18 @@
                         <button type="button" class="btn btn-outline-secondary" id="showPassword2">Show</button>
                     </div>
                 </div>
+                <div class="create-account text-center" style="padding-bottom: 10px;"> <!-- Añadido 'padding' -->
+                    <label for="acceptTerms">Acepta nuestros <a href="/terminos" id="acceptTerms">términos y condiciones</a></label>
+                </div>
                 <div id="error-msg" class="alert alert-danger" style="display:none;"></div>
                 <button type="submit" class="btn btn-primary">Signup</button>
+
             </form>   
         </div>
     </div>
 </main>
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

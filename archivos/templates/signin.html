@@ -1,13 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+    .red-background {
+        background-color: rgba(255, 255, 255, 0.089);
+        color: white; /* Cambiar el color del texto a blanco */
+    }
+    
+    .red-background label {
+        color: white; /* Cambiar el color del texto de las etiquetas a blanco */
+    }
+
+    /* Estilos para el cuadro y el enlace */
+    .create-account {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.089); /* Mismo fondo que el formulario */
+        border: 0px solid #ccc;
+        border-radius: 3px;
+        text-align: center;
+        color: white;
+    }
+
+    .create-account a {
+        color: white;
+        text-decoration: underline;
+    }
+</style>
 
 <main class="container">
     <div class="row">
         <section class="col-md-4 offset-md-4 mt-5">  
-            <form action="/signin/" method="POST" class="card card-body" id="signin-form">
+            <form action="/signin/" method="POST" class="card card-body signin-form red-background" id="signin-form">
                
-                <h1 class="text-center">Signin</h1>
+                <h1 class="text-center" style="color: white;">Sign in</h1> <!-- Cambiar el color del texto de Signin a blanco -->
                 
                 <small id="error-message" class='error' style='color: red; font-weight: bold;'>{{ error }}</small>
 
@@ -30,6 +56,11 @@
                     Signin
                 </button>
             </form>
+
+            <!-- Cuadro para crear una cuenta -->
+            <div class="create-account">
+                ¿Todavía no tienes cuenta? <a href="/signup/">¡Crea una!</a>
+            </div>
         </section>
     </div>
 </main>

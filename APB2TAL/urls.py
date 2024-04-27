@@ -22,10 +22,11 @@ from archivos import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('terminos/', views.terminos, name='terminos'),
+    path('about/', views.about, name='about'),
+    path('project/', views.project, name='project'),
 
     path('administrar/', views.administrar, name='administrar'),
-
-
 
     path('administrar/usuarios/', views.administrar_usuarios, name='administrar_usuarios'),
     path('administrar/usuarios/<int:id>/', views.admi_usuario, name='admi_usuario'),
@@ -56,7 +57,6 @@ urlpatterns = [
     path('contacta/usuario/', views.contact_admin, name='contact_admin'),
     
     path('perfil/', views.perfil, name='perfil'),
-    path('perfil/<str:username>/', views.perfil, name= 'perfil'),
     
     path('grupos/', views.mis_grupos, name= 'mis_grupos'),
     path('grupos/<str:name>/', views.grupo_info, name='grupo_info'),

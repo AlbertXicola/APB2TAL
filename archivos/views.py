@@ -92,6 +92,21 @@ def signin(request):
             login(request, user)
             return redirect('perfil')
 
+
+def terminos(request):
+
+    return render(request, 'terminos.html')
+
+def project(request):
+
+    return render(request, 'proyecto.html')
+
+
+def about(request):
+
+    return render(request, 'About-us.html')
+
+
 def validar_username(request):
     username = request.GET.get('username', None)
     data = {
@@ -116,6 +131,13 @@ def perfil(request):
 
     return render(request, 'perfil.html')
 
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
+@login_required
+def perfil(request):
+    return render(request, 'perfil.html')
 
 
 
