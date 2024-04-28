@@ -8,17 +8,45 @@
         background-color: #6c757d;
         border-radius: 0px;
     }
+
+    /* Agrega este estilo para quitar el subrayado */
+    .list-group-item {
+        text-decoration: none !important; /* Utiliza !important para forzar el estilo */
+        text-align: center; /* Centra el texto horizontalmente */
+        display: block; /* Para que el enlace ocupe todo el ancho disponible */
+        color: rgb(0, 0, 0); /* Cambia el color del texto a rojo */
+        font-size: 20px; /* Ajusta el tamaño de fuente a 20px */
+    }
+
+    /* Centra vertical y horizontalmente */
+    .centered-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60vh; /* Ajusta la altura según tu diseño */
+    }
+
+    /* Ajusta el ancho del contenedor principal */
+    .container {
+        width: 100%;
+        max-width: 1200px; /* Ajusta el ancho máximo según tu diseño */
+    }
 </style>
 
-<h1 class="text-center display-4 py-4 mt-5"> Mis Grupos</h1>
-<div class="col-md-4">
-    <div class="card-body">
-        <ul class="list-group">
-            {% for group in usuario.groups.all %}
-                <a href="{% url 'grupo_info' group.name %}" class="list-group-item">{{ group.name }}</a>
-            {% endfor %}
-        </ul>
+<div class="container">
+    <h1 class="text-center display-4 py-4 mt-5">Mis Grupos</h1>
+    <div class="centered-content">
+        <div class="col-md-4">
+            <div class="card-body">
+                {% for group in usuario.groups.all %}
+                    <ul>
+                        <a href="{% url 'grupo_info' group.name %}" class="list-group-item">{{ group.name }}</a>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
+
 
 {% endblock %}

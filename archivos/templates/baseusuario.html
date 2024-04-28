@@ -9,6 +9,31 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
+        /* Agrega estilos para los botones de navegación al pasar el ratón por encima */
+        .sidebar ul li:hover {
+            color: #dee2e6;
+            background-color: #6c757d;
+            border-radius: 0px;
+        }
+    
+        /* Ajusta el tamaño del degradado para que ocupe toda la pantalla */
+        body {
+            margin: 0;
+            padding: 0;
+            background: rgb(0,0,0);
+            background: linear-gradient(348deg, rgb(41, 41, 41) 0%, rgb(41, 41, 41) 48%);
+            min-height: 100vh; /* Establece la altura mínima del cuerpo al 100% de la ventana del navegador */
+            display: flex;
+        }
+    
+        /* Ajusta el margen y el relleno del contenedor principal */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            flex: 1; /* Hace que el contenedor principal ocupe todo el espacio vertical disponible */
+            /* margin-left: 250px; Quitar este margen para evitar el desplazamiento */
+        }
+    
         /* Estilo personalizado para la barra de navegación */
         .sidebar {
             height: 100%;
@@ -17,11 +42,11 @@
             top: 0;
             left: 0;
             background-color: #343a40;
-            padding-top: 60px;
+            padding-top: 20px;
         }
         .sidebar ul li {
             padding: 20px 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.974);
+            border-bottom: 0px solid rgba(0, 0, 0, 0);
             list-style: none;
         }
         .sidebar ul li a {
@@ -39,6 +64,25 @@
         .sidebar ul li a i {
             margin-right: 10px; /* Ajusta el margen derecho del icono */
         }
+        /* Quitar estilo de hover para el logo */
+        .sidebar ul li.logo:hover {
+            background-color: transparent;
+        }
+        /* Estilo adicional para centralizar el logo */
+        .sidebar ul li.logo {
+            text-align: center;
+        }
+        .sidebar ul li.logo h1 {
+            margin: 0;
+            padding-bottom: 20px;
+        }
+        .sidebar ul li.logo span {
+            display: block;
+            font-size: px;
+        }
+        .sidebar ul li.logo strong {
+            color: #f8f9fa;
+        }
         .sidebar ul li a:hover {
             color: #dee2e6;
         }
@@ -48,7 +92,7 @@
             top: 10px;
         }
         #content {
-            margin-left: 250px;
+             margin-left: 250px; 
         }
         .hidden {
             display: none;
@@ -61,7 +105,6 @@
         .arrow.up {
             transform: rotate(-180deg);
         }
-        
     </style>
 
     
@@ -72,14 +115,21 @@
     <!-- Barra de navegación lateral -->
     <nav id="sidebar" class="sidebar">
         <ul class="list-unstyled components">
-            <li></li>
-            <li>
-                <a href="/"><i class="fas fa-home fa-lg"></i> <span>Home</span></a>
-            </li>
+            
+            
             {% if user.is_authenticated %}
-                <li class="perfil1">
+                <li class="logo">
+                <h1 > <strong><span>APB2TAL</span></strong></h1>
+                </li>
+
+                <li class="">
                     <a href="/perfil"> <i class="fas fa-user fa-lg"></i> <span>Perfil</span></a>
                 </li>
+
+                <li>
+                    <a href="/"><i class="fas fa-home fa-lg"></i> <span>Home</span></a>
+                </li>
+                
                 {% if user.is_accepted %}
                 <li class="archivos1"><a href="/archivos"><i class="fas fa-file fa-lg"></i> <span>Mis archivos</span></a></li>
                 <li class="analizar1"><a href="/archivos/analizar"><i class="fas fa-upload fa-lg"></i> <span>Subir archivos</span></a></li>

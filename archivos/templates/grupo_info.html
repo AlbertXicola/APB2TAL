@@ -31,8 +31,11 @@
 <div class="col-md-8">
     <div class="card-body">
         <ul class="list-group">
+        <a href="/grupos/" class="btn btn-secondary mb-3">Volver</a>
+
         {% for compartido in archivos_compartidos_al_grupo %}
             {% if group == compartido.grupo_destinatario %}
+
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title font-weight-bold">{{ compartido.archivo.nombre_archivo }}</h5>
