@@ -1,5 +1,5 @@
 -------------
-*APB2TAL 60%*
+*APB2TAL 70%*
 -------------
 
 PAU, MAX, ALBERT
@@ -14,7 +14,7 @@ Requeriments
 -  pip install pymongo django-mongodb-engine
 -  pip install requests
 -  pip install django-admin-tools
-
+-  pip install django-avatar
 
 
 Activar
