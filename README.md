@@ -1,5 +1,5 @@
 -------------
-*APB2TAL 70%*
+*APB2TAL 75%*
 -------------
 
 PAU, MAX, ALBERT
