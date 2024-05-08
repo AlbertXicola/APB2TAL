@@ -421,6 +421,7 @@ def contact_user(request):
 def archivos_analiz(request):
     API_KEY = "2f047d42c57a702fd720dd049e5d7f8d24baf8811faf42d34226e703be6270a9"
     base_url = "https://www.virustotal.com/api/v3"
+    #https://www.virustotal.com/api/v3/private/files
     headers = {"x-apikey": API_KEY}  # Definir las cabeceras una sola vez
     hora_actual = datetime.datetime.now()
 
