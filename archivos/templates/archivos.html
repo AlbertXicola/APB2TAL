@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
 <style>
 
     .sidebar ul li.archivos1 {
@@ -9,44 +12,89 @@
         background-color: #6c757d;
         border-radius: 0px;
     }
+    .text-center.display-4.py-4 {
+        color: white; /* Color del texto */
+    }
+
+    /* Estilo para la flecha */
+    .fa-arrow-down {
+        color: #6c757d;
+    }
+
+    .fa-arrow-up {
+        color: #6c757d;
+    }
+
+    .fa-arrow-down.active,
+    .fa-arrow-up.active {
+        color: #007bff;
+    }
 </style>
 
 <body>
 
-<div class="container">
+<div class="container" >
     <div class="row">
         <div class="col-md-8 offset-md-2 mt-5">
             <h2 class="text-center display-4 py-4">Archivos de {{ user.username }} </h2>
 
-            <table class="table table-striped">
-                <thead >
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input type="text" id="busquedaNombre" onkeyup="buscarNombre()" class="form-control" placeholder="Buscar por nombre...">
+            </div>
+
+            <table id="tablaArchivos" class="table table-striped " style="border-radius: 2px; overflow: hidden;">
+                <thead>
                     <tr>
-                        <th>Nombre del Archivo</th>
-                        <th>Positivos</th>
-                        <th>Fecha de Análisis</th>
-                        <th ></th> <!-- Nueva columna para los botones -->
+                        <th onclick="sortTable(0)">
+                            Nombre del Archivo 
+                            <i class="fas fa-arrow-down" onclick="sortTable(0, 'asc')"></i>
+                            <i class="fas fa-arrow-up" onclick="sortTable(0, 'desc')"></i>
+                        </th>
+                        <th onclick="sortTable(1)">
+                            Positivos 
+                            <i class="fas fa-arrow-down" onclick="sortTable(1, 'asc')"></i>
+                            <i class="fas fa-arrow-up" onclick="sortTable(1, 'desc')"></i>
+                        </th>
+                        <th onclick="sortTable(2)">
+                            Fecha de Análisis 
+                            <i class="fas fa-arrow-down" onclick="sortTable(2, 'asc')"></i>
+                            <i class="fas fa-arrow-up" onclick="sortTable(2, 'desc')"></i>
+                        </th>
+                        <th></th> <!-- Nueva columna para los botones -->
                     </tr>
                 </thead>
                 <tbody>
                     {% for registro in registros %}
                     <tr>
                         <td>
-                            <a href="{% url 'archivos_manage' archivo_id=registro.id %}">
+                            {% if registro.positivos > 1 %}
                                 {{ registro.nombre_archivo }}
-                            </a>
+                            {% else %}
+                                <a href="{% url 'archivos_manage' archivo_id=registro.id %}">
+                                    {{ registro.nombre_archivo }}
+                                </a>
+                            {% endif %}
                         </td>
-                        <td>{{ registro.positivos }}</td>
+                        <td {% if registro.positivos > 1 %} style="color: red;" {% endif %}>
+                            {{ registro.positivos }}
+                        </td>
                         <td>{{ registro.current_time }}</td>
-                        
-                        <td class="text-right"> <!-- Columna para los botones -->
+                    
+                        <td class="text-right">
                             <div class="btn-group" role="group" aria-label="Botones de archivo">
-                                <!-- Icono de descarga -->
+                                {% if registro.positivos <= 1 %}
                                 <a href="{% url 'descargar_archivo' registro.id %}" class="btn btn-primary" style="border-radius: 5px;">
                                     <i class="fas fa-download"></i> 
-                                </a>   
-                                
-                                            
-                                <!-- Icono de basura -->
+                                </a>
+                                {% else %}
+                                <button type="button" class="btn btn-warning" style="border-radius: 5px;" onclick="mostrarMensaje()">
+                                    <i class="fas fa-exclamation-circle"></i> 
+                                </button>
+                                {% endif %}   
+                    
                                 <form action="{% url 'eliminar_archivo' registro.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger" style="border-radius: 5px; margin-left: 5px;">
@@ -55,16 +103,103 @@
                                 </form>
                             </div>
                         </td>
-                        
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alertaPersonalizada" style="display: none;">
+                <strong>Amenaza Detectada:</strong> Este archivo ha sido detectado como amenaza y no puede ser descargado.
+
+            </div>
+
         </div>
     </div>
 </div>
 
-</body>
+<script>
+    $(document).ready( function () {
+        $('#tablaArchivos').DataTable();
+    });
 
+    function sortTable(n, order) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("tablaArchivos");
+        switching = true;
+        dir = order ? order : "asc";
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch= true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++; 
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+
+        // Resetear las flechas
+        var arrows = document.querySelectorAll('.fa-arrow-down, .fa-arrow-up');
+        arrows.forEach(arrow => {
+            arrow.classList.remove('active');
+        });
+        // Activar la flecha correspondiente
+        var currentArrow = document.querySelectorAll('.fa-arrow-down')[n];
+        currentArrow.classList.add('active');
+        if (dir === "desc") {
+            currentArrow = document.querySelectorAll('.fa-arrow-up')[n];
+            currentArrow.classList.add('active');
+        }
+    }
+
+    function buscarNombre() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("busquedaNombre");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tablaArchivos");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0]; // Buscar en la primera columna (nombre del archivo)
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    function mostrarMensaje() {
+        var alerta = document.getElementById("alertaPersonalizada");
+        alerta.style.display = "block";
+        setTimeout(function() {
+            alerta.style.display = "none";
+        }, 5000); // Ocultar después de 5 segundos (5000 milisegundos)
+    }
+</script>
+
+</body>
 
 {% endblock %}

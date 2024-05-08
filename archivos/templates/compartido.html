@@ -1,56 +1,174 @@
 {% extends 'baseusuario.html' %}
 
 {% block content %}
+<style>
+    .text-center.display-4.py-4 {
+        color: white; /* Color del texto */
+    }
+    .columna {
+        background-color: white;
+        padding-top: 0px !important;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 25px;
+        overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
+        height: 700px; /* Establece la altura máxima */
+        position: relative; /* Establece la posición relativa */
+    }
+    .titulo-columna {
+        text-align: center; /* Centra el texto */
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #434343; /* Color del texto */
+        position: sticky; /* Fija el título */
+        top: 0; /* Fija el título en la parte superior */
+        background-color: white; /* Color de fondo del título */
+        z-index: 1; /* Asegura que el título esté por encima del contenido desplazable */
+        padding: 10px; /* Agrega espacio alrededor del título */
+    }
+    .buscador {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 1;
+        padding: 10px;
+        margin-bottom: 5px; /* Agrega espacio al contenido para evitar superposiciones */
+    }
+    .input-group {
+        width: 100%;
+    }
+</style>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10 mt-5">
-            <h2 class="text-center display-4 py-4">Archivos Compartidos</h2>
+    <div class="row">
+        <div class="col-md-12 mt-5">
+            <h2 class="text-center display-4 py-4">Análisis de Compartidos</h2>
 
             <div class="row">
-                <div class="col-md-4 overflow-auto"> <!-- Agregada la clase overflow-auto -->
-                    <h3>Te han compartido</h3>
-                    {% for archivo, usuario_propietario in archivos_compartidos_al_usuario %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title font-weight-bold">{{ archivo.nombre_archivo }}</h5>
-                            <p class="card-text">Compartido por: <strong>{{ usuario_propietario.username }}</strong></p>
-                            <p class="card-text">Positivos: {{ archivo.positivos }}</p>
-                            <a href="{% url 'compartido_archivo_info' archivo_id=archivo.id %}" class="btn btn-primary">Detalles</a>
-                            <a href="{% url 'descargar_archivo_compartido' archivo.id %}" class="btn btn-success" download>Descargar</a>
+                <div class="col-md-4">
+                    <div class="columna">
+                        <h3 class="titulo-columna">Shared</h3>
+                        <div class="buscador">
+                            <div class="input-group mb-3">
+                                <input type="text" id="buscar-shared" class="form-control" placeholder="Buscar...">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
+                            </div>
                         </div>
+                        {% for archivo, usuario_propietario in archivos_compartidos_al_usuario %}
+                        <div class="card mb-3 archivo-shared">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bold">{{ archivo.nombre_archivo }}</h5>
+                                <p class="card-text">Compartido por: <strong>{{ usuario_propietario.username }}</strong></p>
+                                <p class="card-text">Positivos: {{ archivo.positivos }}</p>
+                                <a href="{% url 'compartido_archivo_info' archivo_id=archivo.id %}" class="btn btn-primary">Detalles</a>
+                                <a href="{% url 'descargar_archivo_compartido' archivo.id %}" class="btn btn-success" download>Descargar</a>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-                
-                <div class="col-md-4 overflow-auto"> <!-- Agregada la clase overflow-auto -->
-                    <h3>Compartido a Usuarios</h3>
-                    {% for compartido in archivos_compartidos_por_usuario %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-weight: bold; font-size: 1.2em;">{{ compartido.archivo.nombre_archivo }}</h5>
-                            <p class="card-text">Compartido al usuario: <strong>{{ compartido.usuario_destinatario.username }}</strong></p>
-                            <a href="{% url 'archivos_manage' archivo_id=compartido.archivo.id %}" class="btn btn-primary">Detalles</a>
-                            <a href="{% url 'eliminar_archivo_compartido' compartido.id %}" class="btn btn-danger">Eliminar</a>
+
+                <div class="col-md-4">
+                    <div class="columna">
+                        <h3 class="titulo-columna">Shared to users</h3>
+                        <div class="buscador">
+                            <div class="input-group mb-3">
+                                <input type="text" id="buscar-shared-to-users" class="form-control" placeholder="Buscar...">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
+                            </div>
                         </div>
+                        {% for compartido in archivos_compartidos_por_usuario %}
+                        <div class="card mb-3 archivo-shared-to-users">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-weight: bold; font-size: 1.2em;">{{ compartido.archivo.nombre_archivo }}</h5>
+                                <p class="card-text">Compartido al usuario: <strong>{{ compartido.usuario_destinatario.username }}</strong></p>
+                                <a href="{% url 'archivos_manage' archivo_id=compartido.archivo.id %}" class="btn btn-primary">Detalles</a>
+                                <a href="{% url 'eliminar_archivo_compartido' compartido.id %}" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-                
-                <div class="col-md-4 overflow-auto"> <!-- Agregada la clase overflow-auto -->
-                    <h3>Compartido a Grupos</h3>
-                    {% for compartido in archivos_compartidos_por_grupo %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-weight: bold; font-size: 1.2em;">{{ compartido.archivo.nombre_archivo }}</h5>
-                            <p class="card-text">Compartido al grupo: <strong>{{ compartido.grupo_destinatario.name }}</strong></p>
-                            <a href="{% url 'archivos_manage' archivo_id=compartido.archivo.id %}" class="btn btn-primary">Detalles</a>
-                            <a href="{% url 'eliminar_archivo_compartido' compartido.id %}" class="btn btn-danger">Eliminar</a>
+
+                <div class="col-md-4">
+                    <div class="columna">
+                        <h3 class="titulo-columna">Shared to groups</h3>
+                        <div class="buscador">
+                            <div class="input-group mb-3">
+                                <input type="text" id="buscar-shared-to-groups" class="form-control" placeholder="Buscar...">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
+                            </div>
                         </div>
+                        {% for compartido in archivos_compartidos_por_grupo %}
+                        <div class="card mb-3 archivo-shared-to-groups">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-weight: bold; font-size: 1.2em;">{{ compartido.archivo.nombre_archivo }}</h5>
+                                <p class="card-text">Compartido al grupo: <strong>{{ compartido.grupo_destinatario.name }}</strong></p>
+                                <a href="{% url 'archivos_manage' archivo_id=compartido.archivo.id %}" class="btn btn-primary">Detalles</a>
+                                <a href="{% url 'eliminar_archivo_compartido' compartido.id %}" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Función para filtrar la primera columna
+        const inputShared = document.getElementById('buscar-shared');
+        inputShared.addEventListener('input', function() {
+            const filtro = inputShared.value.toLowerCase();
+            const archivosShared = document.querySelectorAll('.archivo-shared');
+            archivosShared.forEach(function(archivo) {
+                const nombreArchivo = archivo.querySelector('.card-title').textContent.toLowerCase();
+                if (nombreArchivo.includes(filtro)) {
+                    archivo.style.display = 'block';
+                } else {
+                    archivo.style.display = 'none';
+                }
+            });
+        });
+
+        // Función para filtrar la segunda columna
+        const inputSharedToUsers = document.getElementById('buscar-shared-to-users');
+        inputSharedToUsers.addEventListener('input', function() {
+            const filtro = inputSharedToUsers.value.toLowerCase();
+            const archivosSharedToUsers = document.querySelectorAll('.archivo-shared-to-users');
+            archivosSharedToUsers.forEach(function(archivo) {
+                const nombreArchivo = archivo.querySelector('.card-title').textContent.toLowerCase();
+                if (nombreArchivo.includes(filtro)) {
+                    archivo.style.display = 'block';
+                } else {
+                    archivo.style.display = 'none';
+                }
+            });
+        });
+
+        // Función para filtrar la tercera columna
+        const inputSharedToGroups = document.getElementById('buscar-shared-to-groups');
+        inputSharedToGroups.addEventListener('input', function() {
+            const filtro = inputSharedToGroups.value.toLowerCase();
+            const archivosSharedToGroups = document.querySelectorAll('.archivo-shared-to-groups');
+            archivosSharedToGroups.forEach(function(archivo) {
+                const nombreArchivo = archivo.querySelector('.card-title').textContent.toLowerCase();
+                if (nombreArchivo.includes(filtro)) {
+                    archivo.style.display = 'block';
+                } else {
+                    archivo.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}

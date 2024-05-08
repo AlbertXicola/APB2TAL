@@ -1,0 +1,66 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+
+<style>
+    .profile-container {
+        background-color: rgba(0, 0, 0, 0.185);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 30px; /* Ajusta según sea necesario */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        height: 600px; /* Ajusta la altura según sea necesario */
+        overflow-y: scroll; /* Habilita el desplazamiento vertical */
+        color: white; /* Color del texto */
+    }
+
+    /* Personalizar la barra de desplazamiento */
+    .profile-container::-webkit-scrollbar {
+        width: 10px; /* Ancho de la barra de desplazamiento */
+    }
+
+    .profile-container::-webkit-scrollbar-thumb {
+        background-color: #0d6efd; /* Color del pulgar de la barra de desplazamiento */
+        border-radius: 5px; /* Borde redondeado del pulgar */
+    }
+
+    .profile-container::-webkit-scrollbar-track {
+        background-color: rgba(0, 0, 255, 0.1); /* Color de fondo de la barra de desplazamiento */
+        border-radius: 5px; /* Borde redondeado de la pista */
+    }
+    .text-center display-4 py-4 mt-5 {
+        color: white;
+    }
+</style>
+
+<div class="container text-center ">
+    <h2 class="text-center display-4 py-4 mt-5" style="color: white;">Logs Administrativos</h2>
+    <main class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-14">  
+            <div class="profile-container" id="profile-container">
+
+                <div class="card-body">
+                    <!-- Loop through logs_mongo -->
+                    {% for log in logs_mongo %}
+                    <p class="text-left"><strong>{{ log.hora|date:"Y/m/d" }}  {{ log.hora|time:"H:i" }}</strong> - {{ log.mensaje }}</p>
+
+                    <hr> <!-- Add a horizontal line to separate log entries -->
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Asegurar que la barra de desplazamiento esté en la parte inferior cuando se carga la página
+    window.onload = function() {
+        var container = document.getElementById('profile-container');
+        container.scrollTop = container.scrollHeight;
+    };
+</script>
+
+{% endblock %}

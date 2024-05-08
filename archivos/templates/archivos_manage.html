@@ -9,18 +9,24 @@
         background-color: #6c757d;
         border-radius: 0px;
     }
+    .text-center.display-7.py-4 {
+        color: white; /* Color del texto */
+    }
+
+    /* Estilo para el borde del checkbox */
+    .form-check-input {
+        border: 2px solid black;
+    }
 </style>
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 offset-md-2 mt-5">
-            <h2 class="text-center display-4 py-4">Datos de <strong>{{ archivo.nombre_archivo }}</strong> actual</h2>
+        <div class="col-md-8 offset-md-2 mt-5 mb-3"> <!-- Se agregó la clase mb-5 aquí -->
+            <h2 class="text-center display-7 py-4">Datos de <strong>{{ archivo.nombre_archivo }}</strong> actual</h2>
             <a href="/archivos/" class="btn btn-secondary mb-3">Volver</a>
 
             <div class="card p-4">
-                <p class="mb-0">El archivo pertenece al usuario {{ usuario_actual.username }}</p>
-                <hr>
-                <h2 class="mb-4">Datos del archivo seleccionado:</h2>
+
                 <p><strong>Nombre:</strong> {{ archivo.nombre_archivo }}</p>
                 <p><strong>Hash AVT:</strong> {{ archivo.archivo_hash }}</p>
                 <p><strong>Hash APB2TAL:</strong> {{ archivo.id_APB2TAL }}</p>
@@ -30,9 +36,9 @@
                 <!-- Asegúrate de que current_time esté definido correctamente en tu modelo Archivo -->
                 <!-- <p>Fecha de creación: {{ archivo.current_time }}</p> -->
 
-                <h2 class="mt-4">COMPARTIR ARCHIVO CON</h2>
-                <hr>
-                <h3>Lista de usuarios:</h3>
+                <h3 >Compartir con</h3>
+
+                <h4>Lista de usuarios:</h4>
                 <form id="compartir-form" method="post" action="{% url 'compartir_archivo' archivo.id %}">
                     {% csrf_token %}
                     <ul class="list-unstyled">
@@ -46,7 +52,7 @@
                         {% endfor %}
                     </ul>
 
-                    <h3 class="mt-4">Lista de grupos:</h3>
+                    <h4 class="mt-4">Lista de grupos:</h4>
                     <ul class="list-unstyled">
                         {% for grupo in grupos %}
                         <li>

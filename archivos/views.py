@@ -20,6 +20,8 @@ import requests
 import hashlib
 import shutil
 import time
+from datetime import datetime
+
 import os
 from django.http import HttpResponse
 import os
@@ -39,7 +41,6 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from .models import Compartido, Archivo
-import os
 from django.conf import settings
 from django.http import Http404
 from django.http import Http404
@@ -48,6 +49,17 @@ from django.shortcuts import get_object_or_404
 from .models import Archivo, Compartido
 from django.http import Http404
 from .models import  *
+import datetime
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
+from django.shortcuts import render
+from pymongo import MongoClient
+
+from django.shortcuts import render
+from pymongo import MongoClient
+
 
 
 
@@ -131,13 +143,13 @@ def perfil(request):
 
     return render(request, 'perfil.html')
 
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+
+
 
 @login_required
 def perfil(request):
     return render(request, 'perfil.html')
+
 
 
 
@@ -285,6 +297,37 @@ def administrar_grupos(request):
     return render(request, 'administrar_grupos.html', context)
 
 
+
+@accepted_user_required
+@login_required
+def registros(request):
+    # Obtener el ID del usuario actual
+    user_id = request.user.id
+    
+    client = MongoClient('localhost', 27018) 
+    db = client['django'] 
+    collection = db['Logs'] 
+    
+    # Filtrar los registros por el ID del usuario actual
+    mensaje = list(collection.find({"user_id": user_id}))
+    
+    client.close()
+    return render(request, 'mis_registros.html', {'logs_mongo': mensaje})
+
+
+@user_passes_test(is_staff)
+@accepted_user_required
+@login_required
+def registros_admin(request):
+    client = MongoClient('localhost', 27018) 
+    db = client['django'] 
+    collection = db['Logs'] 
+    mensaje = list(collection.find({}))  # Retrieve all logs
+    client.close()
+    return render(request, 'logs_admin.html', {'logs_mongo': mensaje})
+
+
+
 @accepted_user_required
 @user_passes_test(is_staff)
 @login_required
@@ -373,15 +416,16 @@ def contact_user(request):
         
         return render(request, 'contact_user.html')
 
-
 @accepted_user_required
 @login_required
 def archivos_analiz(request):
     API_KEY = "2f047d42c57a702fd720dd049e5d7f8d24baf8811faf42d34226e703be6270a9"
     base_url = "https://www.virustotal.com/api/v3"
     headers = {"x-apikey": API_KEY}  # Definir las cabeceras una sola vez
+    hora_actual = datetime.datetime.now()
 
     if request.method == 'POST':
+
         archivos_subidos = request.FILES.getlist('archivos')  # Obtener los archivos subidos
         for archivo_subido in archivos_subidos:  # Renombrar la variable para evitar conflictos de nombres
             nombre_archivo = archivo_subido.name
@@ -447,7 +491,8 @@ def archivos_analiz(request):
                 print ("ANALIZANDO")
                 print (nombre_archivo)
                 print ("==================================================")
-                
+
+
 
                 print ("Creando carpeta encriptada ....")
                 # Guardar el archivo en la carpeta
@@ -484,9 +529,8 @@ def archivos_analiz(request):
                 #identificador = informe.get('data', {}).get('id')
 
 
-
-                now = datetime.now()
-                current_time = now.strftime("%H:%M:%S")
+          
+                current_time = hora_actual.strftime("%H:%M:%S")
                 print("Guardando datos en nuestra base de datos ....")
 
 
@@ -513,7 +557,23 @@ def archivos_analiz(request):
                     print("TODO CORRECTO!")
                     print("=========== SCAN FINALIZADO (" + current_time + ") ===========")
                     print("       ")
+                    # Establecer conexión con la base de datos MongoDB
+                    client = MongoClient('localhost', 27018)
+                    db = client['django']
+                    collection = db['Logs']
 
+                    # Crear el texto del análisis
+                    texto_analisis = f"El usuario '{request.user.username}' ha analizado el archivo '{nombre_archivo}'"
+
+                    # Crear el documento a insertar en la colección
+                    archivo_mongo = {
+                            
+                        "hora": hora_actual,
+                        "user_id": request.user.id,
+                        "mensaje": texto_analisis
+                    }
+
+                    collection.insert_one(archivo_mongo)
                     shutil.move(ruta_carpeta, nuevo_path)
                     
                 except Exception as e:
@@ -550,12 +610,16 @@ def archivos(request):
         registros = Archivo.objects.none()  # Retorna una queryset vacía si no hay archivos asociados al usuario
     
     return render(request, 'archivos.html', {'registros': registros})
-
-
+client = MongoClient('localhost', 27018)
+db = client['django']
+collection = db['Logs']
 @accepted_user_required
 @login_required
 def eliminar_archivo(request, archivo_id):
+    hora_actual = datetime.datetime.now()
     # Obtener el archivo de la tabla de adquisiciones por su ID
+    archivo = get_object_or_404(Archivo, id=archivo_id)
+
     try:
         compartidos = Compartido.objects.filter(archivo_id=archivo_id, usuario_propietario=request.user)
         registro_adquisicion = adquisicion.objects.get(archivo_id=archivo_id, user=request.user)
@@ -569,7 +633,19 @@ def eliminar_archivo(request, archivo_id):
     for compartido in compartidos:
         compartido.delete()
     registro_adquisicion.delete()
-    
+
+
+    # Crear el texto del análisis
+    texto_analisis = f"El usuario '{request.user.username}' ha eliminado el archivo '{archivo.nombre_archivo}'"
+
+    # Crear el documento a insertar en la colección
+    archivo_mongo = {
+        "hora": hora_actual,
+        "user_id": request.user.id,
+        "mensaje": texto_analisis
+    }
+
+    collection.insert_one(archivo_mongo)
     
 
     # Después de eliminar, redirigir a la página de archivos
@@ -630,7 +706,7 @@ def archivos_manage(request, archivo_id):
 @login_required
 def compartir_archivo(request, archivo_id):
     usuario_propietario = request.user
-
+    hora_actual = datetime.datetime.now()
     if request.method == 'POST':
         usuarios_seleccionados = request.POST.getlist('usuarios')
         grupos_seleccionados = request.POST.getlist('grupos')
@@ -652,10 +728,22 @@ def compartir_archivo(request, archivo_id):
         for usuario_id in usuarios_compartidos:
             if str(usuario_id) not in usuarios_seleccionados:
                 Compartido.objects.filter(archivo=archivo, usuario_destinatario_id=usuario_id).delete()
+            texto_analisis = f"El usuario '{request.user.username}' ha desecho el compartido del archivo '{archivo.nombre_archivo}'   "
+            usuarios_destinatarios = [User.objects.get(pk=usuario_id).username for usuario_id in usuarios_seleccionados]
+            texto_analisis += " a algún/os usuario/s "
+            texto_analisis += ', '.join(usuarios_destinatarios)
         
         for grupo_id in grupos_compartidos:
             if str(grupo_id) not in grupos_seleccionados:
                 Compartido.objects.filter(archivo=archivo, grupo_destinatario_id=grupo_id).delete()
+            texto_analisis = f"El usuario '{request.user.username}'  ha desecho el compartido del archivo '{archivo.nombre_archivo}' a "
+            # Agregar nombres de grupos seleccionados
+            grupos_destinatarios = [Group.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
+            texto_analisis += " grupos "
+            texto_analisis += ', '.join(grupos_destinatarios)
+            
+
+
         
         # Compartir con usuarios seleccionados
         for usuario_id in usuarios_seleccionados:
@@ -665,6 +753,11 @@ def compartir_archivo(request, archivo_id):
                 usuario_destinatario=usuario_destinatario,
                 archivo=archivo
             )
+            texto_analisis = f"El usuario '{request.user.username}' ha compartido el archivo '{archivo.nombre_archivo}'   "
+            usuarios_destinatarios = [User.objects.get(pk=usuario_id).username for usuario_id in usuarios_seleccionados]
+            texto_analisis += " a los usuarios: "
+            texto_analisis += ', '.join(usuarios_destinatarios)
+
         
         # Compartir con grupos seleccionados
         for grupo_id in grupos_seleccionados:
@@ -674,7 +767,23 @@ def compartir_archivo(request, archivo_id):
                 grupo_destinatario=grupo_destinatario,
                 archivo=archivo
             )
-        
+            texto_analisis = f"El usuario '{request.user.username}' ha compartido el archivo '{archivo.nombre_archivo}' a "
+            # Agregar nombres de grupos seleccionados
+            grupos_destinatarios = [Group.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
+            texto_analisis += " a los grupos: "
+            texto_analisis += ', '.join(grupos_destinatarios)
+
+    
+
+# Crear el documento a insertar en la colección
+        archivo_mongo = {
+            "hora": hora_actual,
+            "user_id": request.user.id,
+            "mensaje": texto_analisis
+        }
+
+        collection.insert_one(archivo_mongo)
+    
         # Mensaje de éxito
         messages.success(request, 'Archivo compartido exitosamente.')
 

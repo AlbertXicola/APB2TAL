@@ -27,6 +27,7 @@ urlpatterns = [
     path('project/', views.project, name='project'),
 
     path('administrar/', views.administrar, name='administrar'),
+    path('administrar/registros_admin/', views.registros_admin, name='registros_admin'),
 
     path('administrar/usuarios/', views.administrar_usuarios, name='administrar_usuarios'),
     path('administrar/usuarios/<int:id>/', views.admi_usuario, name='admi_usuario'),
@@ -57,7 +58,9 @@ urlpatterns = [
     path('contacta/usuario/', views.contact_admin, name='contact_admin'),
     
     path('perfil/', views.perfil, name='perfil'),
-    
+    path('registros/', views.registros, name='registros'),
+
+
     path('grupos/', views.mis_grupos, name= 'mis_grupos'),
     path('grupos/<str:name>/', views.grupo_info, name='grupo_info'),
     path('grupos/<str:group_name>/<int:archivo_id>/', views.descargar_archivo_grupo, name='descargar_archivo_grupo'),
