@@ -1,0 +1,133 @@
+2024-03-13T14:04:52.321Z In(05) mks Log for VMware Player pid=9276 version=17.0.0 build=build-20800274 option=Release
+2024-03-13T14:04:52.321Z In(05) mks The host is x86_64.
+2024-03-13T14:04:52.321Z In(05) mks Host codepage=windows-1252 encoding=windows-1252
+2024-03-13T14:04:52.321Z In(05) mks Host is Windows 10 Enterprise, 64-bit (Build 19045.3208)
+2024-03-13T14:04:52.321Z In(05) mks Host offset from UTC is -01:00.
+2024-03-13T14:04:52.374Z In(05) main  VTHREAD 13168 "main"
+2024-03-13T14:04:52.374Z In(05) main  MKSRoleMain: Initializing MKSSandbox...
+2024-03-13T14:04:52.374Z In(05) main  MKSRoleMain: Initializing FeatureState...
+2024-03-13T14:04:52.374Z In(05) main  MKSRoleMain: Initializing Locale...
+2024-03-13T14:04:52.374Z In(05) main  LOCALE windows-1252 -> NULL User=c0a System=c0a
+2024-03-13T14:04:52.374Z In(05) main  Msg_SetLocaleEx: HostLocale=windows-1252 UserLocale=NULL
+2024-03-13T14:04:52.374Z In(05) main  MKSRoleMain: Initializing Preference...
+2024-03-13T14:04:52.384Z In(05) main  DictionaryLoad: Cannot open file "C:\Users\CF2022266\AppData\Roaming\VMware\config.ini": Unknown error 2 (0x2).
+2024-03-13T14:04:52.384Z In(05) main  [msg.dictionary.load.openFailed] Cannot open file "C:\Users\CF2022266\AppData\Roaming\VMware\config.ini": Unknown error 2 (0x2).
+2024-03-13T14:04:52.384Z In(05) main  PREF Optional preferences file not found at C:\Users\CF2022266\AppData\Roaming\VMware\config.ini. Using default values.
+2024-03-13T14:04:52.388Z In(05) main  MKSRoleMain: Initializing Poll...
+2024-03-13T14:04:52.388Z In(05) main  POLL Using the WSAPoll API Implementation for PollDefault
+2024-03-13T14:04:52.388Z In(05) main  MKSRoleMain: Initializing Log...
+2024-03-13T14:04:52.391Z In(05) main  MKSRoleMain: Found Config Settings:
+2024-03-13T14:04:52.391Z In(05) main  DICT --- GLOBAL SETTINGS C:\ProgramData\VMware\VMware Workstation\settings.ini
+2024-03-13T14:04:52.391Z In(05) main  DICT          printers.enabled = "FALSE"
+2024-03-13T14:04:52.391Z In(05) main  DICT --- NON PERSISTENT (null)
+2024-03-13T14:04:52.391Z In(05) main  DICT --- USER PREFERENCES C:\Users\CF2022266\AppData\Roaming\VMware\preferences.ini
+2024-03-13T14:04:52.391Z In(05) main  DICT pref.keyboardAndMouse.vmHotKey.enabled = "FALSE"
+2024-03-13T14:04:52.391Z In(05) main  DICT pref.keyboardAndMouse.vmHotKey.count = "0"
+2024-03-13T14:04:52.391Z In(05) main  DICT pref.vmplayer.firstRunDismissedVersion = "17.0.0"
+2024-03-13T14:04:52.391Z In(05) main  DICT pref.updatesVersionIgnore.numItems = "1"
+2024-03-13T14:04:52.391Z In(05) main  DICT pref.updatesVersionIgnore0.key = <not printed>
+2024-03-13T14:04:52.391Z In(05) main  DICT pref.updatesVersionIgnore0.value = "f7e46d06-ce03-4f82-b7ad-e25539ca0a38"
+2024-03-13T14:04:52.391Z In(05) main  DICT   pref.lastUpdateCheckSec = "1710338653"
+2024-03-13T14:04:52.391Z In(05) main  DICT         vmWizard.guestKey = "windows9"
+2024-03-13T14:04:52.391Z In(05) main  DICT vmWizard.installMediaType = "later"
+2024-03-13T14:04:52.391Z In(05) main  DICT vmWizard.isoLocationMRU.count = "2"
+2024-03-13T14:04:52.391Z In(05) main  DICT vmWizard.isoLocationMRU0.location = "C:\Users\CF2022266\Downloads\Win10_22H2_Spanish_x64v1.iso"
+2024-03-13T14:04:52.391Z In(05) main  DICT             hints.hideAll = "FALSE"
+2024-03-13T14:04:52.391Z In(05) main  DICT      pref.mruVM0.filename = "C:\Users\CF2022266\Documents\Virtual Machines\Windows 10\Windows 10.vmx"
+2024-03-13T14:04:52.391Z In(05) main  DICT   pref.mruVM0.displayName = "Windows 10"
+2024-03-13T14:04:52.391Z In(05) main  DICT         pref.mruVM0.index = "0"
+2024-03-13T14:04:52.391Z In(05) main  DICT vmWizard.isoLocationMRU1.location = "C:\Users\CF2022266\Downloads\SERVER_EVAL_x64FRE_es-es.iso"
+2024-03-13T14:04:52.391Z In(05) main  DICT hint.cui.toolsInfoBar.suppressible = "FALSE"
+2024-03-13T14:04:52.391Z In(05) main  DICT hint.loader.mitigations.wsAndFusion = "FALSE"
+2024-03-13T14:04:52.391Z In(05) main  DICT      pref.mruVM1.filename = "C:\Users\CF2022266\Documents\Virtual Machines\Windows 10 (2)\Windows 10 (2).vmx"
+2024-03-13T14:04:52.391Z In(05) main  DICT   pref.mruVM1.displayName = "Windows 10 (2)"
+2024-03-13T14:04:52.391Z In(05) main  DICT         pref.mruVM1.index = "1"
+2024-03-13T14:04:52.391Z In(05) main  DICT      pref.mruVM2.filename = "C:\Users\CF2022266\Documents\Virtual Machines\Windows Server 2022\Windows Server 2022.vmx"
+2024-03-13T14:04:52.391Z In(05) main  DICT   pref.mruVM2.displayName = "Windows Server 2022"
+2024-03-13T14:04:52.391Z In(05) main  DICT         pref.mruVM2.index = "2"
+2024-03-13T14:04:52.391Z In(05) main  DICT --- USER DEFAULTS C:\Users\CF2022266\AppData\Roaming\VMware\config.ini
+2024-03-13T14:04:52.391Z In(05) main  DICT --- HOST DEFAULTS C:\ProgramData\VMware\VMware Workstation\config.ini
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.simplifiedUI = "no"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.autoSoftwareUpdateEnabled = "yes"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.autoSoftwareUpdateEnabled.epoch = "12415"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.componentDownloadEnabled = "yes"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.dataCollectionEnabled = "yes"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.dataCollectionEnabled.epoch = "12415"
+2024-03-13T14:04:52.391Z In(05) main  DICT --- SITE DEFAULTS C:\ProgramData\VMware\VMware Workstation\config.ini
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.simplifiedUI = "no"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.autoSoftwareUpdateEnabled = "yes"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.autoSoftwareUpdateEnabled.epoch = "12415"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.componentDownloadEnabled = "yes"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.dataCollectionEnabled = "yes"
+2024-03-13T14:04:52.391Z In(05) main  DICT installerDefaults.dataCollectionEnabled.epoch = "12415"
+2024-03-13T14:04:52.391Z In(05) main  LOCALE windows-1252 -> NULL User=c0a System=c0a
+2024-03-13T14:04:52.391Z In(05) main  Msg_SetLocaleEx: HostLocale=windows-1252 UserLocale=NULL
+2024-03-13T14:04:52.391Z In(05) main  MKSRoleMain: Initializing Sig
+2024-03-13T14:04:52.391Z In(05) main  MKSRoleMain: Initializing MKS
+2024-03-13T14:04:52.407Z In(05) main  MKSRoleMain: Powering on.
+2024-03-13T14:04:52.407Z In(05) main  MKSSandbox: Powering on MKSSandboxComm
+2024-03-13T14:04:52.407Z In(05) main  MKSSandbox: MKS_UUID=52 0c fd a2 4c 94 e1 84-e2 0b 03 dc 18 71 e3 f4
+2024-03-13T14:04:52.407Z In(05) main  MKSRoleMain: Powering on MKS
+2024-03-13T14:04:52.407Z In(05) main  MKS PowerOn
+2024-03-13T14:04:52.408Z In(05) mks  VTHREAD 7224 "mks"
+2024-03-13T14:04:52.408Z In(05) mks  MKS thread is alive
+2024-03-13T14:04:52.408Z In(05) svga  VTHREAD 8176 "svga"
+2024-03-13T14:04:52.408Z In(05) svga  SVGA thread is alive
+2024-03-13T14:04:52.408Z In(05) mks  MKS: SSE2=1, SSSE3=1, SSE4_1=1
+2024-03-13T14:04:52.415Z In(05) mks  MKS Win32: Registering top level window (0x207e4) to receive session change notification.
+2024-03-13T14:04:52.417Z In(05) mks  MKS Win32: Successfully enabled high resolution system timer.
+2024-03-13T14:04:52.417Z In(05) mks  Current Display Settings:
+2024-03-13T14:04:52.417Z In(05) mks     Display: 0 size: 1920x1080  position: (0, 0) name: \\.\DISPLAY1  
+2024-03-13T14:04:52.417Z In(05) mks  MKS Win32: MIL: 0x2000
+2024-03-13T14:04:52.417Z In(05) mks  MKS-RenderMain: PowerOn allowed DX11Renderer 
+2024-03-13T14:04:52.417Z In(05) mks  MKS-RenderMain: ISB not enabled by config
+2024-03-13T14:04:52.417Z In(05) mks  MKS-RenderMain: Collecting RenderOps caps from DX11Renderer
+2024-03-13T14:04:52.417Z In(05) mks  MKS-RenderMain: Starting DX11Renderer
+2024-03-13T14:04:52.422Z In(05) mks  DX11Renderer: Enumerating adapter 0
+2024-03-13T14:04:52.422Z In(05) mks  DX11Renderer: `Microsoft Basic Render Driver` vendor=0x1414 device=0x008c revision=0
+2024-03-13T14:04:52.422Z In(05) mks  DX11Renderer: video=0MB system=0MB shared=8136MB
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: LOCAL     budget  7474M usage     0M avail  3865M res     0M
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: NON-LOCAL budget     0M usage     0M avail     0M res     0M
+2024-03-13T14:04:52.423Z Wa(03) mks  DX11Renderer: Device ID is badlisted
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: Enumerating adapter 1
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: `Microsoft Basic Render Driver` vendor=0x1414 device=0x008c revision=0
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: video=0MB system=0MB shared=8136MB
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: LOCAL     budget  7474M usage     0M avail  3865M res     0M
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: NON-LOCAL budget     0M usage     0M avail     0M res     0M
+2024-03-13T14:04:52.423Z Wa(03) mks  DX11Renderer: Device ID is badlisted
+2024-03-13T14:04:52.423Z Wa(03) mks  DX11Renderer: Unable to create a Core 3D device from the enumerated adapters...
+2024-03-13T14:04:52.423Z Wa(03) mks  DX11Renderer: Unable to create a Core 3D device from the enumerated adapters...
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: Releasing DXGI Factory
+2024-03-13T14:04:52.423Z In(05) mks  DX11Renderer: Unloading modules
+2024-03-13T14:04:52.424Z In(05) mks  MKS-RenderMain: Failed to start the renderer DX11Renderer
+2024-03-13T14:04:52.424Z In(05) mks  MKS-RenderMain: Retrying renderer selection without VMFeature requirements
+2024-03-13T14:04:52.424Z In(05) mks  MKS-RenderMain: Retrying renderer selection without 3D requirements
+2024-03-13T14:04:52.424Z In(05) mks  MKS-RenderMain: Collecting RenderOps caps from MKSBasicOps
+2024-03-13T14:04:52.424Z In(05) mks  MKS-RenderMain: Starting MKSBasicOps
+2024-03-13T14:04:52.424Z In(05) mks  MKS-RenderMain: Started MKSBasicOps
+2024-03-13T14:04:52.424Z In(05) mks  MKS-RenderMain: Found Full Renderer: MKSBasicOps
+2024-03-13T14:04:52.424Z In(05) mks  MKS-RenderMain: maxTextureSize=32768
+2024-03-13T14:04:52.424Z In(05) mks  MKSRemoteMgr: Set default display name: Windows 10
+2024-03-13T14:04:52.424Z In(05) mks  MKSRemoteMgr: Loading VNC Configuration from VM config file
+2024-03-13T14:04:52.424Z In(05) mks  MKSRemoteMgr: Using default VNC keymap table "us"
+2024-03-13T14:04:52.424Z In(05) main  MKSSandbox: Unable to start a 3D renderer on mksSandbox
+2024-03-13T14:04:52.424Z In(05) main  MKSThread: Requesting MKS exit
+2024-03-13T14:04:52.424Z In(05) main  MKSRoleReplay: Skipping LatePowerOn
+2024-03-13T14:04:52.424Z In(05) main  MKSRoleMain: PowerOn finished.
+2024-03-13T14:04:52.424Z In(05) main  Stopping MKS/SVGA threads
+2024-03-13T14:04:52.424Z In(05) svga  MKSThread: SVGA thread is skipping PowerOn
+2024-03-13T14:04:52.424Z In(05) svga  MKSThread: SVGA thread is skipping the main loop
+2024-03-13T14:04:52.425Z In(05) main  MKS/SVGA threads are stopped
+2024-03-13T14:04:52.425Z In(05) main  MKSRoleMain: Powering off.
+2024-03-13T14:04:52.425Z In(05) main  MKSRoleMain: Powering off MKS
+2024-03-13T14:04:52.425Z In(05) mks  MKS-RenderMain: Stopped MKSBasicOps
+2024-03-13T14:04:52.425Z In(05) mks  MKS PowerOff
+2024-03-13T14:04:52.425Z In(05) svga  MKSThread: SVGA thread is skipping PowerOff
+2024-03-13T14:04:52.425Z In(05) svga  SVGA thread is exiting
+2024-03-13T14:04:52.425Z In(05) mks  MKS thread is exiting
+2024-03-13T14:04:52.425Z In(05) main  MKSRoleMain: Exiting...
+2024-03-13T14:04:52.425Z In(05) main  MKSRoleMain: Exiting MKS
+2024-03-13T14:04:52.425Z In(05) main  MKSRoleMain: Exiting Sig
+2024-03-13T14:04:52.426Z In(05) main  MKSRoleMain: Skipping SSL (already exited)
+2024-03-13T14:04:52.426Z In(05) main  MKSRoleMain: Exiting Poll
+2024-03-13T14:04:52.426Z In(05) main  MKSRoleMain: Exiting Log

@@ -74,18 +74,32 @@
     }
     .file-list {
         list-style: none;
-        padding: 10px; /* Añade un poco de espacio interno */
+        padding : 5px 10px 10px 10px; /* Añade un poco de espacio interno */
         margin: 0;
+        padding-bottom: 0px;
         background-color: white; /* Fondo blanco */
-        border: 2px solid #ccc; /* Borde sólido */
-        border-radius: 5px; /* Bordes redondeados */
-        max-height: 200px; /* Altura máxima de la lista */
+        border: 0px solid #ccc; /* Borde sólido */
+        border-radius: 0px 0px 5px 5px; /* Bordes redondeados */
+        max-height: 90px; /* Altura máxima de la lista */
         overflow-y: auto; /* Añade desplazamiento vertical si hay demasiados archivos */
+
+        
     }
 
-    .file-list-item {
-        margin-bottom: 5px;
+    .file-list-1 {
+        list-style: none;
+        padding : 10px 10px 5px 10px; /* Añade un poco de espacio interno */
+        margin: 0;
+        background-color: white; /* Fondo blanco */
+        border: 0px solid #ccc; /* Borde sólido */
+        border-radius: 5px 5px 0px 0px ; /* Bordes redondeados */
+        max-height: 200px; /* Altura máxima de la lista */
+        overflow-y: auto; /* Añade desplazamiento vertical si hay demasiados archivos */
+        font-weight: bold; !important
+
     }
+
+
 </style>
 
 <body>
@@ -102,11 +116,16 @@
                     <span class="custom-file-add">+</span>
                     <span class="custom-file-addd">Selecciona o Arrastra Archivos</span>
                 </label>
-                <ul class="file-list" id="fileList">Archivos Seleccionados</ul>
+                <ul class="file-list-1">Archivos Seleccionados</ul>
+                <ul class="file-list" id="fileList"> </ul>
                 <button id="analizarBtn" type="submit" class="btn btn-primary mt-3">Analizar</button>
             </form>
+            <div id="mensajeArchivos" class="alert alert-danger mt-4" style="display: none;">Por favor, selecciona al menos un archivo.</div>
+
         </div>
+
     </div>
+
 </div>
 
 <!-- Panel de Información -->
@@ -115,15 +134,47 @@
         <div class="col-md-8 offset-md-2">
             <div class="info-panel">
                 <h4>Información</h4>
-                <p>Aquí puedes encontrar información importante relacionada con el análisis de archivos.</p>
+                <p> </p>
+
+                <p> * Limite Tamaño - 120MB por archivo</p>
+                <p> * No Limite cantidad de archivos</p>
+
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    document.getElementById('archivoForm').addEventListener('submit', function() {
+<script>    
+    document.getElementById('archivoForm').addEventListener('submit', function(event) {
+    const files = document.getElementById('archivos').files;
+    const mensaje = document.getElementById('mensajeArchivos');
+    let hasOversizedFile = false;
+
+    // Verificar el tamaño de cada archivo
+    for (let i = 0; i < files.length; i++) {
+        if (files[i].size > 120000000) { // Tamaño máximo permitido: 120MB
+            hasOversizedFile = true;
+            break;
+        }
+    }
+
+    if (hasOversizedFile) {
+        event.preventDefault(); // Evita que se envíe el formulario
+        mensaje.textContent = 'Uno o más archivos seleccionados superan el límite de tamaño (120MB). Por favor, selecciona archivos más pequeños.';
+        mensaje.style.display = 'block';
+        setTimeout(function() {
+            mensaje.style.display = 'none';
+        }, 10000); // Oculta el mensaje después de 10 segundos (10000 milisegundos)
+    } else if (files.length === 0) {
+        event.preventDefault(); // Evita que se envíe el formulario
+        mensaje.textContent = 'Por favor, selecciona al menos un archivo.';
+        mensaje.style.display = 'block';
+        setTimeout(function() {
+            mensaje.style.display = 'none';
+        }, 10000); // Oculta el mensaje después de 10 segundos (10000 milisegundos)
+    } else {
         document.getElementById('analizarBtn').setAttribute('disabled', 'disabled');
+    }
     });
 
     function dragOver(event) {
@@ -147,6 +198,15 @@
     function displayFileList(files) {
         const fileList = document.getElementById('fileList');
         fileList.innerHTML = '';
+
+        // Agregar el título "Archivos Seleccionados"
+        const titleItem = document.createElement('li');
+        titleItem.textContent = "";
+        titleItem.classList.add('file-list-item');
+        titleItem.classList.add('file-list-title'); // Aplica la clase de estilo
+        fileList.appendChild(titleItem);
+
+        // Agregar cada archivo a la lista
         for (let i = 0; i < files.length; i++) {
             const listItem = document.createElement('li');
             listItem.textContent = files[i].name;
