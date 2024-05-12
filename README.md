@@ -15,6 +15,7 @@ Requeriments
 -  pip install requests
 -  pip install django-admin-tools
 -  pip install django-avatar
+-  pip install cryptography
 
 
 Activar
@@ -26,16 +27,17 @@ cd .\APB2AL\
 python manage.py runserver
 
 
--  django-admin startproject APB2TAL .	-->>>   crear Proyecto
+-  django-admin startproject APB2TAL .	-->>>   Crear Proyecto
 
--  python manage.py migrate 		        -->>>	  Aplica las migraciones pendientes a la base de datos.
+-  python manage.py migrate 		    -->>>	Aplica las migraciones pendientes a la base de datos.
 
--  python manage.py makemigrations		  -->>>	  Genera archivos de migración basados en los cambios que has realizado en tus modelos.
+-  python manage.py makemigrations		-->>>	Genera archivos de migración basados en los cambios que has realizado en tus modelos.
 
--  python manage.py createsuperuser 	  -->>>   crear Admin
+-  python manage.py createsuperuser 	-->>>   Crear Admin
 
--  python manage.py startapp nombre	  -->>>   crear App
+-  python manage.py startapp nombre	    -->>>   Crear App
 
--  python manage.py runserver
+-  python manage.py runserver	        -->>>   Iniciar Servidor Web
+
 
 

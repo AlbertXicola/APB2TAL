@@ -4,8 +4,10 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User, Group
-from django.db import IntegrityError
 from django.http import HttpResponse, Http404
+from cryptography.fernet import Fernet
+from django.db import IntegrityError
+from .models import Task, Compartido
 from django.http import JsonResponse
 from django.contrib import messages
 from django.utils import timezone
@@ -15,52 +17,16 @@ from pymongo import MongoClient
 from datetime import datetime
 from .forms import TaskForm
 from .models import Archivo
-from .models import Task, Compartido
+from .models import  *
 import requests
 import hashlib
 import shutil
 import time
+import os
+import os
+from cryptography.fernet import Fernet
 from datetime import datetime
-
-import os
-from django.http import HttpResponse
-import os
-from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, Group
-from .models import Archivo, Compartido, adquisicion
-from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
-from .models import Archivo
-from django.shortcuts import get_object_or_404, redirect
-from .models import Compartido
-from django.http import JsonResponse
-from django.contrib.auth.models import Group
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
-from .models import Compartido, Archivo
-from django.conf import settings
-from django.http import Http404
-from django.http import Http404
-from django.http import HttpResponse, Http404
-from django.shortcuts import get_object_or_404
-from .models import Archivo, Compartido
-from django.http import Http404
-from .models import  *
 import datetime
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-
-from django.shortcuts import render
-from pymongo import MongoClient
-
-from django.shortcuts import render
-from pymongo import MongoClient
-
-
 
 
 def home(request):
@@ -416,6 +382,26 @@ def contact_user(request):
         
         return render(request, 'contact_user.html')
 
+
+
+def generar_clave():
+    # Verificar si el archivo clave.key ya existe
+    if not os.path.exists("clave.key"):
+        clave = Fernet.generate_key()
+        with open("clave.key", "wb") as archivo_clave:
+            archivo_clave.write(clave)
+        
+def cargar_clave():
+    # Verificar si el archivo clave.key existe antes de intentar cargar la clave
+    if os.path.exists("clave.key"):
+        return open("clave.key", "rb").read()
+    else:
+        # Si el archivo clave.key no existe, generar la clave y luego cargarla
+        generar_clave()
+        return open("clave.key", "rb").read()
+
+
+
 @accepted_user_required
 @login_required
 def archivos_analiz(request):
@@ -423,7 +409,6 @@ def archivos_analiz(request):
     base_url = "https://www.virustotal.com/api/v3"
     #https://www.virustotal.com/api/v3/private/files
     headers = {"x-apikey": API_KEY}  # Definir las cabeceras una sola vez
-    hora_actual = datetime.datetime.now()
 
     if request.method == 'POST':
 
@@ -496,11 +481,19 @@ def archivos_analiz(request):
 
 
                 print ("Creando carpeta encriptada ....")
+                # Generar la clave si no existe
+                generar_clave()
+                
+                # Cargar la clave y encriptar el contenido
+                clave = cargar_clave()
+                fernet = Fernet(clave)
+                encrypted_contenido = fernet.encrypt(contenido)
+                
                 # Guardar el archivo en la carpeta
                 with open(os.path.join(ruta_carpeta, archivo_subido.name), 'wb+') as destino:
-                    destino.write(contenido)
-                print ("Guardando archivo ....")
+                    destino.write(encrypted_contenido)
 
+                    
                 print ("Enviando archivo a la API ....")
                 url = f"{base_url}/files"
                 files = {"file": (nombre_archivo, contenido)}
@@ -530,7 +523,8 @@ def archivos_analiz(request):
                 #identificador = informe.get('data', {}).get('id')
 
 
-          
+                from datetime import datetime  # Correct import
+                hora_actual = datetime.now()
                 current_time = hora_actual.strftime("%H:%M:%S")
                 print("Guardando datos en nuestra base de datos ....")
 
@@ -611,13 +605,19 @@ def archivos(request):
         registros = Archivo.objects.none()  # Retorna una queryset vacía si no hay archivos asociados al usuario
     
     return render(request, 'archivos.html', {'registros': registros})
+
+
 client = MongoClient('localhost', 27018)
 db = client['django']
 collection = db['Logs']
+
+
+
 @accepted_user_required
 @login_required
 def eliminar_archivo(request, archivo_id):
-    hora_actual = datetime.datetime.now()
+    from datetime import datetime  # Correct import
+    hora_actual = datetime.now()
     # Obtener el archivo de la tabla de adquisiciones por su ID
     archivo = get_object_or_404(Archivo, id=archivo_id)
 
@@ -654,7 +654,6 @@ def eliminar_archivo(request, archivo_id):
 
 
 
-
 @accepted_user_required
 @login_required
 def descargar_archivo(request, archivo_id):
@@ -665,17 +664,24 @@ def descargar_archivo(request, archivo_id):
         if adquisicion.objects.filter(archivo=archivo, user=request.user).exists():
             # Obtener la ruta del archivo en el sistema de archivos
             ruta_archivo = os.path.join(settings.MEDIA_ROOT2, archivo.id_APB2TAL, archivo.nombre_archivo)
+            
+            # Cargar la clave y desencriptar el contenido
+            clave = cargar_clave()
+            fernet = Fernet(clave)
             with open(ruta_archivo, 'rb') as f:
-                response = HttpResponse(f.read(), content_type="application/octet-stream")
-                response['Content-Disposition'] = f'attachment; filename="{archivo.nombre_archivo}"'
-                return response
+                encrypted_contenido = f.read()
+                decrypted_contenido = fernet.decrypt(encrypted_contenido)
+            
+            # Crear una respuesta HTTP con el contenido desencriptado
+            response = HttpResponse(decrypted_contenido, content_type="application/octet-stream")
+            response['Content-Disposition'] = f'attachment; filename="{archivo.nombre_archivo}"'
+            return response
         else:
             # Si el usuario no tiene permiso para descargar el archivo, redirigir a algún lugar apropiado
             return HttpResponse("No tienes permiso para descargar este archivo.")
     except Archivo.DoesNotExist:
         # Manejar el caso en el que el archivo no existe en la base de datos
         return HttpResponse("El archivo no existe.")
-
 
 @accepted_user_required
 @login_required
@@ -855,9 +861,11 @@ def descargar_archivo_compartido(request, archivo_id):
     ruta_archivo = os.path.join(settings.MEDIA_ROOT2, archivo.id_APB2TAL, archivo.nombre_archivo)
     
     # Abrir el archivo para lectura en modo binario
-    with open(ruta_archivo, 'rb') as file:
-        # Leer el contenido del archivo
-        contenido_archivo = file.read()
+    clave = cargar_clave()
+    fernet = Fernet(clave)
+    with open(ruta_archivo, 'rb') as f:
+        encrypted_contenido = f.read()
+        contenido_archivo = fernet.decrypt(encrypted_contenido)
     
     # Configurar la respuesta HTTP con el contenido del archivo
     response = HttpResponse(contenido_archivo, content_type='application/octet-stream')
@@ -907,7 +915,6 @@ def compartido_archivo_info(request, archivo_id):
 def mis_grupos(request):
     
     usuario = request.user  # Obtener el usuario actual
-
 
 
     return render(request, 'mis_grupos.html', {'usuario': usuario})
@@ -962,10 +969,12 @@ def descargar_archivo_grupo(request, group_name, archivo_id):
     # Verificar si el archivo existe en el sistema de archivos
     if not os.path.exists(ruta_archivo):
         raise Http404("El archivo no existe.")
-
-    # Abrir el archivo y leer su contenido
+    
+    clave = cargar_clave()
+    fernet = Fernet(clave)
     with open(ruta_archivo, 'rb') as f:
-        contenido_archivo = f.read()
+        encrypted_contenido = f.read()
+        contenido_archivo = fernet.decrypt(encrypted_contenido)
 
     # Crear una respuesta HTTP con el contenido del archivo
     response = HttpResponse(contenido_archivo, content_type='application/octet-stream')

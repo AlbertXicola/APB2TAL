@@ -95,7 +95,7 @@
         border-radius: 5px 5px 0px 0px ; /* Bordes redondeados */
         max-height: 200px; /* Altura máxima de la lista */
         overflow-y: auto; /* Añade desplazamiento vertical si hay demasiados archivos */
-        font-weight: bold; !important
+        font-weight: bold !important;
 
     }
 
@@ -111,14 +111,15 @@
     
             <form id="archivoForm" action="{% url 'archivos_analiz' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <label class="custom-file-container" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+                <label id="formulario" class="custom-file-container" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
                     <input type="file" class="custom-file-input" id="archivos" name="archivos"  maxlength="120000000" multiple>
                     <span class="custom-file-add">+</span>
                     <span class="custom-file-addd">Selecciona o Arrastra Archivos</span>
                 </label>
                 <ul class="file-list-1">Archivos Seleccionados</ul>
                 <ul class="file-list" id="fileList"> </ul>
-                <button id="analizarBtn" type="submit" class="btn btn-primary mt-3">Analizar</button>
+                <button id="analizarBtn" type="submit" class="btn btn-primary mt-3" onclick="ocultarElemento()">Analizar</button>
+                <div id="cargandoMensaje" class="alert alert-info mt-4" style="display: none;">Analizando archivos... <span id="contador"></span></div>
             </form>
             <div id="mensajeArchivos" class="alert alert-danger mt-4" style="display: none;">Por favor, selecciona al menos un archivo.</div>
 
@@ -133,49 +134,92 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="info-panel">
-                <h4>Información</h4>
-                <p> </p>
-
-                <p> * Limite Tamaño - 120MB por archivo</p>
-                <p> * No Limite cantidad de archivos</p>
-
+                <h4><i class="fas fa-info-circle text-primary"> </i>  Información</h4>
+                <br>
+                <style>
+                    .info-text {
+                        color: #4d4d4d; /* Color azul */
+                        font-weight: bold; /* Texto en negrita */
+                        font-size: 15px;
+                    }
+                </style>
+                <p class="info-text">Limite Tamaño   - 120MB por archivo</p>
+                <p class="info-text">Limite Archivos - No hay limite en cantidad de archivos</p>
             </div>
         </div>
     </div>
 </div>
 
 <script>    
-    document.getElementById('archivoForm').addEventListener('submit', function(event) {
-    const files = document.getElementById('archivos').files;
-    const mensaje = document.getElementById('mensajeArchivos');
-    let hasOversizedFile = false;
+    function ocultarFormulario() {
+        const files = document.getElementById('archivos').files;
+        let todosDentroDelLimite = true;
 
-    // Verificar el tamaño de cada archivo
-    for (let i = 0; i < files.length; i++) {
-        if (files[i].size > 120000000) { // Tamaño máximo permitido: 120MB
-            hasOversizedFile = true;
-            break;
+        // Verificar si todos los archivos están dentro del límite
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > 120000000) { // 120MB
+                todosDentroDelLimite = false;
+                break;
+            }
+        }
+
+        if (files.length > 0 && todosDentroDelLimite) {
+            document.getElementById("formulario").style.display = "none";
+            document.getElementById("cargandoMensaje").style.display = "block"; // Mostrar mensaje de carga
+            const tiempoTotal = files.length * 20; // Calcula el tiempo total basado en el número de archivos
+            actualizarContador(tiempoTotal); // Inicia la cuenta regresiva
         }
     }
 
-    if (hasOversizedFile) {
-        event.preventDefault(); // Evita que se envíe el formulario
-        mensaje.textContent = 'Uno o más archivos seleccionados superan el límite de tamaño (120MB). Por favor, selecciona archivos más pequeños.';
-        mensaje.style.display = 'block';
-        setTimeout(function() {
-            mensaje.style.display = 'none';
-        }, 10000); // Oculta el mensaje después de 10 segundos (10000 milisegundos)
-    } else if (files.length === 0) {
-        event.preventDefault(); // Evita que se envíe el formulario
-        mensaje.textContent = 'Por favor, selecciona al menos un archivo.';
-        mensaje.style.display = 'block';
-        setTimeout(function() {
-            mensaje.style.display = 'none';
-        }, 10000); // Oculta el mensaje después de 10 segundos (10000 milisegundos)
-    } else {
-        document.getElementById('analizarBtn').setAttribute('disabled', 'disabled');
+    function actualizarContador(segundos) {
+        const contador = document.getElementById('contador');
+        let tiempoRestante = segundos;
+        contador.textContent = tiempoRestante;
+
+        const intervalo = setInterval(function() {
+            tiempoRestante--;
+            contador.textContent = tiempoRestante;
+            if (tiempoRestante <= 0) {
+                clearInterval(intervalo);
+                mostrarResultado();
+            }
+        }, 1000); // Actualizar el contador cada segundo
     }
+
+    document.getElementById('archivoForm').addEventListener('submit', function(event) {
+        const files = document.getElementById('archivos').files;
+        const mensaje = document.getElementById('mensajeArchivos');
+        let hasOversizedFile = false;
+
+        // Verificar el tamaño de cada archivo
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > 120000000) { // Tamaño máximo permitido: 120MB
+                hasOversizedFile = true;
+                break;
+            }20
+        }
+
+        if (hasOversizedFile) {
+            event.preventDefault(); // Evita que se envíe el formulario
+            mensaje.textContent = 'Uno o más archivos seleccionados superan el límite de tamaño (120MB). Por favor, selecciona archivos más pequeños.';
+            mensaje.style.display = 'block';
+            setTimeout(function() {
+                mensaje.style.display = 'none';
+            }, 10000); // Oculta el mensaje después de 10 segundos (10000 milisegundos)
+        } else if (files.length === 0) {
+            event.preventDefault(); // Evita que se envíe el formulario
+            mensaje.textContent = 'Por favor, selecciona al menos un archivo.';
+            mensaje.style.display = 'block';
+            setTimeout(function() {
+                mensaje.style.display = 'none';
+            }, 10000); // Oculta el mensaje después de 10 segundos (10000 milisegundos)
+        } else {
+            ocultarFormulario(); // Llama a la función para mostrar el mensaje de carga
+            document.getElementById('analizarBtn').setAttribute('disabled', 'disabled');
+        }
     });
+
+
 
     function dragOver(event) {
         event.preventDefault();
@@ -186,6 +230,9 @@
         event.preventDefault();
         event.currentTarget.classList.remove('dragover');
     }
+
+
+
 
     function drop(event) {
         event.preventDefault();

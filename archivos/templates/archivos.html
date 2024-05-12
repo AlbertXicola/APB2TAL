@@ -44,6 +44,10 @@
                 </div>
                 <input type="text" id="busquedaNombre" onkeyup="buscarNombre()" class="form-control" placeholder="Buscar por nombre...">
             </div>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alertaPersonalizada" style="display: none;">
+                <strong>Amenaza Detectada:</strong> Este archivo ha sido detectado como amenaza y no puede ser descargado.
+
+            </div>
 
             <table id="tablaArchivos" class="table table-striped " style="border-radius: 2px; overflow: hidden;">
                 <thead>
@@ -108,10 +112,7 @@
                 </tbody>
             </table>
 
-            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alertaPersonalizada" style="display: none;">
-                <strong>Amenaza Detectada:</strong> Este archivo ha sido detectado como amenaza y no puede ser descargado.
 
-            </div>
 
         </div>
     </div>
