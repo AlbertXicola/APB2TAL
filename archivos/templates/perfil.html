@@ -1,64 +1,80 @@
 {% extends 'baseusuario.html' %}
 {% block content %}
 <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 70px;
+      padding: 0;
+    }
     .profile-container {
-        background-color: rgba(0, 0, 0, 0.185);
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 50px; /* Ajusta según sea necesario */
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        height: 600px; /* Ajusta la altura según sea necesario */
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #ff000011;
+      border: 2px solid #ff000011;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
-
-    .profile-header {
-        background-color: #343a40;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 10px 10px 0 0;
-        margin-bottom: 20px;
+    .profile-picture {
+      text-align: center;
     }
-
-    .profile-info {
-        color: white;
+    .profile-picture img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 6px solid #fff;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
-
-    .waiting-message {
-        background-color: #ffc107;
-        color: #333;
-        padding: 10px 20px;
-        border-radius: 0 0 10px 10px;
+    .profile-details {
+      margin-top: 30px;
     }
-</style>
+    .profile-details h2 {
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+    .profile-details p {
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+    .social-links {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .social-links a {
+      text-decoration: none;
+      color: #ffffff;
+      margin-right: 15px;
+      transition: color 0.3s;
+      font-size: 24px;
+    }
+    .social-links a:hover {
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
 
-<main class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">  
-            <div class="profile-container">
-                <div class="profile-header">
-                    <h1 class="text-center mb-0">{{ user.username }} Profile</h1>
-                </div>
-                <div class="card-body">
-                    <div class="row profile-info">
-                        <div class="col-md-6">
-                            <h5><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</h5>
+<div class="profile-container">
+  <div class="profile-picture">
+    <img src="https://ih1.redbubble.net/image.4964953989.1886/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg" alt="Profile Picture">
+  </div>
+  <div class="profile-details">
+    <h2>{{ user.username }}</h2>
+    <p><strong>Correo electrónico:</strong> {{ user.email }} </p>
+    <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</p>
+    <p><strong>Edad:</strong> ?? años</p>
+    <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
+    <p><strong>Intereses:</strong> Tecnología, viajes, música</p>
+  </div>
 
-                            <br>
-                            <h5><strong>Correo:</strong> {{ user.email }}</h5>
-                            <br>
-                            <h5><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</h5>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-                {% if not user.is_accepted %}
-                    <div class="waiting-message">
-                        <h4 class="mb-0">Esperando a que un administrador acepte tu perfil.</h4>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</main>
+</div>
+{% if not user.is_accepted %}
+<div class="waiting-message">
+    <h4 class="mb-0">Esperando a que un administrador acepte tu perfil.</h4>
+</div>
+{% endif %}
+<!-- Font Awesome -->
+</body>
 
 {% endblock %}

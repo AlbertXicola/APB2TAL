@@ -9,30 +9,64 @@
         border-radius: 0px;
     }
     .text-center.display-4.py-4.mt-5 {
-    color: white;
+        color: white;
+    }
+    .custom-btn {
+        font-size: 18px;
+        height: 200px; /* Establece la altura */
+        width: 400; /* Establece el ancho */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 30px;
+    }
+   /* Define el color rosa para los botones */
+   .btn-pink {
+        background-color: #5FC451;
+        border-color: #5FC451;
+        color: white;
+    }
+
+    /* Cambia el color al pasar el mouse */
+    .btn-pink:hover {
+        background-color: #FF5733;
+        border-color: #FF5733;
+        color: white;
+    }
+    .custom-btn i {
+        margin-right: 10px; /* Espacio entre el icono y el texto */
+    }
+
+    .col-md-4{
+        padding-bottom: 30px;
     }
 
 </style>
-    <div class="container text-center ">
-        <h2 class="text-center display-4 py-4 mt-5">Admin Panel</h2>
+<div class="container text-center ">
+    <h2 class="text-center display-4 py-4 mt-5 mb-5">Admin Panel</h2>
 
-        <div class="row">
-            <div class="col-md-4">
-                <a href="/administrar/usuarios" class="btn btn-primary btn-block">Administrar Usuarios</a>
-            </div>
-            <div class="col-md-4">
-                <a href="/administrar/grupos" class="btn btn-primary btn-block">Administrar Grupos</a>
-            </div>
-            <div class="col-md-4">
-                <a href="/administrar/registros_admin" class="btn btn-primary btn-block">Logs</a>
-            </div>
-
+    <div class="row">
+        <div class="col-md-4">
+            <a href="/administrar/usuarios" class="btn btn-pink custom-btn"><i class="fas fa-users"></i> Administrar Usuarios</a>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <a href="/admin" class="btn btn-primary btn-block">Administración Django</a>
-            </div>
-
+        <div class="col-md-4">
+            <a href="/administrar/grupos" class="btn btn-pink custom-btn"><i class="fas fa-users-cog"></i> Administrar Grupos</a>
+        </div>
+        <div class="col-md-4">
+            <a href="/administrar/registros_admin" class="btn btn-pink custom-btn"><i class="fas fa-clipboard-list"></i> Logs</a>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <a href="/admin" class="btn btn-pink custom-btn"><i class="fas fa-cogs"></i> Administración Django</a>
+        </div>
+        <div class="col-md-4">
+            <a href="/" class="btn btn-pink custom-btn"><i class="fas fa-spinner"></i> Próximamente Django</a>
+        </div>
+        <div class="col-md-4">
+            <a href="/" class="btn btn-pink custom-btn"><i class="fas fa-spinner"></i> Próximamente Django</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -98,7 +98,9 @@
         font-weight: bold !important;
 
     }
-
+    .text-center.display-4.py-4 {
+        color: white; /* Color del texto */
+    }
 
 </style>
 
@@ -107,7 +109,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2 mt-5">
-            <h2 class="text-center display-4 py-4">Análisis de Archivos</h2>
+            <h2 class="text-center display-4 py-4">Analizar Archivos</h2>
     
             <form id="archivoForm" action="{% url 'archivos_analiz' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

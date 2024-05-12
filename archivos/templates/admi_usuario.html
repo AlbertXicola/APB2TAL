@@ -2,7 +2,9 @@
 
 {% block content %}
 <style>
-
+    .text-center.display-4.py-4.mt-5 {
+        color: white;
+    }
     .sidebar ul li.administrar1 {
         color: #dee2e6;
         background-color: #6c757d;
@@ -12,9 +14,9 @@
 <div class="container">
   <h2 class="text-center display-4 py-4 mt-5">Administrar a {{ usuario.username }}</h2>
 
-  <a href="/administrar/usuarios/" class="btn btn-secondary mb-1">Volver</a>
+  <a href="/administrar/usuarios/" class="btn btn-secondary mb-1 ml-3">Volver</a>
 
-    <div class="user-details">
+    <div class="card p-3 m-3">
         <p><strong>ID:</strong> {{ usuario.id }}</p>
         <p><strong>Fecha de Registro:</strong> {{ usuario.date_joined }}</p>
         <p><strong>Último Inicio de Sesión:</strong> {{ usuario.last_login }}</p>

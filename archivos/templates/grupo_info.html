@@ -25,29 +25,109 @@
     .btn-download:hover {
         background-color: #0056b3;
     }
+    .text-center.display-4.py-4 {
+        color: white; /* Color del texto */
+    }   
+
+    /* Estilos para el contenedor del mensaje emergente */
+    .alert {
+
+
+        background-color: #ffffff;
+        color: #868686;
+        border: 1px solid #ffffff00;
+        border-radius: 5px;
+        padding: 0px 0px !important;
+        display: none;
+        z-index: 9999; /* Asegura que esté delante de todos los demás elementos */
+    }
+    ul{
+        padding: 0px;
+        margin: 0px;
+    }
+    /* Estilos para el botón de cerrar del mensaje emergente */
+    .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
 </style>
 
 <h1 class="text-center display-4 py-4 mt-5">{{ group_name }}</h1>
-<div class="col-md-8">
-    <div class="card-body">
-        <ul class="list-group">
-        <a href="/grupos/" class="btn btn-secondary mb-3">Volver</a>
+<div class="container">
 
-        {% for compartido in archivos_compartidos_al_grupo %}
-            {% if group == compartido.grupo_destinatario %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title font-weight-bold">{{ compartido.archivo.nombre_archivo }}</h5>
-                        <p class="card-text">Compartido por: <strong>{{ compartido.usuario_propietario.username }}</strong></p>
-                        <a href="{% url 'descargar_archivo_grupo' group_name=group_name archivo_id=compartido.archivo.id %}" class="btn btn-info btn-download" download>Descargar</a>
-                    </div>
+                <div class="card-header">
+                    <br>
+                    <h4 class="font-weight-bold">Descripción del grupo:</h4>
+                    <h5>• ‎ {{ group.description }}</h5>
+                    <br>
+                    <br>
                 </div>
-                <br>
-            {% endif %}
-        {% endfor %}
-        </ul>
+
+                <div class="card-body">
+                    <a href="/grupos/" class="btn btn-secondary mb-3">Volver</a>
+
+                    <!-- Botón para mostrar el mensaje emergente -->
+                    <button class="btn btn-info mb-3" id="showAlert">Usuarios del grupo</button>
+
+                    <!-- Contenedor del mensaje emergente -->
+                    <div class="alert" id="alert">
+                        <ul class="">
+                            {% for usuario in group.user_set.all %}
+                                <li class="list-group-item font-weight-bold text-dark" >{{ usuario.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <ul class="list-group">
+                        {% for compartido in archivos_compartidos_al_grupo %}
+                            {% if group == compartido.grupo_destinatario %}
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title font-weight-bold">{{ compartido.archivo.nombre_archivo }}</h5>
+                                        <p class="card-text">Compartido por: <strong>{{ compartido.usuario_propietario.username }}</strong></p>
+                                        <a href="{% url 'descargar_archivo_grupo' group_name=group_name archivo_id=compartido.archivo.id %}" class="btn btn-info btn-download" download>Descargar</a>
+                                    </div>
+                                </div>
+                                <br>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    // Obtener el botón y el contenedor del mensaje emergente
+    const showAlertBtn = document.getElementById('showAlert');
+    const alertContainer = document.getElementById('alert');
+    const closeAlertBtn = document.getElementById('closeAlert');
+
+    // Variable para controlar la visibilidad del mensaje emergente
+    let alertVisible = false;
+
+    // Función para alternar la visibilidad del mensaje emergente
+    function toggleAlert() {
+        if (alertVisible) {
+            alertContainer.style.display = 'none';
+        } else {
+            alertContainer.style.display = 'block';
+        }
+        alertVisible = !alertVisible;
+    }
+
+    // Escuchar el clic en el botón para mostrar/ocultar el mensaje emergente
+    showAlertBtn.addEventListener('click', toggleAlert);
+
+    // Escuchar el clic en el botón de cerrar el mensaje emergente
+    closeAlertBtn.addEventListener('click', toggleAlert);
+</script>
 
 {% endblock %}

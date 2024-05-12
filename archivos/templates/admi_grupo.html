@@ -9,15 +9,20 @@
       background-color: #6c757d;
       border-radius: 0px;
   }
+  .text-center.display-4.py-4.mt-5 {
+        color: white;
+    }
 </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="container">
-  <h2 class="text-center display-4 py-4">Administrar el Grupo {{ grupo.name }}</h2>
+  
+  <h2 class="text-center display-4 py-4 mt-5">Administrar Grupo {{ grupo.name }}</h2>
 
-  <a href="/administrar/grupos/" class="btn btn-secondary mb-1">Volver</a>
 
-  <div class="user-details">
+  <a href="/administrar/grupos/" class="btn btn-secondary mb-1 ml-3">Volver</a>
+
+  <div class="card p-3 m-3">
         
     <p><strong>ID:</strong> {{ grupo.id }}</p>
 

@@ -31,6 +31,12 @@
         width: 100%;
         max-width: 1200px; /* Ajusta el ancho máximo según tu diseño */
     }
+    .text-center.display-4.py-4 {
+        color: white; /* Color del texto */
+    }   
+    ul {
+        padding-left: 0 !important;
+    }
 </style>
 
 <div class="container">
@@ -39,6 +45,7 @@
         <div class="col-md-4">
             <div class="card-body">
                 {% for group in usuario.groups.all %}
+                    <!-- La lista no tiene la clase "ul", así que el padding-left se aplica directamente a las listas -->
                     <ul>
                         <a href="{% url 'grupo_info' group.name %}" class="list-group-item">{{ group.name }}</a>
                     </ul>

@@ -14,8 +14,63 @@
     }
 
     /* Estilo para el borde del checkbox */
+
+    .scrollable-list {
+        max-height: 200px; /* Ajusta esta altura según tus necesidades */
+        overflow-y: auto;
+    }
+    /* Estilo para checkboxes no marcados */
+    /* Estilo para hacer los checkboxes más grandes */
+  
+
+    /* Estilo para checkboxes no marcados con color verde pastel y signo "+" */
+    
+    /* Estilo para checkboxes no marcados con color verde pastel y signo "+" */
+    .form-check-input:not(:checked)::before {
+        content: '' !important; /* Contenido del checkbox no marcado */
+        display: block;
+        font-size: 20px;
+        line-height: 20px;
+        color: #ffffff; /* Color del signo */
+        text-align: center;
+    }
+
+    /* Estilo para checkboxes marcados con color rojo pastel y signo "-" */
+    .form-check-input:checked::before {
+        content: '' !important; /* Contenido del checkbox no marcado */
+
+        display: block;
+        font-size: 20px;
+        line-height: 20px;
+        text-size-adjust: 40px;
+        color: #ffffff; /* Color del signo */
+        text-align: center;
+    }
+
+    /* Estilo para checkboxes no marcados */
+    /* Estilo para hacer los checkboxes más grandes */
+/* Estilo para checkboxes no marcados */
+    /* Estilo para hacer los checkboxes más grandes */
     .form-check-input {
-        border: 2px solid black;
+        content: '+' !important; /* Contenido del checkbox no marcado */
+        text-size-adjust: 40px;
+        color: #ffffff; /* Color del signo */
+        width: 20px; /* Modifica el ancho según tus preferencias */
+        height: 20px; /* Modifica la altura según tus preferencias */
+        border: none;
+        border-radius: none;
+    }
+
+    /* Estilo para checkboxes marcados de color rojo */
+    .form-check-input:checked {
+        content: '' !important; /* Contenido del checkbox no marcado */
+
+        background-color: #EB4444; /* Rojo pastel */
+        color: #000; /* Color del texto */
+    }
+    .form-check-input:not(:checked) {
+        background-color: #47C747; /* Verde pastel */
+        color: #000; /* Color del texto */
     }
 </style>
 
@@ -25,48 +80,115 @@
             <h2 class="text-center display-7 py-4">Datos de <strong>{{ archivo.nombre_archivo }}</strong> actual</h2>
             <a href="/archivos/" class="btn btn-secondary mb-3">Volver</a>
 
-            <div class="card p-4">
+            <div class="card p-5">
 
-                <p><strong>Nombre:</strong> {{ archivo.nombre_archivo }}</p>
-                <p><strong>Hash AVT:</strong> {{ archivo.archivo_hash }}</p>
-                <p><strong>Hash APB2TAL:</strong> {{ archivo.id_APB2TAL }}</p>
-                <p><strong>Positivos:</strong> {{ archivo.positivos }}</p>
-                <p><strong>Fecha de análisis:</strong> {{ archivo.current_time }}</p>
+                <h3 class="text-primary"><i class="fa-solid fa-circle-info"></i> Información </h3>
+                <br>
 
+                
+                    <h5 class="list-group-item"><strong>Nombre:</strong> {{ archivo.nombre_archivo }}</h5>
+                    <h5 class="list-group-item"><strong>Hash AVT:</strong> {{ archivo.archivo_hash }}</h5>
+                    <h5 class="list-group-item"><strong>Hash APB2TAL:</strong> {{ archivo.id_APB2TAL }}</h5>
+                    <h5 class="list-group-item"><strong>Positivos:</strong> {{ archivo.positivos }}</h5>
+                    <h5 class="list-group-item"><strong>Fecha de análisis:</strong> {{ archivo.current_time }}</h5>
+           
                 <!-- Asegúrate de que current_time esté definido correctamente en tu modelo Archivo -->
                 <!-- <p>Fecha de creación: {{ archivo.current_time }}</p> -->
-
-                <h3 >Compartir con</h3>
-
-                <h4>Lista de usuarios:</h4>
+                <br>    
+                <h3 class="text-warning"><i class="fas fa-share"></i> Compartir con</h3>
+                <br>
                 <form id="compartir-form" method="post" action="{% url 'compartir_archivo' archivo.id %}">
-                    {% csrf_token %}
-                    <ul class="list-unstyled">
-                        {% for usuario in usuarios %}
-                        <li>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
-                                <label class="form-check-label">{{ usuario.username }}</label>
+                    {% csrf_token %}<div class="container"><div class="container">
+                        <div class="row">
+                            
+                            <div class="col-md-6">
+                                <h4>Usuarios:</h4>
+                                <input type="text" id="searchUsers" class="form-control mb-3" placeholder="Buscar usuario...">
+                                <div class="scrollable-list">
+                                    <ul id="userList" class="list-group">
+                                        {% for usuario in usuarios %}
+                                        <li class="list-group-item">
+                                            <div class="form-check d-flex align-items-center"> <!-- Se agrega d-flex y align-items-center -->
+                                                <input class="form-check-input" type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
+                                                <label class="form-check-label ml-2">{{ usuario.username }}</label> <!-- Se agrega ml-2 -->
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-
-                    <h4 class="mt-4">Lista de grupos:</h4>
-                    <ul class="list-unstyled">
-                        {% for grupo in grupos %}
-                        <li>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="grupos" value="{{ grupo.id }}" {% if grupo.id in grupos_compartidos %}checked{% endif %}>
-                                <label class="form-check-label">{{ grupo.name }}</label>
+                            <div class="col-md-6">
+                                <h4>Grupos:</h4>
+                                <input type="text" id="searchGroups" class="form-control mb-3" placeholder="Buscar grupo...">
+                                <div class="scrollable-list">
+                                    <ul id="groupList" class="list-group">
+                                        {% for grupo in grupos %}
+                                        <li class="list-group-item">
+                                            <div class="form-check d-flex align-items-center"> <!-- Se agrega d-flex y align-items-center -->
+                                                <input class="form-check-input checkbox" type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
+                                                <label class="form-check-label ml-2">{{ grupo.name }}</label> <!-- Se agrega ml-2 -->
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
                     <button type="submit" class="btn btn-primary mt-3">Guardar</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    // Agregar estilos a los checkboxes no marcados
+    document.addEventListener("DOMContentLoaded", function() {
+        var checkboxes = document.querySelectorAll('.checkbox');
+        checkboxes.forEach(function(checkbox) {
+            if (!checkbox.checked) {
+                checkbox.classList.add('unchecked');
+            }
+        });
+    });
+    // Filtrar usuarios
+    document.getElementById("searchUsers").addEventListener("keyup", function() {
+        var input, filter, ul, li, label, i, txtValue;
+        input = document.getElementById("searchUsers");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("userList");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            label = li[i].getElementsByTagName("label")[0];
+            txtValue = label.textContent || label.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    });
+
+    // Filtrar grupos
+    document.getElementById("searchGroups").addEventListener("keyup", function() {
+        var input, filter, ul, li, label, i, txtValue;
+        input = document.getElementById("searchGroups");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("groupList");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            label = li[i].getElementsByTagName("label")[0];
+            txtValue = label.textContent || label.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    });
+</script>
 {% endblock %}

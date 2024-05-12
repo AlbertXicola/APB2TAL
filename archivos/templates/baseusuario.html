@@ -21,7 +21,7 @@
             margin: 0;
             padding: 0;
             /* Establece la imagen de fondo */
-            background-color: #c5c6c8;
+            background-color: #262931;
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-position: top left;
@@ -132,7 +132,6 @@
                 <li class="archivos1"><a href="/archivos"><i class="fas fa-file fa-lg"></i> <span>‎ Mis archivos</span></a></li>
                 <li class="analizar1"><a href="/archivos/analizar"><i class="fas fa-upload fa-lg"></i> <span>Subir archivos</span></a></li>
                 <li class="Compartidos1"><a href="/compartido"><i class="fas fa-share fa-lg"></i> <span>Compartidos</span></a></li>
-                <li class="contacta1"><a href="/contacta"><i class="fas fa-envelope fa-lg"></i> <span>Mensajes</span></a></li>
                 <li class="misgrupos1"><a href="/grupos"><i class="fas fa-users fa-lg"></i> <span>Grupos</span></a></li>
                 <li class="registros1"><a href="/registros"><i class="fas fa-clipboard fa-lg">  </i>  <span> ‎ ‎ Registros</span></a></li>
 
@@ -143,10 +142,12 @@
                 {% else %}
 
                 {% endif %}
+                <li class="contacta1"><a href="/contacta"><i class="fas fa-headset"></i><span>Contacta</span></a></li>
+
                 <li>
                     <a href="/"><i class="fas fa-home fa-lg"></i> <span>Home</span></a>
                 </li>
-            
+
                 <li class="signout1"><a href="/signout"><i class="fas fa-sign-out-alt fa-lg"></i> <span>‎ Signout</span></a></li>
                 {% else %}
                 <li class="signin1"><a href="/signin"><i class="fas fa-sign-in-alt fa-lg"></i> <span>Signin</span></a></li>

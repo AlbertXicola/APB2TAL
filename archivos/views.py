@@ -112,12 +112,6 @@ def perfil(request):
 
 
 
-@login_required
-def perfil(request):
-    return render(request, 'perfil.html')
-
-
-
 
 
 @login_required
