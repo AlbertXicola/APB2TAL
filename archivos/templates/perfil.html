@@ -1,11 +1,7 @@
 {% extends 'baseusuario.html' %}
 {% block content %}
 <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 70px;
-      padding: 0;
-    }
+
     .profile-container {
       max-width: 600px;
       margin: 50px auto;
@@ -13,6 +9,7 @@
       border: 2px solid #ff000011;
       border-radius: 10px;
       padding: 30px;
+      margin-top: 90px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
     .profile-picture {
@@ -50,23 +47,31 @@
     .social-links a:hover {
       color: #007bff;
     }
+    
+    .sidebar ul li.perfil {
+      color: #dee2e6;
+      background-color: #6c757d;
+      border-radius: 0px;
+  }
+
   </style>
 </head>
 <body>
 
 <div class="profile-container">
-  <div class="profile-picture">
-    <img src="https://ih1.redbubble.net/image.4964953989.1886/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg" alt="Profile Picture">
-  </div>
-  <div class="profile-details">
-    <h2>{{ user.username }}</h2>
-    <p><strong>Correo electrónico:</strong> {{ user.email }} </p>
-    <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-    <p><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</p>
-    <p><strong>Edad:</strong> ?? años</p>
-    <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
-    <p><strong>Intereses:</strong> Tecnología, viajes, música</p>
-  </div>
+    <div class="profile-picture">
+      <img src="https://images.ecestaticos.com/XGTW2XyfqZU7Mr9q7x7bG7gbyP4=/51x0:837x589/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F603%2F54f%2F176%2F60354f176c50ab6559e36b23c224f03e.jpg" alt="Profile Picture">
+    </div>
+    
+    <div class="profile-details">
+      <h2>{{ user.username }}</h2>
+      <p><strong>Correo electrónico:</strong> {{ user.email }} </p>
+      <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+      <p><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</p>
+      <p><strong>Edad:</strong> ?? años</p>
+      <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
+      <p><strong>Intereses:</strong>Te pute mare Em pica la polla, </p>
+    </div>
 
 </div>
 {% if not user.is_accepted %}

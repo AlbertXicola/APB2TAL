@@ -72,70 +72,78 @@
         background-color: #47C747; /* Verde pastel */
         color: #000; /* Color del texto */
     }
+    .text-center.display-6.py-4 {
+        color: white; /* Color del texto */
+        padding-bottom: 0px !important;
+    }
+    p{
+        padding: 0px !important;
+    }
 </style>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2 mt-5 mb-3"> <!-- Se agregó la clase mb-5 aquí -->
-            <h2 class="text-center display-7 py-4">Datos de <strong>{{ archivo.nombre_archivo }}</strong> actual</h2>
-            <a href="/archivos/" class="btn btn-secondary mb-3">Volver</a>
 
-            <div class="card p-5">
+        <div class="row">
+            <div class="col-md-13 offset-md-0 mt-5">
+                <h5 class="text-center display-6 py-4">Datos de <strong>{{ archivo.nombre_archivo }}</strong> </h5>
+                <a href="/archivos/" class="btn btn-secondary mb-3">Volver</a>
 
-                <h3 class="text-primary"><i class="fa-solid fa-circle-info"></i> Información </h3>
-                <br>
+                <div class="card p-4">
 
-                
-                    <h5 class="list-group-item"><strong>Nombre:</strong> {{ archivo.nombre_archivo }}</h5>
-                    <h5 class="list-group-item"><strong>Hash AVT:</strong> {{ archivo.archivo_hash }}</h5>
-                    <h5 class="list-group-item"><strong>Hash APB2TAL:</strong> {{ archivo.id_APB2TAL }}</h5>
-                    <h5 class="list-group-item"><strong>Positivos:</strong> {{ archivo.positivos }}</h5>
-                    <h5 class="list-group-item"><strong>Fecha de análisis:</strong> {{ archivo.current_time }}</h5>
-           
-                <!-- Asegúrate de que current_time esté definido correctamente en tu modelo Archivo -->
-                <!-- <p>Fecha de creación: {{ archivo.current_time }}</p> -->
-                <br>    
-                <h3 class="text-warning"><i class="fas fa-share"></i> Compartir con</h3>
-                <br>
-                <form id="compartir-form" method="post" action="{% url 'compartir_archivo' archivo.id %}">
-                    {% csrf_token %}<div class="container"><div class="container">
-                        <div class="row">
-                            
-                            <div class="col-md-6">
-                                <h4>Usuarios:</h4>
-                                <input type="text" id="searchUsers" class="form-control mb-3" placeholder="Buscar usuario...">
-                                <div class="scrollable-list">
-                                    <ul id="userList" class="list-group">
-                                        {% for usuario in usuarios %}
-                                        <li class="list-group-item">
-                                            <div class="form-check d-flex align-items-center"> <!-- Se agrega d-flex y align-items-center -->
-                                                <input class="form-check-input" type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
-                                                <label class="form-check-label ml-2">{{ usuario.username }}</label> <!-- Se agrega ml-2 -->
-                                            </div>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
+                    <h4 class="text-primary"><i class="fa-solid fa-circle-info"></i> Información </h4>
+                    <br>
+
+                    
+                        <p class=""><strong>Nombre:</strong> {{ archivo.nombre_archivo }}</p>
+                        <p class=""><strong>Hash AVT:</strong> {{ archivo.archivo_hash }}</p>
+                        <p class=""><strong>Hash APB2TAL:</strong> {{ archivo.id_APB2TAL }}</p>
+                        <p class=""><strong>Positivos:</strong> {{ archivo.positivos }}</p>
+                        <p class=""><strong>Fecha de análisis:</strong> {{ archivo.current_time }}</p>
+            
+                    <!-- Asegúrate de que current_time esté definido correctamente en tu modelo Archivo -->
+                    <!-- <p>Fecha de creación: {{ archivo.current_time }}</p> -->
+                    <br>    
+                    <h4 class="text-warning"><i class="fas fa-share"></i> Compartir con</h4>
+                    
+                    <form id="compartir-form" method="post" action="{% url 'compartir_archivo' archivo.id %}">
+                        {% csrf_token %}<div class="container"><div class="container">
+                            <div class="row">
+                                
+                                <div class="col-md-6">
+                                    <h5>Usuarios:</h5>
+                                    <input type="text" id="searchUsers" class="form-control mb-3" placeholder="Buscar usuario...">
+                                    <div class="scrollable-list">
+                                        <ul id="userList" class="list-group">
+                                            {% for usuario in usuarios %}
+                                            <li class="list-group-item">
+                                                <div class="form-check d-flex align-items-center"> <!-- Se agrega d-flex y align-items-center -->
+                                                    <input class="form-check-input" type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
+                                                    <label class="form-check-label ml-2">{{ usuario.username }}</label> <!-- Se agrega ml-2 -->
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <h4>Grupos:</h4>
-                                <input type="text" id="searchGroups" class="form-control mb-3" placeholder="Buscar grupo...">
-                                <div class="scrollable-list">
-                                    <ul id="groupList" class="list-group">
-                                        {% for grupo in grupos %}
-                                        <li class="list-group-item">
-                                            <div class="form-check d-flex align-items-center"> <!-- Se agrega d-flex y align-items-center -->
-                                                <input class="form-check-input checkbox" type="checkbox" name="usuarios" value="{{ usuario.id }}" {% if usuario.id in usuarios_compartidos %}checked{% endif %}>
-                                                <label class="form-check-label ml-2">{{ grupo.name }}</label> <!-- Se agrega ml-2 -->
-                                            </div>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
+                                <div class="col-md-6">
+                                    <h5>Grupos:</h5>
+                                    <input type="text" id="searchGroups" class="form-control mb-3" placeholder="Buscar grupo...">
+                                    <div class="scrollable-list">
+                                        <ul id="groupList" class="list-group">
+                                            {% for grupo in grupos %}
+                                            <li class="list-group-item">
+                                                <div class="form-check d-flex align-items-center">
+                                                    <input class="form-check-input checkbox" type="checkbox" name="grupos" value="{{ grupo.id }}" {% if grupo.id in grupos_compartidos %}checked{% endif %}>
+                                                    <label class="form-check-label ml-2">{{ grupo.name }}</label>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
+                        
                     
                     
                     

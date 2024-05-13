@@ -26,6 +26,11 @@
         position: absolute;
         z-index: -1;
     }
+    .sidebar ul li.analizar1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
 
     /* Estilo para el texto dentro del contenedor */
     .custom-file-label {
@@ -121,7 +126,7 @@
                 <ul class="file-list-1">Archivos Seleccionados</ul>
                 <ul class="file-list" id="fileList"> </ul>
                 <button id="analizarBtn" type="submit" class="btn btn-primary mt-3" onclick="ocultarElemento()">Analizar</button>
-                <div id="cargandoMensaje" class="alert alert-info mt-4" style="display: none;">Analizando archivos... <span id="contador"></span></div>
+                <div id="cargandoMensaje" class="alert alert-info mt-4" style="display: none;">Analizando archivos... <span id="contador"></span>s</div>
             </form>
             <div id="mensajeArchivos" class="alert alert-danger mt-4" style="display: none;">Por favor, selecciona al menos un archivo.</div>
 
