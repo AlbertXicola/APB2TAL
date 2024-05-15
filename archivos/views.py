@@ -16,11 +16,11 @@ from .models import adquisicion
 from pymongo import MongoClient
 from datetime import datetime
 from .forms import TaskForm
+from django.views.decorators.csrf import csrf_protect
 from .models import Archivo
 from .models import  *
 import requests
 from django.core.files.uploadedfile import UploadedFile
-
 import hashlib
 import shutil
 import time
@@ -120,36 +120,46 @@ def perfil(request):
         return redirect('perfil')
 
     return render(request, 'perfil.html')
-
-@accepted_user_required
+from django.http import JsonResponse
 @login_required
 def editar_perfil(request):
-    if request.method == "POST":
-        user = request.user  # Obtiene el usuario actual
+    error_message = None
+    disable_save = False  # Bandera para deshabilitar el botón de guardar
 
-        # Verifica si la edad ya ha sido editada y si el usuario está intentando modificarla nuevamente
+    if request.method == "POST":
+        user = request.user  
+
         if user.edad_editada and request.POST.get('edad') is not None:
-            # Muestra un mensaje de error si la edad ya ha sido editada y el usuario intenta modificarla nuevamente
             return render(request, 'perfil.html', {'edad_editada': True})
 
-        # Actualiza los campos del usuario con los valores enviados en el formulario
-        user.username = request.POST.get('username')
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
+        username = request.POST.get('username')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
 
-        # Obtiene la nueva edad del formulario
-        nueva_edad = request.POST.get('edad')
-        if nueva_edad is not None:
-            user.edad = nueva_edad
-            user.edad_editada = True
+        if username != request.user.username and User.objects.filter(username=username).exists():
+            error_message = 'El nombre de usuario ya está en uso.'
+            disable_save = True  # Establece la bandera para deshabilitar el botón de guardar
+        else:
+            # Actualiza los campos del usuario con los valores enviados en el formulario
+            user.username = username
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
 
-        user.save()  # Guarda los cambios en el usuario
+            # Obtiene la nueva edad del formulario
+            nueva_edad = request.POST.get('edad')
+            if nueva_edad is not None:
+                user.edad = nueva_edad
+                user.edad_editada = True
 
-        return redirect('perfil')  # Redirige de nuevo al perfil del usuario después de editar el perfil
-    else:
-        # Si la solicitud no es de tipo POST, simplemente renderiza el formulario de edición de perfil
-        return render(request, 'perfil.html')
+            user.save()  
+
+            return redirect('perfil')  
+
+    return render(request, 'perfil.html', {'user': request.user, 'error_message': error_message, 'disable_save': disable_save})
+
+
 
 @login_required
 def signout(request):
@@ -328,6 +338,7 @@ def registros_admin(request):
 @accepted_user_required
 @user_passes_test(is_staff)
 @login_required
+@csrf_protect
 def crear_grupo(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
@@ -351,7 +362,7 @@ def crear_grupo(request):
     return render(request, 'crear_grupo.html')  # Asegúrate de reemplazar 'nombre_de_tu_template.html' con el nombre de tu template para el formulario
 
 
-
+@csrf_protect
 @accepted_user_required
 @user_passes_test(is_staff)
 @login_required
@@ -431,7 +442,7 @@ def cargar_clave():
         return open("clave.key", "rb").read()
 
 
-
+@csrf_protect
 @accepted_user_required
 @login_required
 def archivos_analiz(request):
@@ -657,6 +668,7 @@ collection = db['Logs']
 
 @accepted_user_required
 @login_required
+@csrf_protect
 def eliminar_archivo(request, archivo_id):
     from datetime import datetime  # Correct import
     hora_actual = datetime.now()
@@ -695,7 +707,7 @@ def eliminar_archivo(request, archivo_id):
     return redirect('archivos')
 
 
-
+@csrf_protect
 @accepted_user_required
 @login_required
 def descargar_archivo(request, archivo_id):
@@ -725,6 +737,8 @@ def descargar_archivo(request, archivo_id):
         # Manejar el caso en el que el archivo no existe en la base de datos
         return HttpResponse("El archivo no existe.")
 
+
+@csrf_protect
 @accepted_user_required
 @login_required
 def archivos_manage(request, archivo_id):
@@ -751,6 +765,7 @@ def archivos_manage(request, archivo_id):
         'grupos_compartidos': grupos_compartidos,
     })
 
+@csrf_protect
 @accepted_user_required
 @login_required
 def compartir_archivo(request, archivo_id):
@@ -842,7 +857,7 @@ def compartir_archivo(request, archivo_id):
         # Si la solicitud no es POST, renderizar nuevamente el formulario o redireccionar según tu lógica
         pass
 
-
+@csrf_protect
 @accepted_user_required
 @login_required
 def eliminar_compartido(request):
@@ -887,7 +902,7 @@ def compartido(request):
     })
 
 
-
+@csrf_protect
 @accepted_user_required
 @login_required
 def descargar_archivo_compartido(request, archivo_id):
@@ -917,6 +932,7 @@ def descargar_archivo_compartido(request, archivo_id):
     
     return response
 
+@csrf_protect
 @accepted_user_required
 @login_required
 def eliminar_archivo_compartido(request, archivo_id):
@@ -934,7 +950,7 @@ def eliminar_archivo_compartido(request, archivo_id):
     # Después de eliminar, redirigir a la página de archivos compartidos
     return redirect('compartido')
 
-
+@csrf_protect
 @accepted_user_required
 @login_required
 def compartido_archivo_info(request, archivo_id):
@@ -987,7 +1003,7 @@ def grupo_info(request, name):
     })
 
 
-
+@csrf_protect
 @accepted_user_required
 @login_required
 def descargar_archivo_grupo(request, group_name, archivo_id):

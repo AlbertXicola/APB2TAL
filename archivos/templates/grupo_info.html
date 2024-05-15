@@ -55,7 +55,7 @@
     .card-body{
         padding-bottom: 0px !important;
     }
-    }
+    
 </style>
 
 <h1 class="text-center display-4 py-4 mt-5">{{ group_name }}</h1>
@@ -98,7 +98,11 @@
                                     <div class="card-body">
                                         <h5 class="card-title font-weight-bold">{{ compartido.archivo.nombre_archivo }}</h5>
                                         <p class="card-text">Compartido por: <strong>{{ compartido.usuario_propietario.username }}</strong></p>
+                                        
+                                        
                                         <a href="{% url 'descargar_archivo_grupo' group_name=group_name archivo_id=compartido.archivo.id %}" class="btn btn-info btn-download" download>Descargar</a>
+                                        <br>
+                                        <br>
                                     </div>
                                 </div>
                                 <br>
