@@ -58,6 +58,8 @@ urlpatterns = [
     path('contacta/usuario/', views.contact_admin, name='contact_admin'),
     
     path('perfil/', views.perfil, name='perfil'),
+    path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
+
     path('registros/', views.registros, name='registros'),
 
 

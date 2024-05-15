@@ -33,7 +33,7 @@
 
 <body>
 
-<div class="container" >
+<div class="container">
     <div class="row">
         <div class="col-md-13 offset-md-0 mt-5">
             <h2 class="text-center display-4 py-4">Archivos de {{ user.username }} </h2>
@@ -45,29 +45,33 @@
                 <input type="text" id="busquedaNombre" onkeyup="buscarNombre()" class="form-control" placeholder="Buscar por nombre...">
             </div>
             <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alertaPersonalizada" style="display: none;">
-                <strong>Amenaza Detectada:</strong> Este archivo ha sido detectado como amenaza y no puede ser descargado.
-
+                <strong>Amenaza Detectada:</strong> Este archivo ha sido detectado como amenaza y no puede ser descargado ni compartido.
             </div>
 
-            <table id="tablaArchivos" class="table table-striped " style="border-radius: 2px; overflow: hidden;">
+            <table id="tablaArchivos" class="table table-striped" style="border-radius: 2px; overflow: hidden;">
                 <thead>
                     <tr>
                         <th onclick="sortTable(0)">
-                            Nombre del Archivo 
+                            Nombre del Archivo
                             <i class="fas fa-arrow-down" onclick="sortTable(0, 'asc')"></i>
                             <i class="fas fa-arrow-up" onclick="sortTable(0, 'desc')"></i>
                         </th>
                         <th onclick="sortTable(1)">
-                            Positivos 
+                            Positivos
                             <i class="fas fa-arrow-down" onclick="sortTable(1, 'asc')"></i>
                             <i class="fas fa-arrow-up" onclick="sortTable(1, 'desc')"></i>
                         </th>
                         <th onclick="sortTable(2)">
-                            Fecha de Análisis 
+                            Fecha de Análisis
                             <i class="fas fa-arrow-down" onclick="sortTable(2, 'asc')"></i>
                             <i class="fas fa-arrow-up" onclick="sortTable(2, 'desc')"></i>
                         </th>
-                        <th></th> <!-- Nueva columna para los botones -->
+                        <th onclick="sortTable(3)">
+                            Tamaño del Archivo
+                            <i class="fas fa-arrow-down" onclick="sortTable(3, 'asc')"></i>
+                            <i class="fas fa-arrow-up" onclick="sortTable(3, 'desc')"></i>
+                        </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,19 +90,18 @@
                             {{ registro.positivos }}
                         </td>
                         <td>{{ registro.current_time }}</td>
-                    
+                        <td>{{ registro.tamaño }}</td>
                         <td class="text-right">
                             <div class="btn-group" role="group" aria-label="Botones de archivo">
                                 {% if registro.positivos <= 1 %}
                                 <a href="{% url 'descargar_archivo' registro.id %}" class="btn btn-primary" style="border-radius: 5px;">
-                                    <i class="fas fa-download"></i> 
+                                    <i class="fas fa-download"></i>
                                 </a>
                                 {% else %}
                                 <button type="button" class="btn btn-warning" style="border-radius: 5px;" onclick="mostrarMensaje()">
-                                    <i class="fas fa-exclamation-circle"></i> 
+                                    <i class="fas fa-exclamation-circle"></i>
                                 </button>
-                                {% endif %}   
-                    
+                                {% endif %}
                                 <form action="{% url 'eliminar_archivo' registro.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger" style="border-radius: 5px; margin-left: 5px;">
@@ -111,16 +114,15 @@
                     {% endfor %}
                 </tbody>
             </table>
-
-
-
         </div>
     </div>
 </div>
 
 <script>
     $(document).ready( function () {
-        $('#tablaArchivos').DataTable();
+        $('#tablaArchivos').DataTable({
+            "scrollX": true // Permitir el desplazamiento horizontal para ajustar las columnas
+        });
     });
 
     function sortTable(n, order) {
@@ -136,21 +138,35 @@
                 x = rows[i].getElementsByTagName("TD")[n];
                 y = rows[i + 1].getElementsByTagName("TD")[n];
                 if (dir == "asc") {
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                        shouldSwitch= true;
-                        break;
+                    if (n === 3) { // Ordenar por tamaño del archivo
+                        if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch= true;
+                            break;
+                        }
                     }
                 } else if (dir == "desc") {
-                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                        shouldSwitch = true;
-                        break;
+                    if (n === 3) { // Ordenar por tamaño del archivo
+                        if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
                     }
                 }
             }
             if (shouldSwitch) {
                 rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                 switching = true;
-                switchcount ++; 
+                switchcount ++;
             } else {
                 if (switchcount == 0 && dir == "asc") {
                     dir = "desc";

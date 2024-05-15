@@ -4,6 +4,7 @@
 
     .profile-container {
       max-width: 600px;
+      max-height: 730px;
       margin: 50px auto;
       background-color: #ff000011;
       border: 2px solid #ff000011;
@@ -23,10 +24,10 @@
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
     .profile-details {
-      margin-top: 30px;
+      margin-top: 20px;
     }
     .profile-details h2 {
-      margin-bottom: 20px;
+      margin-bottom: 17px;
       color: #ffffff;
     }
     .profile-details p {
@@ -53,33 +54,200 @@
       background-color: #6c757d;
       border-radius: 0px;
   }
+  p.buenas{
+    margin-bottom: 0px !important;
+  }
+  form{
+    margin-top: 30px;
+  }
 
   </style>
 </head>
 <body>
-
-<div class="profile-container">
+  <div class="profile-container">
     <div class="profile-picture">
-      <img src="https://images.ecestaticos.com/XGTW2XyfqZU7Mr9q7x7bG7gbyP4=/51x0:837x589/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F603%2F54f%2F176%2F60354f176c50ab6559e36b23c224f03e.jpg" alt="Profile Picture">
+        <img src="https://images.ecestaticos.com/XGTW2XyfqZU7Mr9q7x7bG7gbyP4=/51x0:837x589/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F603%2F54f%2F176%2F60354f176c50ab6559e36b23c224f03e.jpg" alt="Profile Picture">
     </div>
     
-    <div class="profile-details">
-      <h2>{{ user.username }}</h2>
-      <p><strong>Correo electrónico:</strong> {{ user.email }} </p>
-      <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-      <p><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</p>
-      <p><strong>Edad:</strong> ?? años</p>
-      <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
-      <p><strong>Intereses:</strong>Te pute mare Em pica la polla, </p>
+    <div id="profile-details" class="profile-details">
+        <h2>{{ user.username }}</h2>
+        <p><strong>Correo electrónico:</strong> {{ user.email }} </p>
+        <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    {% if not user.is_accepted %}
+    <div class="alert alert-warning" role="alert">
+      <h4 class="mb-0">Esperando a que un administrador acepte tu perfil.</h4>
+    </div>
+    {% else %}
+        <p><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</p>
+        <p><strong>Edad:</strong>
+          {% if user.edad %}
+            {{ user.edad }} años
+          {% endif %}
+        </p>
+        <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <button class="btn btn-info btn-lg" onclick="toggleEditMenu()">
+          <i class="fas fa-user-edit pl-1"></i> Editar
+        </button>
+
+
     </div>
 
-</div>
-{% if not user.is_accepted %}
-<div class="waiting-message">
-    <h4 class="mb-0">Esperando a que un administrador acepte tu perfil.</h4>
-</div>
-{% endif %}
-<!-- Font Awesome -->
-</body>
+      <div id="edit-container" class="profile-details" style="display: none;">
+        <form method="post" action="{% url 'editar_perfil' %}">
+          {% csrf_token %}
+          <style>
+              .profile-details input {
+                  margin: 0;
+                  background-color: transparent;
+                  color: white;
+                  border: none;
+                  border-bottom: 1px solid white;
+                  outline: none;
+                  padding: 5px;
+                  width: 100%;
+                  margin-bottom: 9px;
 
+              }
+
+          </style>
+
+          <p class="buenas" for="id_username"><strong>Nuevo nombre de usuario:</strong></p>
+          <input type="text" id="id_username" name="username" value="{{ user.username }}">
+          <br>
+          <br>
+          <p class="buenas" for="id_first_name"><strong>Nuevo nombre:</strong></p>
+          <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }}">
+          <br>
+          <br>
+          <p class="buenas" for="id_last_name"><strong>Nuevo apellido:</strong></p>
+          <input type="text" id="id_last_name" name="last_name" value="{{ user.last_name }}">
+          <br>
+          <br>
+          <p class="buenas" for="id_email" ><strong>Nuevo correo electrónico:</strong></p>
+          <input type="email" id="id_email" name="email" value="{{ user.email }}">
+          <br>
+          <br>
+          <div style="display: flex; align-items: center;">
+            <div style="margin-right: 20px;">
+              <p class="buenas"><strong>Color perfil:</strong></p>
+              <select class="form-control m-0 pl-1" name="color" id="color" style="width: 150px;">
+                <option value="#7c1e1e3a">Rojo</option>
+                <option value="#2b9b2762">Verde</option>
+                <option value="#2567ad34">Azul</option>
+                <option value="#a8b13162">Amarillo</option>
+                <option value="#8831b162">Morado</option>
+              </select>
+            </div>
+          
+            <div>
+              <p class="buenas"><strong>Imagen de perfil:</strong></p>
+              <select class="form-control m-0 pl-1" name="profile_picture" id="profile_picture" style="width: 150px;">
+                >
+                <option value="https://s3.ppllstatics.com/lasprovincias/www/multimedia/2024/04/26/pablomotos-kQcF-U2102210806602GM-1200x840@Las%20Provincias.jpg">Pablo Motos</option>
+                <option value="https://ak.uecdn.es/p/108/thumbnail/entry_id/0_1ehobvuv/width/600/">Eugenio</option>
+                <option value="https://media.revistagq.com/photos/5f0580bce3676ab95600fa2c/4:3/w_2831,h_2123,c_limit/NAC_4355%201.jpg">Romano</option>
+                <option value="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-Dp8w_scSoShlMRbBu6XHo2G0tqOOw-sFAdUhY1aGzQ&s">Nieztche</option>
+                <option value="https://wl-genial.cf.tsp.li/resize/728x/jpg/b92/0a2/cf403958a0b98e961c6fa33d9f.jpg">Sportacus</option>
+                <!-- Agrega más opciones según sea necesario -->
+              </select>
+            </div>
+          </div>
+          <style>
+            /* Estilos adicionales si los necesitas */
+            /* Ajustar según sea necesario */
+            #color {
+              width: 200px; /* Ancho personalizado */
+              margin: 20px; /* Espaciado */
+            }
+            
+          </style>
+
+
+
+          <!-- Nuevo campo para la edad -->
+          {% if not user.edad_editada %}
+          <p class="buenas" for="id_edad"><strong>Agregar edad: (La edad no se podrá cambiar)</strong></p>
+
+          <input type="number" id="id_edad" name="edad" value="{{ user.edad }}">
+            {% if edad_editada %}
+            <div class="alert alert-info" role="alert">
+                La edad ya ha sido editada y no puede ser modificada nuevamente.
+            </div>
+            {% endif %}
+          {% endif %}
+
+      
+          <br>
+          <br>
+          
+          <button class="btn btn-success btn-lg" onclick="toggleEditMenu()">
+              <i class="fas fa-save"></i> Guardar
+          </button>
+          
+        </form>
+    
+      </div>
+    
+    </div>
+  
+  {% endif %}
+  
+  <script>
+    function toggleEditMenu() {
+        var profileDetails = document.getElementById("profile-details");
+        var editContainer = document.getElementById("edit-container");
+  
+        profileDetails.style.display = "none";
+        editContainer.style.display = "block";
+    }
+   
+    // Elimina esta función editarEdad() ya que la edición de la edad se manejará desde el formulario de edición.
+  </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      // Cargar preferencia de color guardada
+      var savedColor = localStorage.getItem("userColor");
+      if (savedColor) {
+          document.querySelector(".profile-container").style.backgroundColor = savedColor;
+      }
+
+      // Guardar preferencia de color cuando el usuario lo seleccione
+      document.getElementById("color").addEventListener("change", function() {
+          var selectedColor = this.value;
+          document.querySelector(".profile-container").style.backgroundColor = selectedColor;
+          localStorage.setItem("userColor", selectedColor);
+      });
+  });
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Guardar preferencia de imagen de perfil cuando el usuario lo seleccione
+    document.getElementById("profile_picture").addEventListener("change", function() {
+      var selectedPictureUrl = this.value;
+      document.querySelector(".profile-picture img").src = selectedPictureUrl;
+  
+      // Guardar la selección del usuario en el almacenamiento local
+      localStorage.setItem("profilePicture", selectedPictureUrl);
+    });
+  
+    // Cargar la imagen de perfil seleccionada previamente por el usuario
+    var savedPictureUrl = localStorage.getItem("profilePicture");
+    if (savedPictureUrl) {
+      document.querySelector(".profile-picture img").src = savedPictureUrl;
+    }
+  });
+  </script>
 {% endblock %}

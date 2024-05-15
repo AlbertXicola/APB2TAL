@@ -22,6 +22,7 @@ class Archivo(models.Model):
   nombre_archivo = models.CharField(max_length=255)
   positivos = models.IntegerField()
   current_time = models.DateTimeField(auto_now_add=True)
+  tamaño = models.CharField(max_length=255, default=False)
 
 
   def __str__(self):

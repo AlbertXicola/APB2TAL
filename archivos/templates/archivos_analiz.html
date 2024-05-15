@@ -173,7 +173,7 @@
         if (files.length > 0 && todosDentroDelLimite) {
             document.getElementById("formulario").style.display = "none";
             document.getElementById("cargandoMensaje").style.display = "block"; // Mostrar mensaje de carga
-            const tiempoTotal = files.length * 20; // Calcula el tiempo total basado en el número de archivos
+            const tiempoTotal = files.length * 16; // Calcula el tiempo total basado en el número de archivos
             actualizarContador(tiempoTotal); // Inicia la cuenta regresiva
         }
     }
@@ -189,6 +189,8 @@
             if (tiempoRestante <= 0) {
                 clearInterval(intervalo);
                 mostrarResultado();
+            } else if (tiempoRestante === 1) { // Cuando quedan 10 segundos, mostrar "Esperando a la API..."
+                document.getElementById('cargandoMensaje').innerHTML = "Esperando a la API...";
             }
         }, 1000); // Actualizar el contador cada segundo
     }
@@ -203,7 +205,7 @@
             if (files[i].size > 120000000) { // Tamaño máximo permitido: 120MB
                 hasOversizedFile = true;
                 break;
-            }20
+            }16
         }
 
         if (hasOversizedFile) {

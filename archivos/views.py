@@ -19,6 +19,8 @@ from .forms import TaskForm
 from .models import Archivo
 from .models import  *
 import requests
+from django.core.files.uploadedfile import UploadedFile
+
 import hashlib
 import shutil
 import time
@@ -31,6 +33,8 @@ import datetime
 
 def home(request):
     return render(request, 'home.html')
+
+
 
 def signup(request):
 
@@ -100,19 +104,52 @@ def accepted_user_required(view_func):
     )(view_func)
     return decorated_view_func
 
-
-
-
-
 @login_required
 def perfil(request):
+    if request.method == 'POST':
+        user = request.user
+        new_first_name = request.POST.get('first_name')
+        new_last_name = request.POST.get('last_name')
+        
+        # Actualiza el nombre del usuario
+        user.first_name = new_first_name
+        user.last_name = new_last_name
+        user.save()
+
+        messages.success(request, '¡Nombre actualizado correctamente!')
+        return redirect('perfil')
 
     return render(request, 'perfil.html')
 
+@accepted_user_required
+@login_required
+def editar_perfil(request):
+    if request.method == "POST":
+        user = request.user  # Obtiene el usuario actual
 
+        # Verifica si la edad ya ha sido editada y si el usuario está intentando modificarla nuevamente
+        if user.edad_editada and request.POST.get('edad') is not None:
+            # Muestra un mensaje de error si la edad ya ha sido editada y el usuario intenta modificarla nuevamente
+            return render(request, 'perfil.html', {'edad_editada': True})
 
+        # Actualiza los campos del usuario con los valores enviados en el formulario
+        user.username = request.POST.get('username')
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
 
+        # Obtiene la nueva edad del formulario
+        nueva_edad = request.POST.get('edad')
+        if nueva_edad is not None:
+            user.edad = nueva_edad
+            user.edad_editada = True
 
+        user.save()  # Guarda los cambios en el usuario
+
+        return redirect('perfil')  # Redirige de nuevo al perfil del usuario después de editar el perfil
+    else:
+        # Si la solicitud no es de tipo POST, simplemente renderiza el formulario de edición de perfil
+        return render(request, 'perfil.html')
 
 @login_required
 def signout(request):
@@ -357,7 +394,6 @@ def admi_grupo(request, id):
 
     return render(request, 'admi_grupo.html', {'grupo': grupo, 'usuarios': usuarios})
 
-@accepted_user_required
 @login_required
 def contacta(request):
         
@@ -516,12 +552,23 @@ def archivos_analiz(request):
                 sha256 = informe.get('meta', {}).get('file_info', {}).get('sha256')
                 #identificador = informe.get('data', {}).get('id')
 
+                import math
 
                 from datetime import datetime  # Correct import
                 hora_actual = datetime.now()
                 current_time = hora_actual.strftime("%H:%M:%S")
                 print("Guardando datos en nuestra base de datos ....")
+                
+                if isinstance(archivo_subido, UploadedFile):  # Verificar si es un objeto UploadedFile
+                    tamaño_archivo_bytes = archivo_subido.size
+                else:
+                    tamaño_archivo_bytes = len(contenido)
 
+                # Calcular el tamaño del archivo en KB o MB
+                if tamaño_archivo_bytes >= 1024 * 1024:  # Si es mayor o igual a 1 MB
+                    tamaño_archivo = f"{tamaño_archivo_bytes / (1024 * 1024):.2f} MB"  # Convertir a MB con dos decimales
+                else:  # Si es menor que 1 MB
+                    tamaño_archivo = f"{tamaño_archivo_bytes / 1024:.2f} KB"  # Convertir a KB con dos decimales
 
                 # Intentar insertar el documento en la base de datos
                 try:
@@ -530,7 +577,8 @@ def archivos_analiz(request):
                         id_APB2TAL=hash_archivo,
                         nombre_archivo=nombre_archivo,
                         positivos=malicious,
-                        current_time=current_time
+                        current_time=current_time,
+                        tamaño=tamaño_archivo
                     )
 
                     usuario_actual = request.user
