@@ -1,0 +1,103 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+<style>
+    .text-center.display-4.py-4.mt-5 {
+        color: white;
+    }
+    .form-group{
+        color: white;
+    }
+    .sidebar ul li.contacta1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+    .dark-mode .sidebar ul li.contacta1 {
+        color: #176ec5;
+        background-color: #b2dafa;
+        border-radius: 0px;
+    }
+</style>
+<div class="container">
+    <div class="row overflow-auto">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center display-4 py-4 mt-5">Contacta con administración</h2>
+            <form id="messageForm" method="post" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <a href="/contacta/" class="btn btn-secondary mb-3">Volver</a>
+
+                <div class="form-group">
+                    <label for="title">Titulo:</label>
+                    <input type="text" class="form-control" id="title" name="title">
+                    <span id="titleError" style="display: none; color: red;">Por favor, ingrese un título.</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipomensaje">Tipo de Mensaje:</label>
+                    {% if request.user.is_staff %}
+                        <input type="text" class="form-control" id="tipomensaje" name="tipomensaje" value="Consulta" readonly>
+                    {% else %}
+                        <select class="form-control" id="tipomensaje" name="tipomensaje">
+                            <option value="Consulta">Consulta</option>
+                            <option value="Queja">Queja</option>
+                            <option value="Sugerencia">Sugerencia</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Descripción del mensaje:</label>
+                    <textarea class="form-control" id="description" name="description"></textarea>
+                    <span id="descriptionError" style="display: none; color: red;">Por favor, ingrese una descripción.</span>
+                </div>
+                
+                {% if request.user.is_staff %}
+                    <div class="form-group">
+                        <label for="receptor_username">Seleccionar Receptor:</label>
+                        <select class="form-control" id="receptor_username" name="receptor_username">
+                            {% for usuario in usuarios %}
+                                {% if not usuario.is_staff %}
+                                    <option value="{{ usuario.username }}">{{ usuario.username }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+                
+                <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+            </form>
+            {% if error %}
+                <p class="text-danger">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var title = document.getElementById("title").value.trim();
+        var description = document.getElementById("description").value.trim();
+        var titleError = document.getElementById("titleError");
+        var descriptionError = document.getElementById("descriptionError");
+        
+        if (title === "") {
+            titleError.style.display = "inline";
+            return false;
+        } else {
+            titleError.style.display = "none";
+        }
+        
+        if (description === "") {
+            descriptionError.style.display = "inline";
+            return false;
+        } else {
+            descriptionError.style.display = "none";
+        }
+        
+        return true;
+    }
+</script>
+
+{% endblock %}

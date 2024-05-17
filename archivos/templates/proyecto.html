@@ -2,6 +2,297 @@
 
 {% block content %}
 
-<h1>Proyecto:</h1>
 
+
+
+<h1>Project stages</h1>
+
+<style>
+    /* Agrega las reglas de estilo para el título */
+    h1 {
+        color: rgb(255, 255, 255); /* Color blanco */
+        position: absolute;
+        top: 200px;
+        left: 485px ;
+        background: #ffffff28;
+        border-radius: 6px;
+        padding: 10px; /* Relleno de 10 píxeles */
+
+        }
+    .imagenes{
+        width: 48px;
+        height: 38px;
+
+    }
+    .imagenes1{
+        width: 45px;
+        height: 45px;
+
+    
+
+    }
+    .imagenes2{
+        width: 35px;
+        height: 40px;
+
+    }
+    .imagenes3{
+        width: 50px;
+        height: 45px;
+
+    }
+</style>
+<div class="cuadrado1"></div>
+
+
+
+
+
+<div class="timeline">
+    <div class="timeline-item timeline-item-1">
+        <div class="timeline-content">
+            <img class="imagenes" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/2560px-PHP-logo.svg.png" alt="">
+
+            <h2>React + PHP</h2>
+            <p>Primera etapa desde Sept-Nov</p>
+ 
+        </div>
+    </div>
+    <div class="cuadrado3"></div>
+
+    <div class="timeline-item timeline-item-2">
+        <div class="timeline-content">
+            <h2>Django + React</h2>
+            <p>Segunda etapa desde Noviem-Dicie</p>
+            <img class="imagenes1" src="https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png" alt="">
+
+
+        </div>
+    </div>
+    <div class="cuadrado4"></div>
+
+    <div class="timeline-item timeline-item-3">
+        <div class="timeline-content">
+            <img class="imagenes2" src="https://static-00.iconduck.com/assets.00/django-icon-1606x2048-lwmw1z73.png" alt="">
+
+            <h2>Django #1</h2>
+            <p>Tercera etapa desde Enero-Abril</p>
+
+        </div>
+    </div>
+    <div class="cuadrado5"></div>
+
+    <div class="timeline-item timeline-item-4">
+        <div class="timeline-content">
+
+            <h2>Django  #2</h2>
+            <p>Ultima etapa desde Abril-Dia de hoy</p>
+            <img class="imagenes3" src="https://static.vecteezy.com/system/resources/previews/027/127/463/original/javascript-logo-javascript-icon-transparent-free-png.png" alt="">
+
+        </div>
+    </div>
+    <div class="cuadrado6"></div>
+
+
+</div>
+<div class="cuadrado2"></div>
+
+
+
+<style>
+
+
+.timeline {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 50px 0;
+    position: relative;
+}
+    .cuadrado1 {
+        width: 6px;           /* Ancho de 6 píxeles */
+        height: 30px;         /* Alto de 30 píxeles */
+        background: #f9f9f9; /* Fondo blanco */
+        border: 1px solid #f9f9f9; /* Borde color blanco de 1 píxel de grosor */
+        float: right;  
+        display: flex;
+        justify-content: flex-end;
+        position: relative;
+        top: 2px;
+        left: 60px; /* Alinea los elementos hijos hacia la derecha */       /* Flotar a la derecha */
+    }
+    .cuadrado2 {
+        width: 6px;           /* Ancho de 6 píxeles */
+        height: 30px;         /* Alto de 30 píxeles */
+        background: #f9f9f9; /* Fondo blanco */
+        border: 1px solid #f9f9f9; /* Borde color blanco de 1 píxel de grosor */
+        opacity: 0; /* Inicialmente invisible */
+
+        position: relative;
+        top: 2px;
+        right: 60px; /* Alinea los elementos hijos hacia la derecha */       /* Flotar a la derecha */
+        animation: padentro 1s ease-in-out forwards; /* Añadido forwards */
+        animation-delay: 5.3s; /* Sin retraso */
+    }
+    .cuadrado3 {
+        width: 6px;           /* Ancho de 6 píxeles */
+        height: 30px;         /* Alto de 30 píxeles */
+        background: #f9f9f9; /* Fondo blanco */
+        border: 1px solid #f9f9f9; /* Borde color blanco de 1 píxel de grosor */
+        opacity: 0; /* Inicialmente invisible */
+
+        position: relative;
+        bottom: 11px;
+        right: 118px; /* Alinea los elementos hijos hacia la derecha */       /* Flotar a la derecha */
+        animation: fadeInDown 1s ease-in-out forwards; /* Añadido forwards */
+        animation-delay: 0.4s; /* Sin retraso */
+        
+    }
+    .cuadrado4 {
+        width: 6px;           /* Ancho de 6 píxeles */
+        height: 30px;         /* Alto de 30 píxeles */
+        background: #f9f9f9; /* Fondo blanco */
+        border: 1px solid #f9f9f9; /* Borde color blanco de 1 píxel de grosor */
+        opacity: 0; /* Inicialmente invisible */
+
+        position: relative;
+        top: 15px;
+        right: 119px; /* Alinea los elementos hijos hacia la derecha */       /* Flotar a la derecha */
+        animation: fadeInUp 1s ease-in-out forwards; /* Añadido forwards */
+        animation-delay: 1.4s; /* Retraso de 0.5s */
+        
+    }
+    .cuadrado5 {
+        width: 6px;           /* Ancho de 6 píxeles */
+        height: 30px;         /* Alto de 30 píxeles */
+        background: #f9f9f9; /* Fondo blanco */
+        border: 1px solid #f9f9f9; /* Borde color blanco de 1 píxel de grosor */
+        opacity: 0; /* Inicialmente invisible */
+
+        position: relative;
+        bottom: 11px;
+        right: 118px; /* Alinea los elementos hijos hacia la derecha */       /* Flotar a la derecha */
+        animation: fadeInDown 1s ease-in-out forwards; /* Añadido forwards */
+        animation-delay: 2.6s; /* Retraso de 0.5s */
+        
+    }
+    .cuadrado6 {
+        width: 6px;           /* Ancho de 6 píxeles */
+        height: 30px;         /* Alto de 30 píxeles */
+        background: #f9f9f9; /* Fondo blanco */
+        border: 1px solid #f9f9f9; /* Borde color blanco de 1 píxel de grosor */
+        opacity: 0; /* Inicialmente invisible */
+
+        position: relative;
+        top: 15px;
+        right: 119px; /* Alinea los elementos hijos hacia la derecha */       /* Flotar a la derecha */
+        animation: fadeInUp 1s ease-in-out forwards; /* Añadido forwards */
+        animation-delay: 4.2s; /* Retraso de 1.5s */
+        
+    }
+    
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #ddd;
+    z-index: -1;
+    animation: slideIn 6s ease-out; /* Animación de la línea */
+}
+
+.timeline-item {
+    position: relative;
+    width: 20%;
+    text-align: center;
+}
+
+.timeline-item-1 .timeline-content {
+    margin-top: -149px; /* Más arriba */
+    animation: fadeInDown 1s ease-in-out forwards; /* Añadido forwards */
+    animation-delay: 0.4s; /* Sin retraso */
+}
+
+.timeline-item-2 .timeline-content {
+    margin-top: 189px; /* Más abajo */
+    animation: fadeInUp 1s ease-in-out forwards; /* Añadido forwards */
+    animation-delay: 1.4s; /* Retraso de 0.5s */
+}
+
+.timeline-item-3 .timeline-content {
+    margin-top: -149px; /* Más arriba */
+    animation: fadeInDown 1s ease-in-out forwards; /* Añadido forwards */
+    animation-delay: 2.6s; /* Retraso de 0.5s */
+}
+
+.timeline-item-4 .timeline-content {
+    margin-top: 189px; /* Más abajo */
+    animation: fadeInUp 1s ease-in-out forwards; /* Añadido forwards */
+    animation-delay: 4.2s; /* Retraso de 1.5s */
+}
+
+.timeline-content {
+    padding: 10px 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    opacity: 0; /* Inicialmente invisible */
+    animation-fill-mode: forwards; /* Mantiene el estado final de la animación */
+}
+
+.timeline-content h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.timeline-content p {
+    margin-bottom: 0;
+    color: #666;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes padentro {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        width: -0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+</style>
 {% endblock %}

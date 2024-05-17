@@ -1,0 +1,196 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+<style>
+    .text-center.display-4.py-4.mt-5 {
+        color: white;
+    }
+
+    h3 {
+        color: white;
+    }
+    .sidebar ul li.contacta1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+    .dark-mode .sidebar ul li.contacta1 {
+        color: #176ec5;
+        background-color: #b2dafa;
+        border-radius: 0px;
+    }
+</style>
+<div class="container">
+    <div class="row overflow-auto">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center display-4 py-4 mt-5">Buzón</h2>
+            {% if user.is_staff %}
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar por usuario" id="searchInput">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Buscar</button>
+                </div>
+            </div>
+            {% endif %}
+            <a href="/contacta/" class="btn btn-secondary mb-3">Volver</a>
+            
+            {% if user.is_staff %}
+            <div class="btn-group mb-3 pl-5">
+                <button type="button" class="btn btn-primary filtro-btn" data-target="consultas">Consultas</button>
+                <button type="button" class="btn btn-primary filtro-btn" data-target="quejas">Quejas</button>
+                <button type="button" class="btn btn-primary filtro-btn" data-target="sugerencias">Sugerencias</button>
+                <button type="button" class="btn btn-primary filtro-btn" data-target="otros">Otros</button>
+            </div>
+            {% endif %}
+            <br>
+            <!-- Seccionesb de mensajes -->
+            <div id="consultas" class="seccion-mensaje">
+                <h3>{% if user.is_staff %}Consultas{% else %}Mensajes{% endif %}</h3>
+                <ul class="list-group">
+                    {% if mensajes_recibidos %}
+                        {% for mensaje in mensajes_recibidos %}
+                            {% if mensaje.tipomensaje != 'Otros' and mensaje.tipomensaje != 'Queja' and mensaje.tipomensaje != 'Sugerencia' %}
+                                <li class="list-group-item bg-dark text-white">
+                                    <h5><strong></strong> {{ mensaje.title }}  - {{ mensaje.enviador.username }}</h5>
+                                    <strong>Descripción:</strong> {{ mensaje.description }} <br>
+                                    <h6 style="margin-bottom: 0px; text-align: right;"><strong>{{ mensaje.hora_envio }}</strong></h6>
+                                    <div class="float-right">
+                                        <form action="{% url 'eliminar_mensaje' mensaje.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-secondary btn-sm mt-2">
+                                                <i class="fas fa-trash-alt text-white"></i> 
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item bg-dark text-white">No hay mensajes</li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            
+            
+            <div id="quejas" class="seccion-mensaje" style="display: none;">
+                <h3>Quejas</h3>
+                <ul class="list-group">
+                    {% for mensaje in mensajes_recibidos %}
+                    {% if mensaje.tipomensaje != 'Consulta' and mensaje.tipomensaje != 'Otros' and mensaje.tipomensaje != 'Sugerencia' %}
+                        <li class="list-group-item bg-dark text-white">
+                            <h5><strong></strong> {{ mensaje.title }}  - {{ mensaje.enviador.username }}<br></h5>
+                            
+                            <strong>Descripción:</strong> {{ mensaje.description }} <br>
+                            <h6 style="margin-bottom: 0px; text-align: right;"><strong>{{ mensaje.hora_envio }}</strong></h6>
+                            <div class="float-right">
+                                <form action="{% url 'eliminar_mensaje' mensaje.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-secondary btn-sm mt-2">
+                                        <i class="fas fa-trash-alt text-white"></i> 
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% empty %}
+                    <li class="list-group-item bg-dark text-white">No hay mensajes</li>
+                {% endfor %}
+                
+                </ul>
+            </div>
+            
+            <div id="sugerencias" class="seccion-mensaje" style="display: none;">
+                <h3>Sugerencias</h3>
+                <ul class="list-group">
+                    {% for mensaje in mensajes_recibidos %}
+                    {% if mensaje.tipomensaje != 'Consulta' and mensaje.tipomensaje != 'Queja' and mensaje.tipomensaje != 'Otros' %}
+                        <li class="list-group-item bg-dark text-white">
+                            <h5><strong></strong> {{ mensaje.title }}  - {{ mensaje.enviador.username }}<br></h5>
+                            
+                            <strong>Descripción:</strong> {{ mensaje.description }} <br>
+                            <h6 style="margin-bottom: 0px; text-align: right;"><strong>{{ mensaje.hora_envio }}</strong></h6>
+                            <div class="float-right">
+                                <form action="{% url 'eliminar_mensaje' mensaje.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-secondary btn-sm mt-2">
+                                        <i class="fas fa-trash-alt text-white"></i> 
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% empty %}
+                    <li class="list-group-item bg-dark text-white">No hay mensajes</li>
+                {% endfor %}
+                
+                </ul>
+            </div>
+            
+            <div id="otros" class="seccion-mensaje" style="display: none;">
+                <h3>Otros</h3>
+                <ul class="list-group">
+                    {% for mensaje in mensajes_recibidos %}
+                    {% if mensaje.tipomensaje != 'Consulta' and mensaje.tipomensaje != 'Queja' and mensaje.tipomensaje != 'Sugerencia' %}
+                        <li class="list-group-item bg-dark text-white">
+                            <h5><strong></strong> {{ mensaje.title }}  - {{ mensaje.enviador.username }}<br></h5>
+                            
+                            <strong>Descripción:</strong> {{ mensaje.description }} <br>
+                            <h6 style="margin-bottom: 0px; text-align: right;"><strong>{{ mensaje.hora_envio }}</strong></h6>
+                            <div class="float-right">
+                                <form action="{% url 'eliminar_mensaje' mensaje.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-secondary btn-sm mt-2">
+                                        <i class="fas fa-trash-alt text-white"></i> 
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% empty %}
+                    <li class="list-group-item bg-dark text-white">No hay mensajes</li>
+                {% endfor %}
+                
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('searchButton').addEventListener('click', function() {
+            var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            var messages = document.querySelectorAll('.seccion-mensaje .list-group-item');
+            
+            messages.forEach(function(message) {
+                var sender = message.querySelector('strong:nth-of-type(1)').textContent.toLowerCase();
+                if (sender.includes(searchTerm)) {
+                    message.style.display = 'block';
+                } else {
+                    message.style.display = 'none';
+                }
+            });
+        });
+        
+        // Event listener para los botones de filtrar
+        document.querySelectorAll('.filtro-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var target = this.getAttribute('data-target');
+                var secciones = document.querySelectorAll('.seccion-mensaje');
+                
+                // Ocultar todas las secciones
+                secciones.forEach(function(seccion) {
+                    seccion.style.display = 'none';
+                });
+                
+                // Mostrar la sección seleccionada
+                document.getElementById(target).style.display = 'block';
+            });
+        });
+
+    });
+</script>
+{% endblock %}

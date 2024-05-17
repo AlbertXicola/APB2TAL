@@ -12,3 +12,6 @@ class TaskForm(forms.ModelForm):
             'important' : forms.CheckboxInput(attrs={'class': 'form-check-input ',}),
             'completed': forms.CheckboxInput(attrs={'class': 'form-check-input '}),
         }
+    
+    
+        

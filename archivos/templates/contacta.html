@@ -1,0 +1,78 @@
+{% extends 'baseusuario.html' %}
+
+{% block content %}
+<style>
+
+    .sidebar ul li.contacta1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+    .dark-mode .sidebar ul li.contacta1 {
+        color: #176ec5;
+        background-color: #b2dafa;
+        border-radius: 0px;
+    }
+    .text-center.display-4.py-4.mt-5 {
+        color: white;
+    }
+    .custom-btn {
+        font-size: 18px;
+        height: 200px; /* Establece la altura */
+        width: 400; /* Establece el ancho */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 30px;
+    }
+   /* Define el color rosa para los botones */
+   .btn-pink {
+        background-color: #5FC451;
+        border-color: #5FC451;
+        color: white;
+    }
+
+    /* Cambia el color al pasar el mouse */
+    .btn-pink:hover {
+        background-color: #FF5733;
+        border-color: #FF5733;
+        color: white;
+    }
+    .custom-btn i {
+        margin-right: 10px; /* Espacio entre el icono y el texto */
+    }
+
+    .col-md-4{
+        padding-bottom: 30px;
+    }
+
+</style>
+
+
+</style>
+<div class="container text-center">
+    <h2 class="text-center display-4 py-4 mt-5 mb-5 ml-5">Contacta</h2>
+
+    <div class="row ">
+        <div class="col-md-4">
+            <a href="/contacta/administracion/" class="btn btn-pink custom-btn"><i class="fas fa-envelope"></i> Mensaje Administración</a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/contacta/buzon" class="btn btn-pink custom-btn">
+                <i class="fas fa-inbox"></i> Buzón
+                {% if mensajes_no_leidos > 0 %}
+                    <span style="margin-left: 5px;" class="badge badge-pill badge-danger">{{ mensajes_no_leidos }}</span>
+                {% endif %}
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="tel:222222222" class="btn btn-pink custom-btn"><i class="fas fa-phone"></i> Llamar</a>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

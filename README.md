@@ -1,5 +1,5 @@
 -------------
-*APB2TAL 75%*
+*APB2TAL 98%*
 -------------
 
 PAU, MAX, ALBERT
@@ -16,6 +16,8 @@ Requeriments
 -  pip install django-admin-tools
 -  pip install django-avatar
 -  pip install cryptography
+-  pip install python-dotenv
+
 
 
 Activar
@@ -40,4 +42,7 @@ python manage.py runserver
 -  python manage.py runserver	        -->>>   Iniciar Servidor Web
 
 
+Tener un mongo corriendo (puerto 27018 para servidor mongo)
+===========================================================
 
+- Facil con docker Pull Mongo y conectar a dicho puerto

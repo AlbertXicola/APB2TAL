@@ -1,206 +1,46 @@
 {% extends 'baseusuario.html' %}
 {% block content %}
 {% load static %}
-<style>
 
-    .profile-container {
-      max-width: 600px;
-      max-height: 730px;
-      margin: 50px auto;
-      background-color: #ff000011;
-      border: 2px solid #ff000011;
-      border-radius: 10px;
-      padding: 30px;
-      margin-top: 90px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-    .profile-picture {
-      text-align: center;
-    }
-    .profile-picture img {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      border: 6px solid #fff;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    }
-    .profile-details {
-      margin-top: 20px;
-    }
-    .profile-details h2 {
-      margin-bottom: 17px;
-      color: #ffffff;
-    }
-    .profile-details p {
-      color: #ffffff;
-      margin-bottom: 15px;
-    }
-    .social-links {
-      margin-top: 30px;
-      text-align: center;
-    }
-    .social-links a {
-      text-decoration: none;
-      color: #ffffff;
-      margin-right: 15px;
-      transition: color 0.3s;
-      font-size: 24px;
-    }
-    .social-links a:hover {
-      color: #007bff;
-    }
-    
-    .sidebar ul li.perfil {
-      color: #dee2e6;
-      background-color: #6c757d;
-      border-radius: 0px;
-  }
-  p.buenas{
-    margin-bottom: 0px !important;
-  }
-  form{
-    margin-top: 30px;
-  }
-
-  </style>
-</head>
 <body>
-  <div class="profile-container">
+  <div class="profile-container2" id="profile-container">
     <div class="profile-picture">
-      <img src="https://cdn-icons-png.flaticon.com/512/147/147142.png" alt="Profile Picture">
+      <img src="" alt="Profile Picture" id="profile-image">
     </div>
+    
     
     <div id="profile-details" class="profile-details">
-        <h2>{{ user.username }}</h2>
-        <p><strong>Correo electrónico:</strong> {{ user.email }} </p>
-        <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-        <p><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</p>
-        <p><strong>Edad:</strong>
-          {% if user.edad %}
-            {{ user.edad }} años
-          {% endif %}
-        </p>
-        <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <button class="btn btn-info btn-lg" onclick="toggleEditMenu()">
-          <i class="fas fa-user-edit pl-1"></i> Editar
-        </button>
-
-
-    </div>
-  
-    <div id="edit-container" class="profile-details" style="display: none;">
-      <form method="post" action="{% url 'editar_perfil' %}">
-        {% csrf_token %}
-        <style>
-            .profile-details input {
-                margin: 0;
-                background-color: transparent;
-                color: white;
-                border: none;
-                border-bottom: 1px solid white;
-                outline: none;
-                padding: 5px;
-                width: 100%;
-                margin-bottom: 9px;
-
-            }
-
-        </style>
-        <div style="margin-left: 100px;" id="color-buttons">
-          <button class="color-btn" style="background-color: rgba(251, 88, 88, 0.945);" data-color="#7c1e1e3a"></button>
-          <button class="color-btn" style="background-color: rgb(40, 204, 40);" data-color="#2b9b2762"></button>
-          <button class="color-btn" style="background-color: rgba(43, 43, 180, 0.729);" data-color="#2567ad34"></button>
-          <button class="color-btn" style="background-color: rgb(231, 231, 66);" data-color="#a8b13162"></button>
-          <button class="color-btn" style="background-color: rgb(167, 51, 167);" data-color="#8831b162"></button>
-          
-        </div>
-        <br>
-        <br>
-        <p class="buenas" for="id_username"><strong>Nuevo nombre de usuario:</strong></p>
-        <input type="text" id="id_username" name="username" value="{{ user.username }}">
-        
-        <br>
-        <br>
-        <p class="buenas" for="id_first_name"><strong>Nuevo nombre:</strong></p>
-        <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }}">
-        <br>
-        <br>
-        <p class="buenas" for="id_last_name"><strong>Nuevo apellido:</strong></p>
-        <input type="text" id="id_last_name" name="last_name" value="{{ user.last_name }}">
-        <br>
-        <br>
-        <p class="buenas" for="id_email" ><strong>Nuevo correo electrónico:</strong></p>
-        <input type="email" id="id_email" name="email" value="{{ user.email }}">
-    
-     
-        <!-- Nuevo campo para la edad -->
-        {% if not user.edad_editada %}
-        <p class="buenas" for="id_edad"><strong>Agregar edad: (La edad no se podrá cambiar)</strong></p>
-
-        <input type="number" id="id_edad" name="edad" value="{{ user.edad }}">
-          {% if edad_editada %}
-          <div class="alert alert-info" role="alert">
-              La edad ya ha sido editada y no puede ser modificada nuevamente.
-          </div>
-          {% endif %}
+      <h2>{{ user.username }}</h2>
+      <p><strong>Correo electrónico:</strong> {{ user.email }} </p>
+      <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+      {% if not user.is_accepted %}
+      <div class="alert alert-warning" role="alert">
+        Esperando a que un administrador acepte tu perfil.
+      </div>
+      {% else %}
+      <p><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</p>
+      <p><strong>Edad:</strong>
+        {% if user.edad %}
+          {{ user.edad }} años
         {% endif %}
-        <style>
-          .color-btn {
-              display: inline-block;
-              width: 25px;
-              height: 25px;
-              margin-left: 30px;
-              cursor: pointer;
-              border: none;
-              border-radius: 5px;
-              outline: none;
-          }
-         </style>
+      </p>
 
-        <br>
-        <br>
 
-        
-        <button class="btn btn-success btn-lg" onclick="toggleEditMenu()">
-            <i class="fas fa-save"></i> Guardar
-        </button>
-      </form>
-  
+      <p><strong>Se unió el:</strong> {{ user.date_joined }}</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+      <a href="/perfil/editar" class="btn btn-secondary mb-3"><i class="fas fa-edit"></i> Editar</a>      
+      {% endif %}
+      
     </div>
-  
-  </div>
-  
-  {% if not user.is_accepted %}
-  <div class="waiting-message">
-    <h4 class="mb-0">Esperando a que un administrador acepte tu perfil.</h4>
-  </div>
-  {% endif %}
-  
-  <script>
-    function toggleEditMenu() {
-        var profileDetails = document.getElementById("profile-details");
-        var editContainer = document.getElementById("edit-container");
-  
-        profileDetails.style.display = "none";
-        editContainer.style.display = "block";
-    }
-   
-    // Elimina esta función editarEdad() ya que la edición de la edad se manejará desde el formulario de edición.
-  </script>
+  </div>  
+</body>
+
 <script>
   const colorButtons = document.querySelectorAll('.color-btn');
+  const profileContainer = document.getElementById('profile-container');
 
   function changeColor(color) {
-      document.querySelector(".profile-container").style.backgroundColor = color;
+      profileContainer.style.backgroundColor = color;
       localStorage.setItem('userColor', color);
   }
 
@@ -217,5 +57,105 @@
           changeColor(savedColor);
       }
   });
+
+  function guardarPerfil() {
+    if (validarNombreUsuario()) {
+        toggleEditMenu();
+        document.querySelector("form").submit();
+    }
+  }
 </script>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const profileImage = document.getElementById('profile-image');
+  
+  // Leer la imagen seleccionada del localStorage cuando se carga la página
+  const savedImage = localStorage.getItem('userImage');
+  if (savedImage) {
+      profileImage.src = savedImage;
+  } else {
+      profileImage.src = "https://cdn-icons-png.flaticon.com/512/147/147142.png"; // URL de imagen por defecto si no hay ninguna guardada
+  }
+});
+</script>
+<style>
+  .profile-container2 {
+    max-width: 600px;
+    max-height: 760px;
+    margin: 50px auto;
+    background-color: #ff000011;
+    border: 2px solid #ff000011;
+    border-radius: 10px;
+    padding: 30px;
+    margin-top: 90px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  .profile-picture {
+    text-align: center;
+  }
+  .profile-picture img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  .profile-details {
+    margin-top: 30px;
+  }
+  .profile-details h2 {
+    margin-bottom: 17px;
+    color: #ffffff;
+  }
+  .profile-details p {
+    color: #ffffff;
+    margin-bottom: 15px;
+  }
+  .social-links {
+    margin-top: 30px;
+    text-align: center;
+  }
+  .social-links a {
+    text-decoration: none;
+    color: #ffffff;
+    margin-right: 15px;
+    transition: color 0.3s;
+    font-size: 24px;
+  }
+  .social-links a:hover {
+    color: #007bff;
+  }
+  
+  .sidebar ul li.perfil {
+    color: #dee2e6;
+    background-color: #6c757d;
+    border-radius: 0px;
+  }
+  p.buenas{
+    margin-bottom: 0px !important;
+  }
+  form{
+    margin-top: 30px;
+  }
+  .waiting-message {
+    margin-top: 20px;
+  }
+
+  .waiting-message h4 {
+      color: #ffffff;
+  }
+
+  /* Ocultar el botón de editar cuando el usuario no está aceptado */
+  .waiting-message + button {
+      display: none;
+  }
+  .dark-mode .sidebar ul li.perfil {
+      background-color: #b2dafa;
+      border-radius: 0px;
+  }
+</style>
 {% endblock %}

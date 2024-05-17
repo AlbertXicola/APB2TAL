@@ -2,19 +2,20 @@
 
 {% block content %}
 
-    <main class="container py-5">
+    <main class="container ">
 
         <section class="hero-section">
             <div class="hero">
-              <h2>Proyecto Asix 2024</h2>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum magni nihil beatae sint incidunt harum animi quis, ab expedita delectus, quod eligendi inventore. In libero sint velit incidunt, facilis commodi! Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, consectetur, eius laborum totam voluptatem deleniti commodi earum dolor explicabo, non quo incidunt a ducimus optio culpa ratione veritatis et dignissimos.
+              <h2 class="hero-title">APB2TAL</h2>
+              <p class="hero-text">
+                ¡Bienvenido a nuestro innovador programa web! Somos una plataforma diseñada para que los usuarios puedan analizar archivos, compartirlos con seguridad y eliminarlos según su conveniencia. Con un enfoque centrado en la seguridad y la atención al cliente, ofrecemos una experiencia integral para la gestión de archivos en línea.
 
+Nuestro sitio web garantiza la máxima seguridad en cada paso del proceso. Los usuarios pueden confiar en que sus archivos están protegidos mediante medidas de seguridad avanzadas, lo que proporciona tranquilidad en cada interacción.
               </p>
               
               <div class="buttons">
-                <a href="/signin" class="join">Join Now</a>
-                <a href="/about" class="learn">Learn More</a>
+                <a href="/perfil" class="join">Entra!</a>
+                <a href="/about" class="learn">Saber Más</a>
               </div>
             </div>
             <div class="img">
@@ -23,5 +24,82 @@
           </section>
 
     </main>
+<style>
+  .hero-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white
+}
 
+.hero {
+  max-width: 600px;
+  padding: 20px;
+  text-align: center;
+  animation: fadeIn 1s ease-out;
+}
+
+.hero-title {
+  font-size: 36px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  animation: slideInTitle 1s ease-out;
+}
+
+.hero-text {
+  color: #666;
+  animation: slideInText 1s ease-out;
+}
+
+
+
+.img {
+  margin-left: 50px;
+  animation: slideInImage 1s ease-out;
+}
+
+@keyframes slideInTitle {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInText {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInImage {
+  0% {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+</style>
 {% endblock %}

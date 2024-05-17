@@ -1,0 +1,329 @@
+{% extends 'baseusuario.html' %}
+{% block content %}
+{% load static %}
+
+<body>
+  <div class="profile-container">
+    <div class="profile-picture">
+      <img src="https://cdn-icons-png.flaticon.com/512/147/147142.png" alt="Profile Picture" id="profile-image">
+    </div>
+    
+    <div class="image-edit-section">
+      <div id="image-options">
+        <img class="profile-option" src="https://cdn.iconscout.com/icon/free/png-512/free-avatar-365-456317.png?f=webp&w=256" alt="Option 1">
+        <img class="profile-option" src="https://cdn.iconscout.com/icon/free/png-512/free-avatar-366-456318.png?f=webp&w=256" alt="Option 2">
+        <img class="profile-option" src="https://cdn.iconscout.com/icon/free/png-512/free-avatar-370-456322.png?f=webp&w=256" alt="Option 3">
+        <img class="profile-option" src="https://cdn.iconscout.com/icon/free/png-512/free-avatar-369-456321.png?f=webp&w=256" alt="Option 4">
+        <img class="profile-option" src="https://cdn.iconscout.com/icon/free/png-512/free-avatar-373-456325.png?f=webp&w=256" alt="Option 5">
+        <img class="profile-option" src="https://cdn.iconscout.com/icon/free/png-512/free-avatar-375-456327.png?f=webp&w=256" alt="Option 6">
+      </div>
+    </div>
+
+    <div style="margin-left: 100px;" id="color-buttons">
+      <button class="color-btn" style="background-color: #da2121af;" data-color="#e9262652"></button>
+      <button class="color-btn" style="background-color: rgb(40, 204, 40);" data-color="#2b9b2762"></button>
+      <button class="color-btn" style="background-color: rgba(43, 43, 180, 0.729);" data-color="#2567ad34"></button>
+      <button class="color-btn" style="background-color: rgb(231, 231, 66);" data-color="#a8b13162"></button>
+      <button class="color-btn" style="background-color: rgb(167, 51, 167);" data-color="#8831b162"></button>
+    </div>
+    <form method="post" class="container" onsubmit="return validarCampos()">
+      {% csrf_token %}
+      <style>
+        .form-label,
+        .form-control {
+          color: white !important;
+        }
+        .form-control {
+          border: none !important;
+          border-bottom: 1px solid rgba(230, 207, 207, 0.822) !important;
+          background-color: transparent !important;
+          border-radius: 0 !important;
+        }
+      </style>
+      <div class="form-group row">
+        <div class="col">
+          <label for="first_name" class="form-label">Nombre:</label>
+          <input type="text" id="first_name" name="first_name" value="{{ request.user.first_name }}" class="form-control">
+
+        </div>
+        <div class="col">
+          <label for="last_name" class="form-label">Apellido:</label>
+          <input type="text" id="last_name" name="last_name" value="{{ request.user.last_name }}" class="form-control">
+
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="username" class="form-label">Nombre de usuario:</label>
+        <input type="text" id="username" name="username" value="{{ request.user.username }}" class="form-control">
+
+      </div>
+      <div class="form-group">
+        <label for="email" class="form-label">Correo electrónico:</label>
+        <input type="email" id="email" name="email" value="{{ request.user.email }}" class="form-control">
+
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label">Cambiar Contraseña:</label>
+        <input type="password" id="password" name="password" class="form-control">
+
+      </div>
+      <div class="form-group">
+        <label for="edad" class="form-label">Edad:</label>
+        <input type="number" id="edad" name="edad" value="{{ request.user.edad }}" class="form-control">
+
+      </div> 
+      <div id="error-message" style="color: #f5b2b2e0;"></div> <!-- Aquí se mostrarán los mensajes de error -->
+      <br>
+
+      
+
+      <button type="submit" class="btn btn-success mb-3 mt-1"><i class="fas fa-save pr-2 "></i> Save</button>          
+      <br>
+
+    </form>
+    
+  </div>  
+</body>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const profileOptions = document.querySelectorAll('.profile-option');
+    const profileImage = document.getElementById('profile-image');
+  
+    profileOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            profileImage.src = this.src;
+        });
+    });
+  });
+
+  const colorButtons = document.querySelectorAll('.color-btn');
+  const profileContainer = document.querySelector('.profile-container');
+
+  function changeColor(color) {
+      profileContainer.style.backgroundColor = color;
+      localStorage.setItem('userColor', color);
+  }
+
+  colorButtons.forEach(button => {
+      button.addEventListener('click', function() {
+          const color = this.dataset.color;
+          changeColor(color);
+      });
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+      const savedColor = localStorage.getItem('userColor');
+      if (savedColor) {
+          changeColor(savedColor);
+      }
+  });
+
+
+  function validarCampos() {
+    const nombre = document.getElementById('first_name').value.trim();
+    const apellido = document.getElementById('last_name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const edad = document.getElementById('edad').value.trim();
+    const errorMessage = document.getElementById('error-message');
+
+    errorMessage.textContent = ''; // Limpiar mensajes de error anteriores
+
+    // Validación para el nombre
+    if (nombre.length < 2 || !/^[a-zA-Z]+$/.test(nombre)) {
+        errorMessage.textContent = 'Por favor, ingrese un nombre válido (mínimo 2 letras y sin caracteres especiales).';
+        return false;
+    }
+
+    // Validación para el apellido
+    if (apellido.length < 2 || !/^[a-zA-Z]+$/.test(apellido)) {
+        errorMessage.textContent = 'Por favor, ingrese un apellido válido (mínimo 2 letras y sin caracteres especiales).';
+        return false;
+    }
+
+    // Validación para el correo electrónico
+    if (!email.includes('@')) {
+        errorMessage.textContent = 'Por favor, ingrese una dirección de correo electrónico válida.';
+        return false;
+    }
+
+    // Validación para el nombre de usuario
+    if (!/^[a-zA-Z0-9]+$/.test(username)) {
+        errorMessage.textContent = 'Por favor, ingrese un nombre de usuario válido (sin espacios ni caracteres especiales).';
+        return false;
+    }
+
+    // Validación para la contraseña
+    if (password !== '' && (password.length < 8 || !/[A-Z]/.test(password) || !/\d/.test(password))) {
+        errorMessage.textContent = 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un número.';
+        return false;
+    }
+
+    // Validación para la edad
+    if (isNaN(edad) || parseInt(edad) <= 0) {
+        errorMessage.textContent = 'Por favor, ingrese una edad válida.';
+        return false;
+    }
+
+    return true;
+  }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const profileOptions = document.querySelectorAll('.profile-option');
+    const profileImage = document.getElementById('profile-image');
+
+    profileOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            profileImage.src = this.src;
+            localStorage.setItem('userImage', this.src); // Guardar la URL de la imagen en localStorage
+        });
+    });
+    
+    // Leer la imagen seleccionada del localStorage cuando se carga la página
+    const savedImage = localStorage.getItem('userImage');
+    if (savedImage) {
+        profileImage.src = savedImage;
+    }
+  });
+</script>
+
+<style>
+  .container{
+    padding-left: 0px;
+  }
+
+  .image-edit-section {
+    margin-top: 20px;
+  }
+
+  #image-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .profile-option {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    cursor: pointer;
+  }
+</style>
+
+<style>
+  .profile-details input {
+    margin: 0;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-bottom: 1px solid white;
+    outline: none;
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 9px;
+  }
+
+  .color-btn {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin-left: 32px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+  }
+
+  .profile-container {
+    max-width: 600px;
+    max-height: 760px;
+    margin: 50px auto;
+    background-color: #ff000011;
+    border: 2px solid #ff000011;
+    border-radius: 10px;
+    padding: 30px;
+    margin-top: 90px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-picture {
+    text-align: center;
+  }
+
+  .profile-picture img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .profile-details {
+    margin-top: 20px;
+  }
+
+  .profile-details h2 {
+    margin-bottom: 17px;
+    color: #ffffff;
+  }
+
+  .profile-details p {
+    color: #ffffff;
+    margin-bottom: 15px;
+  }
+
+  .social-links {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .social-links a {
+    text-decoration: none;
+    color: #ffffff;
+    margin-right: 15px;
+    transition: color 0.3s;
+    font-size: 24px;
+  }
+
+  .social-links a:hover {
+    color: #007bff;
+  }
+  
+  .sidebar ul li.perfil {
+    color: #dee2e6;
+    background-color: #6c757d;
+    border-radius: 0px;
+  }
+
+  p.buenas{
+    margin-bottom: 0px !important;
+  }
+
+  form{
+    margin-top: 30px;
+  }
+
+  .waiting-message {
+    margin-top: 20px;
+  }
+
+  .waiting-message h4 {
+      color: #ffffff;
+  }
+
+  /* Ocultar el botón de editar cuando el usuario no está aceptado */
+  .waiting-message + button {
+      display: none;
+  }
+  .dark-mode .sidebar ul li.perfil {
+      background-color: #b2dafa;
+      border-radius: 0px;
+  }
+</style>
+
+{% endblock %}

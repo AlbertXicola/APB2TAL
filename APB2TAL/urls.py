@@ -51,13 +51,17 @@ urlpatterns = [
     path('administrar/grupos/', views.administrar_grupos, name='administrar_grupos'),
     path('administrar/grupos/create', views.crear_grupo, name='crear_grupo'),
     path('administrar/grupos/<int:id>/', views.admi_grupo, name='admi_grupo'),
+    
 
     path('contacta/', views.contacta, name='contacta'),
     path('contacta/administracion/', views.contact_admin, name='contact_admin'),
-    path('contacta/usuario/', views.contact_user, name='contact_user'),
-    path('contacta/usuario/', views.contact_admin, name='contact_admin'),
+    path('contacta/buzon/', views.buzon, name='buzon'),
+    path('eliminar-mensaje/<int:mensaje_id>/', views.eliminar_mensaje, name='eliminar_mensaje'),
+
     
     path('perfil/', views.perfil, name='perfil'),
+    path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
+
     path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
 
     path('registros/', views.registros, name='registros'),
@@ -81,3 +85,4 @@ urlpatterns = [
     path('tasks/<int:task_id>/delete', views.delete_task, name='delete_task'),
 
 ]
+

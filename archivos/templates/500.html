@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+    /* Estilos CSS para personalizar la apariencia de la página de error */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 80%;
+        max-width: 600px;
+        margin: 50px auto;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 36px;
+        color: white; /* Texto blanco */
+    }
+
+    p {
+        font-size: 18px;
+        color: white; /* Texto blanco */
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Error 500 - Página no encontrada</h1>
+        <p>Ho vaya! Parece que te has perdido campeón, tranquilo, aqui acojemos a la gente con dificultades.</p>
+        <p>Por favor, verifica la URL o regresa a <a href="/">la página de inicio</a>.</p>
+    </div>
+</body>
+
+
+{% endblock %}
+
+

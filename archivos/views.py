@@ -104,63 +104,45 @@ def accepted_user_required(view_func):
     )(view_func)
     return decorated_view_func
 
+
+
+
 @login_required
 def perfil(request):
-    if request.method == 'POST':
-        user = request.user
-        new_first_name = request.POST.get('first_name')
-        new_last_name = request.POST.get('last_name')
-        
-        # Actualiza el nombre del usuario
-        user.first_name = new_first_name
-        user.last_name = new_last_name
-        user.save()
-
-        messages.success(request, '¡Nombre actualizado correctamente!')
-        return redirect('perfil')
-
     return render(request, 'perfil.html')
-from django.http import JsonResponse
+
+
+@accepted_user_required
 @login_required
 def editar_perfil(request):
-    error_message = None
-    disable_save = False  # Bandera para deshabilitar el botón de guardar
-
-    if request.method == "POST":
-        user = request.user  
-
-        if user.edad_editada and request.POST.get('edad') is not None:
-            return render(request, 'perfil.html', {'edad_editada': True})
-
+    if request.method == 'POST':
+        # Obtener los datos del formulario
         username = request.POST.get('username')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
+        password = request.POST.get('password')
+        edad = request.POST.get('edad')  # Obtener la edad del formulario
 
-        if username != request.user.username and User.objects.filter(username=username).exists():
-            error_message = 'El nombre de usuario ya está en uso.'
-            disable_save = True  # Establece la bandera para deshabilitar el botón de guardar
-        else:
-            # Actualiza los campos del usuario con los valores enviados en el formulario
-            user.username = username
-            user.first_name = first_name
-            user.last_name = last_name
-            user.email = email
+        # Obtener el usuario actual
+        user = request.user
 
-            # Obtiene la nueva edad del formulario
-            nueva_edad = request.POST.get('edad')
-            if nueva_edad is not None:
-                user.edad = nueva_edad
-                user.edad_editada = True
+        # Actualizar los datos del usuario
+        user.username = username
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        if password:
+            user.set_password(password)
+        user.edad
+   
+        user.save()
 
-            user.save()  
+        # Redirigir a la página de perfil
+        return redirect('perfil')
 
-            return redirect('perfil')  
-
-    return render(request, 'perfil.html', {'user': request.user, 'error_message': error_message, 'disable_save': disable_save})
-
-
-
+    # Si es una solicitud GET, renderizar el formulario de edición
+    return render(request, 'perfil_edit.html')
 @login_required
 def signout(request):
     logout(request)
@@ -405,45 +387,100 @@ def admi_grupo(request, id):
 
     return render(request, 'admi_grupo.html', {'grupo': grupo, 'usuarios': usuarios})
 
+
+
+
+from django.db.models import Count
+
 @login_required
 def contacta(request):
-        
-        return render(request, 'contacto.html')
-
-
-@accepted_user_required
-@login_required
-def contact_admin(request):
-        
-        return render(request, 'contact_admin.html')
-
-@accepted_user_required
-@login_required
-def contact_user(request):
-        
-        return render(request, 'contact_user.html')
-
-
-
-def generar_clave():
-    # Verificar si el archivo clave.key ya existe
-    if not os.path.exists("clave.key"):
-        clave = Fernet.generate_key()
-        with open("clave.key", "wb") as archivo_clave:
-            archivo_clave.write(clave)
-        
-def cargar_clave():
-    # Verificar si el archivo clave.key existe antes de intentar cargar la clave
-    if os.path.exists("clave.key"):
-        return open("clave.key", "rb").read()
-    else:
-        # Si el archivo clave.key no existe, generar la clave y luego cargarla
-        generar_clave()
-        return open("clave.key", "rb").read()
-
+    # Obtener el recuento de mensajes no leídos
+    mensajes_no_leidos = Mensajes.objects.filter(receptor=request.user, leido=False).count()
+    
+    return render(request, 'contacta.html', {'mensajes_no_leidos': mensajes_no_leidos})
 
 @csrf_protect
+@login_required
+def contact_admin(request):
+    if request.method == 'POST':
+        enviador = request.user
+        title = request.POST.get('title')
+        tipomensaje = request.POST.get('tipomensaje')
+        description = request.POST.get('description')
+        
+        if request.user.is_staff:
+            receptor_username = request.POST.get('receptor_username')
+            receptor = User.objects.filter(username=receptor_username).first()
+            if receptor is None:
+                usuarios = User.objects.all()
+                return render(request, 'contacta_adminstracion.html', {'usuarios': usuarios, 'error': 'Usuario no válido'})
+        else:
+            receptor = User.objects.filter(is_staff=True).first()
+        
+        mensaje = Mensajes.objects.create(enviador=enviador, receptor=receptor, title=title, tipomensaje=tipomensaje, description=description)
+        mensaje.save()
+        return redirect('contacta')
+    else:
+        usuarios = User.objects.all()
+        return render(request, 'contacta_adminstracion.html', {'usuarios': usuarios})
+
+@csrf_protect
+@login_required
+def buzon(request):
+    # Obtener todos los mensajes recibidos por el usuario actual y ordenarlos por hora de envío descendente
+    mensajes_recibidos = Mensajes.objects.filter(receptor=request.user).order_by('-hora_envio')
+
+    # Marcar todos los mensajes como leídos
+    for mensaje in mensajes_recibidos:
+        mensaje.leido = True
+        mensaje.save()
+
+    return render(request, 'buzon.html', {'mensajes_recibidos': mensajes_recibidos})
+from django.shortcuts import redirect, get_object_or_404
+
+def eliminar_mensaje(request, mensaje_id):
+    mensaje = get_object_or_404(Mensajes, id=mensaje_id)
+    if request.method == 'POST':
+        mensaje.delete()
+        # Redirigir a la página de buzón después de eliminar el mensaje
+        return redirect('buzon')
+    # Manejar casos donde la solicitud no sea POST
+    return redirect('buzon')
+
+
 @accepted_user_required
+@login_required
+def contact_buzon(request):
+        
+        return render(request, 'buzon.html')
+
+
+
+import os
+from dotenv import load_dotenv
+
+# Cargar las variables de entorno desde el archivo .en
+
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
+
+def generar_clave():
+    if not os.getenv("SECRET_KEY"):
+        clave = Fernet.generate_key()
+        # Guardar la clave en la variable de entorno
+        os.environ["SECRET_KEY"] = clave.decode()
+
+def cargar_clave():
+    # Cargar la clave desde la variable de entorno SECRET_KEY
+    clave_env = os.getenv("SECRET_KEY")
+    if clave_env:
+        return clave_env.encode()
+    else:
+        # Si la clave no está definida en las variables de entorno, generarla y guardarla
+        generar_clave()
+        return os.getenv("SECRET_KEY").encode()
+
+
 @login_required
 def archivos_analiz(request):
     API_KEY = "2f047d42c57a702fd720dd049e5d7f8d24baf8811faf42d34226e703be6270a9"
@@ -1039,3 +1076,4 @@ def descargar_archivo_grupo(request, group_name, archivo_id):
     response['Content-Disposition'] = f'attachment; filename="{archivo.nombre_archivo}"'
 
     return response
+

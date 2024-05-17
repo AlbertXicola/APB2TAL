@@ -49,3 +49,20 @@ class Compartido(models.Model):
     
     def __str__(self):
      return None
+   
+   
+   
+   
+
+
+class Mensajes(models.Model):
+    enviador = models.ForeignKey(User, related_name='enviador_mensajes', on_delete=models.CASCADE, null=True)
+    receptor = models.ForeignKey(User, related_name='receptor_mensajes', on_delete=models.CASCADE, null=True)
+    title = models.CharField(max_length=200)
+    tipomensaje = models.CharField(max_length=200, null=True)
+    description = models.TextField(max_length=1000)
+    leido = models.BooleanField(default=False)
+    hora_envio = models.DateTimeField(auto_now_add=True, null=True)  # Agrega este campo
+    
+    def __str__(self):
+        return self.title

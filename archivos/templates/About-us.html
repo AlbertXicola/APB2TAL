@@ -1,7 +1,196 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<title>Tres cuadrados alineados</title>
+<style>
+    .square {
+        background-color: rgba(255, 255, 255, 0.103);
+        border: 2px solid rgba(189, 189, 189, 0);
+        border-radius: 6px;
+        width: 380px;
+        height: 500px;
+        padding: 20px;
+        margin-left:  0px !important;
 
-<h1>Sobre nosotros:</h1>
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
 
+    .rect {
+        background-color: rgba(255, 255, 255, 0.103);
+        border: 2px solid rgba(189, 189, 189, 0);
+        border-radius: 6px;
+        width: 300px;
+        height: 90px;
+        padding: 20px;
+        margin: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .rect:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .cast {
+        background-color: rgba(255, 255, 255, 0);
+        border: 2px solid rgba(189, 189, 189, 0);
+        border-radius: 6px;
+        width: 300px;
+        height: 1px;
+        padding: 20px;
+        margin: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+
+    }
+
+    .cast:hover {
+        transform: translateY(-5px);
+    }
+
+    .square img {
+        max-width: 70%;
+        height: auto;
+    }
+    .rect img {
+        max-width: 25% !important;
+        height: auto;
+        margin-bottom: 20px;
+        padding-top: 20px;
+    }
+    .rect a {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #ececec !important;
+        padding-left: 5px;
+  
+    }
+    .rect a:hover {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #a0a0a0 !important;
+    }
+    .square p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #ffffff;
+        margin-top: 30px;
+        margin-bottom: 0px !important;
+    }
+
+    .square li {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #ffffff;
+       
+    }
+
+    .square a {
+        text-decoration: none;
+        color: #ffffff;
+        transition: color 0.3s ease;
+        
+    }
+
+    .square a:hover {
+        color: #007bff;
+    }
+
+    .rect a {
+        display: flex;
+        align-items: center;
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+    .rect img {
+        margin-right: 10px;
+    }
+    .cast{
+        margin-left: 20px;
+        margin-left: 20px;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+    .cast a {
+        display: flex;
+        align-items: center;
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+    .cast img {
+        margin-right: 10px;
+    }
+</style>
+</head>
+<body>
+
+
+<div class="square">
+    <div class="rect">
+        <a href="https://www.linkedin.com/in/pau-ca%C3%B1adillas-32aa84262/">
+            <img src="https://i.ibb.co/GFLvpBC/pau.png" alt="Icono de GitHub"><strong>Pau Cañadillas Isern</strong>
+        </a>
+    </div>
+    <div class="rect">
+        <a href="https://www.linkedin.com/in/max-thomas-garin-a6b802249/">
+            <img src="https://i.ibb.co/rxVqwx0/max.png" alt="Icono de GitHub"><strong>Max Thomas Garin</strong>
+        </a>
+    </div>
+    <div class="rect">
+        <a href="https://www.linkedin.com/in/albert-xicola-s%C3%A1nchez-0878b7262/">
+            <img src="https://i.ibb.co/pfVhP7L/xicola.png" alt="Icono de GitHub"><strong>Albert Xicola Sánchez</strong>
+        </a>
+    </div>
+</div>
+
+
+<div class="square">
+    <img src="https://www.stucom.com/wp-content/themes/wpt/images/logos/logo.svg" alt="Logo de la escuela">
+    <h3 style="color: #ffffff;margin-top: 10px;">Proyecto ASIX 2024</h3>
+
+    <p>Este servidor web es el proyecto del cusro 2023-24 de Administracion de sistemas y redes con perfil de cibersegurridad en el centro de STUCOM córsega tras un trabajo de 7 meses. E aqui a la izquierda a los integrantes, y a ala derecha el repositorio del proyecto en github. Tras un considerable esfuerzo, hasta el momento terminamos lo que es la fase Beta de dicho proyecto.</p>
+    <div class="cast">
+
+    </div>
+</div>
+
+
+
+
+<div class="square">
+    <div class="rect">
+        <a href="https://github.com/AlbertXicola/APB2TAL">
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="Icono de GitHub"><strong>Github Repository</strong>
+        </a>
+    </div>
+    <div class="rect">
+        <a href="">
+            <img src="https://www.pngall.com/wp-content/uploads/2/Question-Mark-PNG-Image.png" alt="Icono de GitHub"><strong></strong>
+        </a>
+    </div>
+    <div class="rect">
+        <a href="">
+            <img src="https://www.pngall.com/wp-content/uploads/2/Question-Mark-PNG-Image.png" alt="Icono de GitHub"><strong></strong>
+        </a>
+    </div>
+</div>
+</body>
 {% endblock %}
