@@ -1,0 +1,9 @@
+django
+djongo
+pymongo
+django-mongodb-engine
+requests
+django-admin-tools
+django-avatar
+cryptography
+python-dotenv
