@@ -134,7 +134,7 @@ def editar_perfil(request):
         user.email = email
         if password:
             user.set_password(password)
-        user.edad
+        user.edad = edad
    
         user.save()
 

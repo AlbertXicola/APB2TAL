@@ -311,12 +311,45 @@
             
             {% if user.is_authenticated %}
                 <button id="theme-toggle-btn" class="dark-mode-toggle"><i class="fas fa-sun"></i></button>
-                <li class="logo">
                 
+                    <style>
+                        .box {
+                        display: flex;
+                        align-items: center;
+                        justify-content: left;
+                        margin: 10px 30px 30px 40px;
+                        }
 
+                        .box div {
+                        width: 50px;
+                        height: 50px;
+                        }
+                        .textologo{
+                            color: #ffffff;
+                            margin-bottom: 10px;
+                            margin-top: 10px;
+                            margin-left: 10px;
+                        }
+                        .dark-mode .textologo{
+                            color: #343a40;
 
-                <h1><strong><span> APB2TAL</span></strong></h1>
-                </li>
+                        }
+                        .imagenlogo{
+                            height: 50px; 
+                            width: 50px;
+                        }
+                        .dark-mode .imagenlogo{
+                            filter: invert(80%);
+
+                        }
+
+                    </style>
+
+                    <div class="box">
+                        <div><img class="imagenlogo" src="https://i.ibb.co/X4cpR8G/logo.png" "></div>
+                        <div><h1 class="textologo"><strong><span> APB2TAL</span></strong></h1></div>
+                    </div>
+                
 
                 <li class="perfil">
                     <a href="/perfil"> <i class="fas fa-user fa-lg"></i> <span>Perfil</span></a>
