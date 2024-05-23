@@ -1,4 +1,4 @@
-# APB2TAL 99% Readme
+# APB2TAL 99% Read-me
 
 ## Integrantes
 - Albert Xicola
@@ -128,8 +128,8 @@ Si deseas ver las tablas y los datos de la base de datos, sigue estos pasos:
 
 ## Advertencia
 
-Asegúrate de haber configurado correctamente el archivo `settings.py`:
+Asegúrate de haber configurado correctamente el archivo `settings.py`: 
 (Solo si es necesario ya esta en False)
 
-- `DEBUG = False`: Modo Producción.
-- `DEBUG = True`: Activa el modo de errores.
+- `DEBUG = False`:    Modo Producción.
+- `DEBUG = True`:     Activa el modo de errores.
