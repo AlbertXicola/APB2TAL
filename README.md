@@ -8,7 +8,7 @@ PAU, MAX, ALBERT
 Requeriments
 ============
 
-
+-  apt install python3-pip
 -  pip install django
 -  pip install djongo
 -  pip install pymongo django-mongodb-engine
