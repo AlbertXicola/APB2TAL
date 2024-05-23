@@ -83,19 +83,15 @@ class CustomUser(AbstractUser):
         default=False,
         help_text=_("Designates whether this user is accepted."),
     )
-    edad = models.IntegerField(default=None, null=True, blank=True)
+    edad = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return self.username
     
     
+from django.db import models
 from django.contrib.auth.models import Group
 
-class CustomGroup(Group):
-    # Agrega campos adicionales aquí
-    namenombre = models.CharField(_("name"), max_length=150, unique=True, default=None)
-    description = models.CharField(max_length=255)
-
-    class Meta:
-        verbose_name = 'Grupo Personalizado'
-        verbose_name_plural = 'Grupos Personalizados'
+class GroupDescription(models.Model):
+    group = models.OneToOneField(Group, related_name='description', on_delete=models.CASCADE)
+    description = models.TextField()

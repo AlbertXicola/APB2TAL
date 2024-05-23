@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import Group
 from django.http import HttpResponse, Http404
 from cryptography.fernet import Fernet
 from django.db import IntegrityError
@@ -276,7 +277,7 @@ def admi_usuario(request, id):
 @user_passes_test(is_staff)
 @login_required
 def administrar_grupos(request):
-    grupos = CustomGroup.objects.all()  # Obtén todos los grupos
+    grupos = Group.objects.all()  # Obtén todos los grupos
 
     context = {
         'grupos': grupos  # Agrega los grupos al contexto
@@ -314,6 +315,10 @@ def registros_admin(request):
     return render(request, 'logs_admin.html', {'logs_mongo': mensaje})
 
 
+from django.contrib.auth.models import Group
+from .models import GroupDescription
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 @accepted_user_required
 @user_passes_test(is_staff)
@@ -322,24 +327,24 @@ def registros_admin(request):
 def crear_grupo(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
-        description = request.POST.get('description')
+        descripcion_texto = request.POST.get('description')
         
         # Verificar si el grupo ya existe
-        if CustomGroup.objects.filter(namenombre=nombre).exists():
+        if Group.objects.filter(name=nombre).exists():
             messages.error(request, 'El grupo ya existe.')
             return redirect('crear_grupo')  # Redireccionar al mismo formulario
             
-        # Crear el grupo
-        nuevo_grupo = CustomGroup(namenombre=nombre, description=description)  # Asegúrate de que 'descripcion' sea un campo válido en tu modelo Group
+        # Crear una instancia de Group
+        nuevo_grupo = Group.objects.create(name=nombre)
         
-        nuevo_grupo.save()
-
-
+        # Crear una instancia de GroupDescription y asignarla al grupo
+        descripcion = GroupDescription.objects.create(group=nuevo_grupo, description=descripcion_texto)
+        
         messages.success(request, 'Grupo creado con éxito.')
         
         return redirect('/administrar/grupos')  # Redireccionar a donde sea apropiado
         
-    return render(request, 'crear_grupo.html')  # Asegúrate de reemplazar 'nombre_de_tu_template.html' con el nombre de tu template para el formulario
+    return render(request, 'crear_grupo.html')  # Asegúrate de reemplazar 'crear_grupo.html' con el nombre de tu template para el formulario
 
 
 @csrf_protect
@@ -347,7 +352,7 @@ def crear_grupo(request):
 @user_passes_test(is_staff)
 @login_required
 def admi_grupo(request, id):
-    grupo = get_object_or_404(CustomGroup, id=id)
+    grupo = get_object_or_404(Group, id=id)
     usuarios = CustomUser.objects.all()
 
     if request.method == 'POST':
@@ -357,10 +362,15 @@ def admi_grupo(request, id):
 
         elif 'guardar' in request.POST:
             nombre = request.POST.get('nombre')
-            description = request.POST.get('description')
-            grupo.description = description
-            grupo.namenombre = nombre
+            descripcion_texto = request.POST.get('descripcion')  # Cambia 'description' a 'descripcion'
+            
+            descripcion, created = GroupDescription.objects.get_or_create(group=grupo)
+            descripcion.description = descripcion_texto
+
+            grupo.name = nombre
             grupo.save()
+            descripcion.save()
+
 
 
             # Procesar los usuarios añadidos al grupo
@@ -837,7 +847,7 @@ def compartir_archivo(request, archivo_id):
                 Compartido.objects.filter(archivo=archivo, grupo_destinatario_id=grupo_id).delete()
             texto_analisis = f"El usuario '{request.user.username}'  ha desecho el compartido del archivo '{archivo.nombre_archivo}' a "
             # Agregar nombres de grupos seleccionados
-            grupos_destinatarios = [CustomGroup.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
+            grupos_destinatarios = [Group.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
             texto_analisis += " grupos "
             texto_analisis += ', '.join(grupos_destinatarios)
             
@@ -860,7 +870,7 @@ def compartir_archivo(request, archivo_id):
         
         # Compartir con grupos seleccionados
         for grupo_id in grupos_seleccionados:
-            grupo_destinatario = CustomGroup.objects.get(pk=grupo_id)
+            grupo_destinatario = Group.objects.get(pk=grupo_id)
             Compartido.objects.get_or_create(
                 usuario_propietario=usuario_propietario,
                 grupo_destinatario=grupo_destinatario,
@@ -868,7 +878,7 @@ def compartir_archivo(request, archivo_id):
             )
             texto_analisis = f"El usuario '{request.user.username}' ha compartido el archivo '{archivo.nombre_archivo}' a "
             # Agregar nombres de grupos seleccionados
-            grupos_destinatarios = [CustomGroup.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
+            grupos_destinatarios = [Group.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
             texto_analisis += " a los grupos: "
             texto_analisis += ', '.join(grupos_destinatarios)
 
@@ -1021,7 +1031,10 @@ def grupo_info(request, name):
     usuario_actual = request.user
 
     # Obtener el grupo por su nombre
-    grupo_seleccionado = CustomGroup.objects.get(name=name)
+    grupo_seleccionado = Group.objects.get(name=name)
+
+    # Obtener la descripción del grupo
+    descripcion_grupo = grupo_seleccionado.description.description
 
     # Verificar si el usuario actual pertenece al grupo seleccionado
     if not usuario_actual.groups.filter(name=name).exists():
@@ -1034,8 +1047,10 @@ def grupo_info(request, name):
         'usuario_actual': usuario_actual,
         'group_name': name,
         'group': grupo_seleccionado,
+        'descripcion_grupo': descripcion_grupo,
         'archivos_compartidos_al_grupo': archivos_compartidos_al_grupo,
     })
+
 
 
 @csrf_protect
@@ -1046,7 +1061,7 @@ def descargar_archivo_grupo(request, group_name, archivo_id):
     archivo = get_object_or_404(Archivo, pk=archivo_id)
     
     # Obtener el grupo
-    grupo = get_object_or_404(CustomGroup, name=group_name)
+    grupo = get_object_or_404(Group, name=group_name)
     
     # Verificar si el usuario actual pertenece al grupo
     if not request.user.groups.filter(name=group_name).exists():

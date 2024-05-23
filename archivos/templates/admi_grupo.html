@@ -21,7 +21,7 @@
 
 <div class="container">
   
-  <h2 class="text-center display-4 py-4 mt-5">Administrar Grupo {{ grupo.namenombre }}</h2>
+  <h2 class="text-center display-4 py-4 mt-5">Administrar Grupo {{ grupo.name }}</h2>
 
 
   <a href="/administrar/grupos/" class="btn btn-secondary mb-1 ml-3">Volver</a>
@@ -33,9 +33,11 @@
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <label for="nombre">Nombre:</label>
-      <input type="text" class="form-control" id="nombre" name="nombre" value="{{ grupo.namenombre }}"><br>
+      <input type="text" class="form-control" id="nombre" name="nombre" value="{{ grupo.name }}"><br>
       <label for="nombre">Descripción:</label>
-      <input type="text" class="form-control" id="description" name="description" value="{{ grupo.description }}"><br>
+
+      <textarea class="form-control" id="descripcion" name="descripcion">{{ grupo.description.description }}</textarea>
+      <br>
 
       <input type="text" id="search" placeholder="Buscar usuario..."><br><br>
       <div id="user-list-container" class="user-list-container">

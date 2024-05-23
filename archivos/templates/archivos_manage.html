@@ -137,7 +137,7 @@
                                             <li class="list-group-item">
                                                 <div class="form-check d-flex align-items-center">
                                                     <input class="form-check-input checkbox" type="checkbox" name="grupos" value="{{ grupo.id }}" {% if grupo.id in grupos_compartidos %}checked{% endif %}>
-                                                    <label class="form-check-label ml-2">{{ grupo.namenombre }}</label>
+                                                    <label class="form-check-label ml-2">{{ grupo.name }}</label>
                                                 </div>
                                             </li>
                                             {% endfor %}
