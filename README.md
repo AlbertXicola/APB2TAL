@@ -83,7 +83,7 @@
     python manage.py runserver
     ```
 
-## Configuración de MongoDB (Docker)
+## Configuración de MongoDB (Docker) NECESARIO
 
 1. Descarga e instala Docker Desktop desde [Docker.com](https://docs.docker.com/desktop/install/windows-install/)
 
@@ -111,3 +111,25 @@ Si deseas supervisar manualmente los logs de MongoDB, sigue estos pasos:
     mongodb://localhost:27018/
     ```
 
+## Información Adicional
+
+### Credenciales Administrador
+
+- Usuario: admin
+- Contraseña: Asdewq123@
+
+### Visualización de la Base de Datos SQLite
+
+Si deseas ver las tablas y los datos de la base de datos, sigue estos pasos:
+
+1. Instala SQLiteStudio desde [sqlitestudio.pl](https://sqlitestudio.pl/)
+
+2. Abre el archivo `db.sqlite3` (ubicado en la raíz del repositorio) en la aplicación descargada.
+
+## Advertencia
+
+Asegúrate de haber configurado correctamente el archivo `settings.py`:
+(Solo si es necesario ya esta en False)
+
+- `DEBUG = False`: Modo Producción.
+- `DEBUG = True`: Activa el modo de errores.

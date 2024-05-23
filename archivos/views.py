@@ -473,10 +473,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def generar_clave():
-    if not os.getenv("SECRET_KEY"):
-        clave = Fernet.generate_key()
-        # Guardar la clave en la variable de entorno
-        os.environ["SECRET_KEY"] = clave.decode()
+    if not os.path.exists('.env'):
+        # Si el archivo .env no existe, crea uno y guarda la clave
+        with open('.env', 'w') as f:
+            clave = Fernet.generate_key()
+            clave_str = clave.decode()
+            f.write(f'SECRET_KEY={clave_str}\n')
+            os.environ["SECRET_KEY"] = clave_str
+    else:
+        # Si el archivo .env ya existe, verifica si la variable de entorno SECRET_KEY está definida
+        if not os.getenv("SECRET_KEY"):
+            clave = Fernet.generate_key()
+            clave_str = clave.decode()
+            # Guarda la clave en el archivo .env y en la variable de entorno
+            with open('.env', 'a') as f:
+                f.write(f'SECRET_KEY={clave_str}\n')
+                os.environ["SECRET_KEY"] = clave_str
 
 def cargar_clave():
     # Cargar la clave desde la variable de entorno SECRET_KEY
