@@ -1,16 +1,34 @@
 {% extends 'baseusuario.html' %}
 
 {% block content %}
+
+<style>
+    .text-center.display-4.py-4 {
+        color: white; /* Color del texto */
+    }
+    .dark-mode .sidebar ul li.Compartidos1 {
+        color: #176ec5;
+        background-color: #b2dafa;
+        border-radius: 0px;
+    }
+
+    .sidebar ul li.Compartidos1 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+
+</style>
 <div class="container">
     <div class="row">
-        <div class="col-md-8 offset-md-2 mt-5">
+        <div class="col-md-12 mt-5">
             <h2 class="text-center display-4 py-4"><strong>{{ archivo.nombre_archivo }}</strong> compartido</h2>
             <a href="/compartido/" class="btn btn-secondary mb-3">Volver</a>
 
             <div class="row">
                 <div class="col-md-6">
-                    <h4 class="card-title">Detalles del archivo</h4>
-                    <div class="card mb-1" style="width: 700px;">
+                    <h4 style="color: white;" class="card-title">Detalles del archivo</h4>
+                    <div class="card mb-1" style="width: 200%;">
                         <div class="card-body">
                     
                             <p class="card-text" style="font-size: 18px;"><strong>Nombre:</strong> {{ archivo.nombre_archivo }}</p>
