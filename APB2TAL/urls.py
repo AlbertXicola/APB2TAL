@@ -68,7 +68,7 @@ urlpatterns = [
 
 
     path('grupos/', views.mis_grupos, name= 'mis_grupos'),
-    path('grupos/<str:name>/', views.grupo_info, name='grupo_info'),
+    path('grupos/<str:namenombre>/', views.grupo_info, name='grupo_info'),
     path('grupos/<str:group_name>/<int:archivo_id>/', views.descargar_archivo_grupo, name='descargar_archivo_grupo'),
 
     path('signup/', views.signup, name='signup'),

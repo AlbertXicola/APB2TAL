@@ -3,7 +3,6 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.models import User, Group
 from django.http import HttpResponse, Http404
 from cryptography.fernet import Fernet
 from django.db import IntegrityError
@@ -35,44 +34,42 @@ def home(request):
     return render(request, 'home.html')
 
 
+from .forms import CustomUserCreationForm  # Asegúrate de importar el formulario personalizado
 
 def signup(request):
-
     if request.method == 'GET':
-        return render(request, 'signup.html',{
-            'form' : UserCreationForm
-        })
+        return render(request, 'signup.html', {'form': CustomUserCreationForm()})  # Utiliza el formulario personalizado
     else:
         if request.POST['password1'] == request.POST['password2']:
             try:
-                user = User.objects.create_user(username=request.POST['username'],
-                password=request.POST['password1'],email=request.POST['email'],first_name=request.POST['first_name'],last_name=request.POST['last_name'])
+                user = CustomUser.objects.create_user(username=request.POST['username'],
+                                                       password=request.POST['password1'],
+                                                       email=request.POST['email'],
+                                                       first_name=request.POST['first_name'],
+                                                       last_name=request.POST['last_name'])
                 print('username:', request.POST['username'])
                 user.save()
                 login(request, user)
                 return redirect('perfil')
             
             except IntegrityError:
-                return render(request, 'signup.html',{
-                'form' : UserCreationForm,
-                'error' : 'Please enter valid data'
-                })
+                return render(request, 'signup.html', {'form': CustomUserCreationForm(), 'error': 'Please enter valid data'})
+
+
 
 def signin(request):
     if request.method == 'GET':
-        return render(request, 'signin.html',{
-            'form' : AuthenticationForm    })
+        return render(request, 'signin.html', {'form': AuthenticationForm()})
     else:
-        user = authenticate(request, username=request.POST['username'], 
-                                     password=request.POST['password'])
-        if user is None:
-            return render(request, 'signin.html',{
-            'form' : AuthenticationForm,
-            'error': 'Username or password is incorrect'})
-            
-        else:
-            login(request, user)
-            return redirect('perfil')
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('perfil')
+        return render(request, 'signin.html', {'form': form, 'error': 'Username or password is incorrect'})
 
 
 def terminos(request):
@@ -92,7 +89,7 @@ def about(request):
 def validar_username(request):
     username = request.GET.get('username', None)
     data = {
-        'is_taken': User.objects.filter(username__iexact=username).exists()
+        'is_taken': CustomUser.objects.filter(username__iexact=username).exists()
     }
     return JsonResponse(data)
 
@@ -229,6 +226,7 @@ def delete_task(request, task_id):
 def is_staff(user):
     return user.is_authenticated and user.is_staff
 
+
 @accepted_user_required
 @user_passes_test(is_staff, login_url='/')
 @login_required
@@ -242,7 +240,7 @@ def administrar(request):
 @login_required
 def administrar_usuarios(request):
 
-    usuarios = User.objects.all()
+    usuarios = CustomUser.objects.all()
 
     context = {
         'usuarios': usuarios
@@ -253,7 +251,7 @@ def administrar_usuarios(request):
 @user_passes_test(is_staff)
 @login_required
 def admi_usuario(request, id):
-    usuario = get_object_or_404(User, id=id)
+    usuario = get_object_or_404(CustomUser, id=id)
     
     if request.method == 'POST':
         if 'eliminar' in request.POST:
@@ -278,7 +276,7 @@ def admi_usuario(request, id):
 @user_passes_test(is_staff)
 @login_required
 def administrar_grupos(request):
-    grupos = Group.objects.all()  # Obtén todos los grupos
+    grupos = CustomGroup.objects.all()  # Obtén todos los grupos
 
     context = {
         'grupos': grupos  # Agrega los grupos al contexto
@@ -327,12 +325,12 @@ def crear_grupo(request):
         description = request.POST.get('description')
         
         # Verificar si el grupo ya existe
-        if Group.objects.filter(name=nombre).exists():
+        if CustomGroup.objects.filter(namenombre=nombre).exists():
             messages.error(request, 'El grupo ya existe.')
             return redirect('crear_grupo')  # Redireccionar al mismo formulario
             
         # Crear el grupo
-        nuevo_grupo = Group(name=nombre, description=description)  # Asegúrate de que 'descripcion' sea un campo válido en tu modelo Group
+        nuevo_grupo = CustomGroup(namenombre=nombre, description=description)  # Asegúrate de que 'descripcion' sea un campo válido en tu modelo Group
         
         nuevo_grupo.save()
 
@@ -349,8 +347,8 @@ def crear_grupo(request):
 @user_passes_test(is_staff)
 @login_required
 def admi_grupo(request, id):
-    grupo = get_object_or_404(Group, id=id)
-    usuarios = User.objects.all()
+    grupo = get_object_or_404(CustomGroup, id=id)
+    usuarios = CustomUser.objects.all()
 
     if request.method == 'POST':
         if 'eliminar' in request.POST:
@@ -361,7 +359,7 @@ def admi_grupo(request, id):
             nombre = request.POST.get('nombre')
             description = request.POST.get('description')
             grupo.description = description
-            grupo.name = nombre
+            grupo.namenombre = nombre
             grupo.save()
 
 
@@ -369,18 +367,18 @@ def admi_grupo(request, id):
             usuarios_seleccionados = request.POST.getlist('usuarios_no_grupo')
             for usuario_id in usuarios_seleccionados:
                 try:
-                    usuario = User.objects.get(id=usuario_id)
+                    usuario = CustomUser.objects.get(id=usuario_id)
                     grupo.user_set.add(usuario)
-                except User.DoesNotExist:
+                except CustomUser.DoesNotExist:
                     pass
 
             # Procesar los usuarios eliminados del grupo
             usuarios_a_eliminar = request.POST.getlist('usuarios_a_eliminar')
             for usuario_id in usuarios_a_eliminar:
                 try:
-                    usuario = User.objects.get(id=usuario_id)
+                    usuario = CustomUser.objects.get(id=usuario_id)
                     grupo.user_set.remove(usuario)
-                except User.DoesNotExist:
+                except CustomUser.DoesNotExist:
                     pass
 
             return redirect('administrar_grupos')
@@ -410,18 +408,18 @@ def contact_admin(request):
         
         if request.user.is_staff:
             receptor_username = request.POST.get('receptor_username')
-            receptor = User.objects.filter(username=receptor_username).first()
+            receptor = CustomUser.objects.filter(username=receptor_username).first()
             if receptor is None:
-                usuarios = User.objects.all()
+                usuarios = CustomUser.objects.all()
                 return render(request, 'contacta_adminstracion.html', {'usuarios': usuarios, 'error': 'Usuario no válido'})
         else:
-            receptor = User.objects.filter(is_staff=True).first()
+            receptor = CustomUser.objects.filter(is_staff=True).first()
         
         mensaje = Mensajes.objects.create(enviador=enviador, receptor=receptor, title=title, tipomensaje=tipomensaje, description=description)
         mensaje.save()
         return redirect('contacta')
     else:
-        usuarios = User.objects.all()
+        usuarios = CustomUser.objects.all()
         return render(request, 'contacta_adminstracion.html', {'usuarios': usuarios})
 
 @csrf_protect
@@ -786,7 +784,7 @@ def archivos_manage(request, archivo_id):
     if not adquisicion.objects.filter(user=usuario_actual, archivo=archivo).exists():
         raise Http404("No tienes permiso para acceder a este archivo.")
 
-    usuarios = User.objects.all().exclude(id=usuario_actual.id)
+    usuarios = CustomUser.objects.all().exclude(id=usuario_actual.id)
     grupos = usuario_actual.groups.all()
 
     # Obtener los usuarios y grupos con los que se ha compartido el archivo
@@ -830,7 +828,7 @@ def compartir_archivo(request, archivo_id):
             if str(usuario_id) not in usuarios_seleccionados:
                 Compartido.objects.filter(archivo=archivo, usuario_destinatario_id=usuario_id).delete()
             texto_analisis = f"El usuario '{request.user.username}' ha desecho el compartido del archivo '{archivo.nombre_archivo}'   "
-            usuarios_destinatarios = [User.objects.get(pk=usuario_id).username for usuario_id in usuarios_seleccionados]
+            usuarios_destinatarios = [CustomUser.objects.get(pk=usuario_id).username for usuario_id in usuarios_seleccionados]
             texto_analisis += " a algún/os usuario/s "
             texto_analisis += ', '.join(usuarios_destinatarios)
         
@@ -839,7 +837,7 @@ def compartir_archivo(request, archivo_id):
                 Compartido.objects.filter(archivo=archivo, grupo_destinatario_id=grupo_id).delete()
             texto_analisis = f"El usuario '{request.user.username}'  ha desecho el compartido del archivo '{archivo.nombre_archivo}' a "
             # Agregar nombres de grupos seleccionados
-            grupos_destinatarios = [Group.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
+            grupos_destinatarios = [CustomGroup.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
             texto_analisis += " grupos "
             texto_analisis += ', '.join(grupos_destinatarios)
             
@@ -848,21 +846,21 @@ def compartir_archivo(request, archivo_id):
         
         # Compartir con usuarios seleccionados
         for usuario_id in usuarios_seleccionados:
-            usuario_destinatario = User.objects.get(pk=usuario_id)
+            usuario_destinatario = CustomUser.objects.get(pk=usuario_id)
             Compartido.objects.get_or_create(
                 usuario_propietario=usuario_propietario,
                 usuario_destinatario=usuario_destinatario,
                 archivo=archivo
             )
             texto_analisis = f"El usuario '{request.user.username}' ha compartido el archivo '{archivo.nombre_archivo}'   "
-            usuarios_destinatarios = [User.objects.get(pk=usuario_id).username for usuario_id in usuarios_seleccionados]
+            usuarios_destinatarios = [CustomUser.objects.get(pk=usuario_id).username for usuario_id in usuarios_seleccionados]
             texto_analisis += " a los usuarios: "
             texto_analisis += ', '.join(usuarios_destinatarios)
 
         
         # Compartir con grupos seleccionados
         for grupo_id in grupos_seleccionados:
-            grupo_destinatario = Group.objects.get(pk=grupo_id)
+            grupo_destinatario = CustomGroup.objects.get(pk=grupo_id)
             Compartido.objects.get_or_create(
                 usuario_propietario=usuario_propietario,
                 grupo_destinatario=grupo_destinatario,
@@ -870,7 +868,7 @@ def compartir_archivo(request, archivo_id):
             )
             texto_analisis = f"El usuario '{request.user.username}' ha compartido el archivo '{archivo.nombre_archivo}' a "
             # Agregar nombres de grupos seleccionados
-            grupos_destinatarios = [Group.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
+            grupos_destinatarios = [CustomGroup.objects.get(pk=grupo_id).name for grupo_id in grupos_seleccionados]
             texto_analisis += " a los grupos: "
             texto_analisis += ', '.join(grupos_destinatarios)
 
@@ -1023,7 +1021,7 @@ def grupo_info(request, name):
     usuario_actual = request.user
 
     # Obtener el grupo por su nombre
-    grupo_seleccionado = Group.objects.get(name=name)
+    grupo_seleccionado = CustomGroup.objects.get(name=name)
 
     # Verificar si el usuario actual pertenece al grupo seleccionado
     if not usuario_actual.groups.filter(name=name).exists():
@@ -1048,7 +1046,7 @@ def descargar_archivo_grupo(request, group_name, archivo_id):
     archivo = get_object_or_404(Archivo, pk=archivo_id)
     
     # Obtener el grupo
-    grupo = get_object_or_404(Group, name=group_name)
+    grupo = get_object_or_404(CustomGroup, name=group_name)
     
     # Verificar si el usuario actual pertenece al grupo
     if not request.user.groups.filter(name=group_name).exists():

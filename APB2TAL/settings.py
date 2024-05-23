@@ -24,10 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-q5*^#dv=3m7cu(dsojv-lrr*lfdk!2hu2=7@ob%!m$59*7hg)e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
+AUTH_USER_MODEL = 'archivos.CustomUser'
 
 
 # Application definition
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'archivos',
-    'avatar',
 ]
 
 MIDDLEWARE = [

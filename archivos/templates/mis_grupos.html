@@ -54,7 +54,7 @@
                 {% for group in usuario.groups.all %}
                     <!-- La lista no tiene la clase "ul", así que el padding-left se aplica directamente a las listas -->
                     <ul>
-                        <a href="{% url 'grupo_info' group.name %}" class="list-group-item">{{ group.name }}</a>
+                        <a href="{% url 'grupo_info' group.namenombre %}" class="list-group-item">{{ group.namenombre }}</a>
                     </ul>
                 {% endfor %}
             </div>

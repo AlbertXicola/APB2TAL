@@ -27,7 +27,7 @@
                 <ul class="list-group">
                     {% for grupo in grupos %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="{% url 'admi_grupo' grupo.id %}" class="name">{{ grupo.name }}</a>
+                                <a href="{% url 'admi_grupo' grupo.id %}" class="name">{{ grupo.namenombre }}</a>
                                 <a {{ grupo.description }}> </a>
                                 <span class="badge bg-info rounded-pill">Activo</span>
                             </li>
