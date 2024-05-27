@@ -679,7 +679,15 @@ def archivos_analiz(request):
                     }
 
                     collection.insert_one(archivo_mongo)
-                    shutil.move(ruta_carpeta, nuevo_path)
+                    if malicious >= 1:
+                        # Eliminar la carpeta si hay al menos 1 positivo
+                        print("Eliminando carpeta por tener al menos 1 positivo...")
+                        shutil.rmtree(ruta_carpeta)
+                        print("Carpeta eliminada correctamente.")
+
+                    else:
+                        # Mover la carpeta si no hay positivos
+                        shutil.move(ruta_carpeta, nuevo_path)
                     
                 except Exception as e:
                     # Manejar cualquier excepción que pueda ocurrir durante la inserción en la base de datos
