@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,255 +6,245 @@
     <title>APB2TAL</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/L9cjtSz/icono.png">
- 
-</head>
-  <style>
+    <style>
         /* Importing Google font - Open Sans */
-    @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
- 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Open Sans", sans-serif;
-    }
- 
-    body {
-      height: 100vh;
-      width: 100%;
-      background: linear-gradient(to bottom, #1f8a9c 23%, #701c91 95%);
-    }
- 
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-    }
- 
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 15px;
-    }
- 
-    .navbar .logo a {
-      font-size: 1.8rem;
-      text-decoration: none;
-      color: #fff;
-    }
- 
-    .navbar .links {
-      display: flex;
-      align-items: center;
-      list-style: none;
-      gap: 35px;
-      margin-left: 120px; /* Ajusta el margen izquierdo para mover los botones a la derecha */
-      position: absolute;
-      left: 350px;
- 
-    }
- 
-    .navbar .links a {
-      font-weight: 500;
-      text-decoration: none;
-      color: #fff;
-      padding: 10px 0;
-      transition: 0.2s ease;
-    }
- 
-    .navbar .links a:hover {
-      color: #47b2e4;
-    }
-    .navbar .buttons {
-      display: flex;
-      align-items: center;
-    }
- 
-    .navbar .buttons a {
-      text-decoration: none;
-      color: #fff;
-      padding: 15px 10px; /* Ajuste el padding para alinear verticalmente con el texto */
-      transition: 0.2s ease;
-    }
- 
-    .navbar .buttons .signup {
-      margin-left: 20px; /* Mover el botón Sign Up hacia la derecha */
-      border: 1px solid #fff;
-      padding: 10px 20px;
-      border-radius: 0.375rem;
-      text-align: center;
-      transition: 0.2s ease;
-    }
- 
-    .navbar .buttons .signup:hover {
-      background-color: #47b2e4;
-      color: #fff;
-    }
- 
-    .hero-section {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-      height: 95vh;
-      padding: 0 15px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
- 
-    .hero-section .hero {
-      max-width: 50%;
-      color: #fff;
-    }
- 
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
- 
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-      color: #c9c7c7;
-    }
- 
-    .hero-section .img img {
-      width: 517px;
-    }
- 
-    .hero-section .buttons {
-      margin-top: 40px;
-    }
- 
-    .hero-section .buttons a {
-      text-decoration: none;
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 0.375rem;
-      font-weight: 600;
-      transition: 0.2s ease;
-      display: inline-block;
-    }
- 
-    .hero-section .buttons a:not(:last-child) {
-      margin-right: 15px;
-    }
- 
-    .buttons .join {
-      background-color: #47b2e4;
-    }
- 
-    .hero-section .buttons .learn {
-      border: 1px solid #fff;
-      border-radius: 0.375rem;
-    }
- 
-    .hero-section .buttons a:hover {
-      background-color: #47b2e4;
-    }
- 
-    /* Hamburger menu styles */
-    #menu-toggle {
-      display: none;
-    }
- 
-    #hamburger-btn {
-      font-size: 1.8rem;
-      color: #fff;
-      cursor: pointer;
-      display: none;
-      order: 1;
-    }
- 
-    @media screen and (max-width: 1023px) {
-      .navbar .logo a {
-        font-size: 1.5rem;
-      }
- 
-      .links {
-        position: fixed;
-        left: -100%;
-        top: 75px;
-        width: 100%;
-        height: 100vh;
-        padding-top: 50px;
-        background: #175d69;
-        flex-direction: column;
-        transition: 0.3s ease;
-      }
- 
+        @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #1f8a9c 23%, #701c91 95%);
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        .navbar .logo a {
+            font-size: 1.8rem;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .navbar .links {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            gap: 35px;
+            margin-left: 120px; /* Ajusta el margen izquierdo para mover los botones a la derecha */
+            position: absolute;
+            left: 350px;
+        }
+
+        .navbar .links a {
+            font-weight: 500;
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 0;
+            transition: 0.2s ease;
+        }
+
+        .navbar .links a:hover {
+            color: #47b2e4;
+        }
+
+        .navbar .buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .buttons a {
+            text-decoration: none;
+            color: #fff;
+            padding: 15px 10px; /* Ajuste el padding para alinear verticalmente con el texto */
+            transition: 0.2s ease;
+        }
+
+        .navbar .buttons .signup {
+            margin-left: 20px; /* Mover el botón Sign Up hacia la derecha */
+            border: 1px solid #fff;
+            padding: 10px 20px;
+            border-radius: 0.375rem;
+            text-align: center;
+            transition: 0.2s ease;
+        }
+
+        .navbar .buttons .signup:hover {
+            background-color: #47b2e4;
+            color: #fff;
+        }
+
+        .hero-section {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 95vh;
+            padding: 0 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-section .hero {
+            max-width: 50%;
+            color: #fff;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #c9c7c7;
+        }
+
+        .hero-section .img img {
+            width: 517px;
+        }
+
+        .hero-section .buttons {
+            margin-top: 40px;
+        }
+
+        .hero-section .buttons a {
+            text-decoration: none;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: 0.2s ease;
+            display: inline-block;
+        }
+
+        .hero-section .buttons a:not(:last-child) {
+            margin-right: 15px;
+        }
+
+        .buttons .join {
+            background-color: #47b2e4;
+        }
+
+        .hero-section .buttons .learn {
+            border: 1px solid #fff;
+            border-radius: 0.375rem;
+        }
+
+        .hero-section .buttons a:hover {
+            background-color: #47b2e4;
+        }
+
+        /* Hamburger menu styles */
+        #menu-toggle {
+            display: none;
+        }
+
+        #hamburger-btn {
+            font-size: 1.8rem;
+            color: #fff;
+            cursor: pointer;
+            display: none;
+            order: 1;
+        }
+
+        @media screen and (max-width: 1023px) {
+            .navbar .logo a {
+                font-size: 1.5rem;
+            }
+
+            .links {
+                position: fixed;
+                left: -100%;
+                top: 75px;
+                width: 100%;
+                height: 100vh;
+                padding-top: 50px;
+                background: #175d69;
+                flex-direction: column;
+                transition: 0.3s ease;
+            }
+
+            .hero-section .hero {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            .hero-section img {
+                display: none;
+            }
 
 
- 
-      
-      .hero-section .hero {
-        max-width: 100%;
-        text-align: center;
-      }
- 
-      .hero-section img {
-        display: none;
-      }
-    }
-    .footer {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      width: 100%;
-      padding: 10px 0;
-     
-    }
- 
-    .footer p {
-      color: #b4c5c5;
-      font-size: 11px;
-      text-decoration: none;
-     
-    }
-  </style>
- 
- 
+        }
+
+        .footer {
+            text-align: center;
+            width: 100%;
+            padding: 0px 0;
+            background: #6f1c9000; /* Color de fondo del footer */
+            padding-bottom: 10px;
+        }
+
+        .footer p {
+            color: #b4c5c5;
+            font-size: 11px;
+            text-decoration: none;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
 <body>
-  <header class="header">
-    <nav class="navbar">
+    <header class="header">
+        <nav class="navbar">
+            <h2 style="margin-top: 8px !important; text-align: left;" class="logo">
+                <img src="https://i.ibb.co/X4cpR8G/logo.png" style="height: 50px; width: 50px;">
+                <a href="/">APB2TAL</a>
+            </h2>
+            <div class="buttons">
+                {% if user.is_authenticated %}
+                <a href="/perfil">Mi Perfil</a>
+                <a href="/signout" class="signup">Cerrar Sessión</a>
+                {% else %}
+                <a href="/signin" class="signin">Login</a>
+                <a href="/signup" class="signup">Registro</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
 
+    <div class="main-content">
+        <section class="hero-section" style="padding-top: 90px;">
+            {% block content %}
+            {% endblock %}
+        </section>
+    </div>
 
-      <h2 style="margin-top: 8px !important; text-align: left;" class="logo">
-        <img src="https://i.ibb.co/X4cpR8G/logo.png" style="height: 50px; width: 50px;">
- 
-        <a href="/">APB2TAL</a>
-      </h2>
-
-
-
-
-      <div class="buttons">
-        {% if user.is_authenticated %}
-        <a href="/perfil">Mi Perfil</a>
-        <a href="/signout" class="signup">Cerrar Sessión</a>
-        {% else %}
-        <a href="/signin" class="signin">Login</a>
-        <a href="/signup" class="signup">Registro</a>
-        {% endif %}
-      </div>
-    </nav>
-  </header>
-
-
- 
-  <div class="footer">
-    <p>© 2024 APB2TAL. Todos los derechos reservados. <a href="/terminos" style="color: #b4c5c5; text-decoration: none;">Términos y condiciones</a></p>
-  </div>
-
-
-
-  <section class="hero-section">
-      {% block content %}
-      {% endblock %}
-  </section>
-     
+    <div class="footer">
+        <p>© 2024 APB2TAL. Todos los derechos reservados. <a href="/terminos" style="color: #b4c5c5; text-decoration: none;">Términos y condiciones</a></p>
+    </div>
+</body>
+</html>
