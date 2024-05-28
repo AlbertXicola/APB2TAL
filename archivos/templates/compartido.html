@@ -23,7 +23,7 @@
         border-radius: 5px;
         margin-bottom: 25px;
         overflow-y: auto; /* Agrega una barra de desplazamiento vertical */
-        height: 700px; /* Establece la altura máxima */
+        height: 600px; /* Establece la altura máxima */
         position: relative; /* Establece la posición relativa */
     }
     .titulo-columna {
@@ -55,7 +55,8 @@
     <div class="row">
         <div class="col-md-12 mt-5">
             <h2 class="text-center display-4 py-4">Archivos Compartidos</h2>
-
+            <br>
+            <br>
             <div class="row">
                 <div class="col-md-4">
                     <div class="columna">
@@ -68,6 +69,7 @@
                                 </div>
                             </div>
                         </div>
+
                         {% for archivo, usuario_propietario in archivos_compartidos_al_usuario %}
                         <div class="card mb-3 archivo-shared">
                             <div class="card-body">

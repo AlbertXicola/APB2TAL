@@ -15,10 +15,14 @@ class TaskForm(forms.ModelForm):
     
     
         
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
+from django_recaptcha.fields import ReCaptchaField
 
 class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
+    captcha = ReCaptchaField()
+
+    class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name']
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'captcha']

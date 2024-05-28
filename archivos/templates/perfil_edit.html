@@ -5,7 +5,7 @@
 <body>
   <div class="profile-container">
     <div class="profile-picture">
-      <img src="https://cdn-icons-png.flaticon.com/512/147/147142.png" alt="Profile Picture" id="profile-image">
+      <img src="https://t4.ftcdn.net/jpg/03/31/69/91/360_F_331699188_lRpvqxO5QRtwOM05gR50ImaaJgBx68vi.jpg" alt="Profile Picture" id="profile-image">
     </div>
     
     <div class="image-edit-section">
@@ -19,12 +19,12 @@
       </div>
     </div>
 
-    <div style="margin-left: 100px;" id="color-buttons">
-      <button class="color-btn" style="background-color: #da2121af;" data-color="#e9262652"></button>
-      <button class="color-btn" style="background-color: rgb(40, 204, 40);" data-color="#2b9b2762"></button>
-      <button class="color-btn" style="background-color: rgba(43, 43, 180, 0.729);" data-color="#2567ad34"></button>
-      <button class="color-btn" style="background-color: rgb(231, 231, 66);" data-color="#a8b13162"></button>
-      <button class="color-btn" style="background-color: rgb(167, 51, 167);" data-color="#8831b162"></button>
+    <div style="text-align: center;" id="color-buttons">
+      <button class="color-btn" style="background-color: rgb(207, 79, 79);" data-color="#922B21"></button>
+      <button class="color-btn" style="background-color: rgb(67, 167, 105);" data-color="#138D75"></button>
+      <button class="color-btn" style="background-color: rgba(43, 43, 180, 0.729);" data-color="#3498DB"></button>
+      <button class="color-btn" style="background-color: rgb(235, 170, 28);" data-color="#D4AC0D"></button>
+      <button class="color-btn" style="background-color: rgb(207, 34, 207);" data-color="#8E44AD"></button>
     </div>
     <form method="post" class="container" onsubmit="return validarCampos()">
       {% csrf_token %}
@@ -232,24 +232,26 @@
     display: inline-block;
     width: 25px;
     height: 25px;
-    margin-left: 32px;
     cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
     border: none;
     border-radius: 5px;
     outline: none;
   }
 
   .profile-container {
-    max-width: 600px;
-    max-height: 760px;
+    width: 80%;
+    height: 80%;
     margin: 50px auto;
-    background-color: #ff000011;
-    border: 2px solid #ff000011;
+    background-color: #3657b4;
+    border: 2px solid #ffffff00;
     border-radius: 10px;
     padding: 30px;
     margin-top: 90px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
+}
+
 
   .profile-picture {
     text-align: center;

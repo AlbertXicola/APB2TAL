@@ -26,7 +26,7 @@
       </p>
 
 
-      <p><strong>Se unió el:</strong> {{ user.date_joined }}</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
 
       <a href="/perfil/editar" class="btn btn-secondary mb-3"><i class="fas fa-edit"></i> Editar</a>      
       {% endif %}
@@ -78,22 +78,25 @@ document.addEventListener('DOMContentLoaded', function() {
   if (savedImage) {
       profileImage.src = savedImage;
   } else {
-      profileImage.src = "https://cdn-icons-png.flaticon.com/512/147/147142.png"; // URL de imagen por defecto si no hay ninguna guardada
+      profileImage.src = "https://t4.ftcdn.net/jpg/03/31/69/91/360_F_331699188_lRpvqxO5QRtwOM05gR50ImaaJgBx68vi.jpg"; // URL de imagen por defecto si no hay ninguna guardada
   }
 });
 </script>
 <style>
-  .profile-container2 {
-    max-width: 600px;
-    max-height: 760px;
+.profile-container2 {
+    width: 80%;
+    height: 80%;
     margin: 50px auto;
-    background-color: #ff000011;
-    border: 2px solid #ff000011;
+    background-color: #3657b4;
+    border: 2px solid #ffffff00;
     border-radius: 10px;
     padding: 30px;
     margin-top: 90px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
+}
+
+
+
   .profile-picture {
     text-align: center;
   }

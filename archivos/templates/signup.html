@@ -61,20 +61,25 @@
                         <button type="button" class="btn btn-outline-secondary" id="showPassword2">Show</button>
                     </div>
                 </div>
-                <div class="create-account text-center" style="padding-bottom: 10px;"> <!-- Añadido 'padding' -->
+                <div class="mt-2 d-flex justify-content-center">
+                    <div class="mb-3">
+                        {{ form.captcha }}
+                    </div>
+                </div>
+                
+
+                <div class="create-account text-center" style="padding-bottom: 10px;">
                     <label for="acceptTerms">Acepta nuestros <a href="/terminos" id="acceptTerms">términos y condiciones</a></label>
                 </div>
                 <div id="error-msg" class="alert alert-danger" style="display:none;"></div>
                 <button type="submit" class="btn btn-primary">Signup</button>
-
-            </form>   
+            </form>
         </div>
     </div>
 </main>
 
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
     $(document).ready(function(){
         $('#username').keyup(function(){

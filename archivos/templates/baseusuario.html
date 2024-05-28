@@ -230,6 +230,27 @@
         .dark-mode .dark-mode-toggle {
             background-color: #343a40;
         }
+        
+    </style>
+    <style>
+        /* Estilos previos... */
+    
+        /* Estilo para el botón de Dark Mode */
+        .dark-mode-toggle {
+            /* Estilos previos... */
+        }
+    
+        /* Estilo para el botón de Dark Mode cuando se le hace hover en modo oscuro */
+        .dark-mode .dark-mode-toggle:hover {
+            background-color: #ffffff;
+            color: #343a40 !important;
+        }
+    
+        /* Estilo adicional para el fondo del botón en modo oscuro cuando se le hace hover */
+        .dark-mode .dark-mode-toggle.sun:hover {
+            background-color: #ffffff;
+            color: #343a40 !important;
+        }
     </style>
     
 <style>
@@ -266,8 +287,8 @@
         width: 1px;
             height: 1px;
             font-size: 1px;
-            background-color: #343a4000;
-            color: #ffffff00;
+            background-color: #ffffff00;
+            color: #343a4000;
             border: none;
             border-radius: 100%;
 
@@ -275,6 +296,35 @@
     /* Estilos adicionales para el botón de toggle en pantallas más pequeñas */
     @media (max-width: 768px) {
         .toggle-btn {
+            display: block; /* Muestra el botón de toggle en pantallas pequeñas */
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1100;
+            background-color: #ffffff;
+            color: #343a40;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+    }
+    .toggle-btn:hover{
+        width: 1px;
+            height: 1px;
+            font-size: 1px;
+            background-color: #343a40;
+            color: #ffffff;
+            border: none;
+            border-radius: 100%;
+
+    }
+    /* Estilos adicionales para el botón de toggle en pantallas más pequeñas */
+    @media (max-width: 768px) {
+        .toggle-btn:hover {
             display: block; /* Muestra el botón de toggle en pantallas pequeñas */
             position: fixed;
             top: 10px;
@@ -292,6 +342,7 @@
         }
     }
 
+    
     /* Estilos adicionales para el contenido en pantallas más pequeñas */
     @media (max-width: 768px) {
         #content {
@@ -311,57 +362,26 @@
             
             {% if user.is_authenticated %}
                 <button id="theme-toggle-btn" class="dark-mode-toggle"><i class="fas fa-sun"></i></button>
-                
+                <div class="imagenlogo" style="display: flex; justify-content: center; align-items: center; margin-bottom: 50px; margin-top: 20px;">
+                    <img src="https://i.ibb.co/X4cpR8G/logo.png" style="width: 50px; height: 50px;" alt="Logo">
+                    <h1 style="margin: 0;"><strong><a style="color: #fff;">APB2TAL</a></strong></h1>
+                </div>
                     <style>
-                        .box {
-                        display: flex;
-                        align-items: center;
-                        justify-content: left;
-                        margin: 10px 30px 30px 40px;
-                        }
 
-                        .box div {
-                        width: 50px;
-                        height: 50px;
-                        }
-                        .textologo{
-                            color: #ffffff;
-                            margin-bottom: 5px;  
-                            margin-top: 10px;
-                            margin-left: 10px;
-                            font-size: 40px;    
-                        }
-                        .hola{
-                            font-size: 30px;  
-                        }
-                        .dark-mode .textologo{
-                            color: #343a40;
-
-                        }
-                        .imagenlogo{
-                            height: 40px; 
-                            width: 40px;
-                        }
                         .dark-mode .imagenlogo{
                             filter: invert(80%);
-
                         }
-
                     </style>
 
-                    <div class="box">
-                        <div><img class="imagenlogo" src="https://i.ibb.co/X4cpR8G/logo.png" "></div>
-                        <div class="textologo"><h1 ><strong><span class="hola"> APB2TAL</span></strong></h1></div>
-                    </div>
-                
+                    
+                    
+                    
 
                 <li class="perfil">
                     <a href="/perfil"> <i class="fas fa-user fa-lg"></i> <span>Perfil</span></a>
                 </li>
                 <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
 
-
-                
                 {% if user.is_accepted %}
                 <li class="archivos1"><a href="/archivos"><i class="fas fa-file fa-lg"></i> <span>‎ Mis archivos</span></a></li>
                 <li class="analizar1"><a href="/archivos/analizar"><i class="fas fa-upload fa-lg"></i> <span>Subir archivos</span></a></li>
@@ -450,5 +470,6 @@
         border-radius: 0px;
     }
 </style>
+
 </body>
 </html>

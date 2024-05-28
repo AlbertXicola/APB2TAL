@@ -41,7 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'archivos',
+    'django_recaptcha',
+
 ]
+
+RECAPTCHA_PUBLIC_KEY = '6Le50ekpAAAAAGnMjyTPa-TEH9V4ugAHEiuv7OYg'
+RECAPTCHA_PRIVATE_KEY = '6Le50ekpAAAAAAZxO9ffxYdpn7v0cdplfJDRUtZR'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

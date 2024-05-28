@@ -4,8 +4,8 @@
 <style>
     /* Estilos para el contenedor del cuadro de entrada */
     .custom-file-container {
-        width: 725px; /* Ancho del contenedor */
-        height: 300px; /* Altura del contenedor */
+        width: 100%; /* Ancho del contenedor */
+        height: 100%; /* Altura del contenedor */
         background-color: white; /* Fondo blanco */
         border: 2px solid #ccc; /* Borde sólido */
         border-radius: 10px; /* Bordes redondeados */
@@ -14,6 +14,8 @@
         align-items: center;
         position: relative;
         flex-direction: column;
+        padding-bottom: 110px;
+        padding-top: 60px;
         margin-bottom: 20px; /* Espacio entre el formulario y el panel de información */
     }
 
@@ -120,7 +122,8 @@
     <div class="row">
         <div class="col-md-8 offset-md-2 mt-5">
             <h2 class="text-center display-4 py-4">Analizar Archivos</h2>
-    
+            <br>
+            <br>
             <form id="archivoForm" action="{% url 'archivos_analiz' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label id="formulario" class="custom-file-container" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
