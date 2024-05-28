@@ -2,104 +2,66 @@
 
 {% block content %}
 
-    <main class="container ">
+<main class="container">
 
-        <section class="hero-section">
-            <div class="hero">
-              <h2 class="hero-title">APB2TAL</h2>
-              <p class="hero-text">
-                ¡Bienvenido a nuestro innovador programa web! Somos una plataforma diseñada para que los usuarios puedan analizar archivos, compartirlos con seguridad y eliminarlos según su conveniencia. Con un enfoque centrado en la seguridad y la atención al cliente, ofrecemos una experiencia integral para la gestión de archivos en línea.
+    <section class="hero-section">
+        <div class="hero">
+          <h2 class="hero-title">APB2TAL</h2>
+          <p class="hero-text">
+            ¡Bienvenido a nuestro innovador programa web! Somos una plataforma diseñada para que los usuarios puedan analizar archivos, compartirlos con seguridad y eliminarlos según su conveniencia. Con un enfoque centrado en la seguridad y la atención al cliente, ofrecemos una experiencia integral para la gestión de archivos en línea. Nuestro sitio web garantiza la máxima seguridad en cada paso del proceso. Los usuarios pueden confiar en que sus archivos están protegidos mediante medidas de seguridad avanzadas.
+          </p>
+          
+          <div class="buttons">
+            <a href="/perfil" class="join">Entra!</a>
+          </div>
+        </div>
+        <div class="img">
+          <img src="https://static.vecteezy.com/system/resources/previews/023/258/496/non_2x/digital-data-protection-design-illustration-cyber-security-illustration-background-cloud-computing-network-safety-concept-free-png.png" alt="hero image" />
+        </div>
+      </section>
 
-Nuestro sitio web garantiza la máxima seguridad en cada paso del proceso. Los usuarios pueden confiar en que sus archivos están protegidos mediante medidas de seguridad avanzadas, lo que proporciona tranquilidad en cada interacción.
-              </p>
-              
-              <div class="buttons">
-                <a href="/perfil" class="join">Entra!</a>
-                <a href="/about" class="learn">Saber Más</a>
-              </div>
-            </div>
-            <div class="img">
-              <img src="https://static.vecteezy.com/system/resources/previews/023/258/496/non_2x/digital-data-protection-design-illustration-cyber-security-illustration-background-cloud-computing-network-safety-concept-free-png.png" alt="hero image" />
-            </div>
-          </section>
+</main>
 
-    </main>
 <style>
-  .hero-section {
+.hero-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  color: white
+  padding: 20px;
+  color: white;
 }
 
 .hero {
-  max-width: 600px;
-  padding: 20px;
+  max-width: 100%;
   text-align: center;
-  animation: fadeIn 1s ease-out;
 }
 
 .hero-title {
-  font-size: 36px;
-  color: #ffffff;
+  font-size: 3em;
   margin-bottom: 20px;
-  animation: slideInTitle 1s ease-out;
 }
 
 .hero-text {
-  color: #666;
-  animation: slideInText 1s ease-out;
+  font-size: 1em;
 }
-
-
 
 .img {
   margin-left: 50px;
-  animation: slideInImage 1s ease-out;
 }
 
-@keyframes slideInTitle {
-  0% {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
+img {
+  max-width: 100%;
 }
 
-@keyframes slideInText {
-  0% {
-    transform: translateY(50px);
-    opacity: 0;
+@media screen and (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
   }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInImage {
-  0% {
-    transform: translateX(-50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
+  
+  .img {
+    margin-left: 0;
+    margin-top: 20px;
   }
 }
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 </style>
 {% endblock %}
