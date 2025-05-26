@@ -39,6 +39,57 @@ pipeline {
             }
         }
 
+        stage('Deploy to Web Server') {
+            steps {
+                sshagent(['webserver_ssh_credentials_id']) {
+                    sh '''
+                        echo "Verificando clave SSH"
+                        ssh-add -l
+
+                        ssh -o StrictHostKeyChecking=no root@10.30.212.36 << 'EOF'
+                            set -e
+
+                            echo "=== INICIANDO DESPLIEGUE EN SERVIDOR REMOTO ==="
+
+                            git config --global --add safe.directory /var/www/APB2TAL
+
+                            if [ -d /var/www/APB2TAL ]; then
+                                echo "Repositorio ya existente, actualizando..."
+                                cd /var/www/APB2TAL
+                                git reset --hard HEAD
+                                git pull
+                            else
+                                echo "Clonando repositorio..."
+                                git clone https://github.com/AlbertXicola/APB2TAL.git /var/www/APB2TAL
+                                cd /var/www/APB2TAL
+                            fi
+
+                            cd /var/www/APB2TAL
+
+                            if [ ! -d "venv" ]; then
+                                echo "Creando entorno virtual..."
+                                python3 -m venv venv
+                            fi
+
+                            source venv/bin/activate
+
+                            pip install --upgrade pip wheel
+                            pip install -r requirements.txt
+
+                            python manage.py migrate
+                            python manage.py collectstatic --noinput
+
+                            echo "Reiniciando servicios gunicorn y nginx..."
+                            systemctl restart gunicorn
+                            systemctl restart nginx
+
+                            echo "=== DESPLIEGUE COMPLETADO ==="
+                        EOF
+                    '''
+                }
+            }
+        }
+
         stage('DAST con OWASP ZAP') {
             steps {
                 script {
@@ -57,68 +108,6 @@ pipeline {
             post {
                 always {
                     archiveArtifacts artifacts: 'reporte_zap.html', fingerprint: true
-                }
-            }
-        }
-
-        stage('Deploy to Web Server') {
-            steps {
-                sshagent(['webserver_ssh_credentials_id']) {
-                    sh '''
-                        echo "Verificando clave SSH"
-                        ssh-add -l
-
-                        ssh -o StrictHostKeyChecking=no root@10.30.212.36 << 'EOF'
-                            set -e
-
-                            echo "=== INICIANDO DESPLIEGUE EN SERVIDOR REMOTO ==="
-
-                            # Configurar Git
-                            git config --global --add safe.directory /var/www/APB2TAL
-
-                            # Clonar o actualizar el repositorio
-                            if [ -d /var/www/APB2TAL ]; then
-                                echo "Repositorio ya existente, actualizando..."
-                                cd /var/www/APB2TAL
-                                git reset --hard HEAD
-                                git pull
-                            else
-                                echo "Clonando repositorio..."
-                                git clone https://github.com/AlbertXicola/APB2TAL.git /var/www/APB2TAL
-                                cd /var/www/APB2TAL
-                            fi
-
-                            cd /var/www/APB2TAL
-
-                            # Crear entorno virtual si no existe
-                            if [ ! -d "venv" ]; then
-                                echo "Creando entorno virtual..."
-                                python3 -m venv venv
-                            fi
-
-                            # Activar entorno virtual
-                            source venv/bin/activate
-
-                            # Actualizar pip y wheel
-                            pip install --upgrade pip wheel
-
-                            # Instalar dependencias
-                            pip install -r requirements.txt
-
-                            # Migraciones de base de datos
-                            python manage.py migrate
-
-                            # Archivos estáticos
-                            python manage.py collectstatic --noinput
-
-                            # Reiniciar servicios
-                            echo "Reiniciando servicios gunicorn y nginx..."
-                            systemctl restart gunicorn
-                            systemctl restart nginx
-
-                            echo "=== DESPLIEGUE COMPLETADO ==="
-                        EOF
-                    '''
                 }
             }
         }
