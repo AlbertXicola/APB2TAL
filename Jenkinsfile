@@ -68,7 +68,7 @@ pipeline {
 
                             if [ ! -d "venv" ]; then
                                 echo "Creando entorno virtual..."
-                                python3 -m venv venv
+                                python3.10 -m venv env -m venv venv
                             fi
 
                             source venv/bin/activate
