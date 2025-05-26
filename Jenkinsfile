@@ -76,7 +76,7 @@ pipeline {
                             pip install -r requirements.txt
 
                             python manage.py migrate
-                            python3 manage.py runserver 0.0.0.0:80
+                            sudo nohup python3 manage.py runserver 0.0.0.0:80 | sudo tee /var/www/server.log > /dev/null 2>&1 &
 
                             echo "=== DESPLIEGUE COMPLETADO ==="
                         EOF
