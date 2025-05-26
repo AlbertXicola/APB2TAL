@@ -77,11 +77,7 @@ pipeline {
                             pip install -r requirements.txt
 
                             python manage.py migrate
-                            python manage.py collectstatic --noinput
-
-                            echo "Reiniciando servicios gunicorn y nginx..."
-                            systemctl restart gunicorn
-                            systemctl restart nginx
+                            python3 manage.py runserver 0.0.0.0:80
 
                             echo "=== DESPLIEGUE COMPLETADO ==="
                         EOF
