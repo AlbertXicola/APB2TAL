@@ -49,6 +49,116 @@ import requests
 from requests.auth import HTTPBasicAuth  # <--- esta línea faltaba
 
 
+from django.shortcuts import render
+import requests
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
+from django.http import JsonResponse
+
+import requests
+import time
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import requests
+import time
+from django.shortcuts import render
+from django.http import HttpResponse
+
+JENKINS_URL = 'http://10.30.212.36:8080'
+JOB_NAME = 'Pipeline_SonarQube'
+TRIGGER_URL = f'{JENKINS_URL}/job/{JOB_NAME}/build?token=mi_token_seguro'
+API_USER = 'admin-jenkins'
+API_TOKEN = '1147a292f0559733a360e43466040414f9'
+
+# Jenkins API base url para job
+JOB_API_URL = f'{JENKINS_URL}/job/{JOB_NAME}'
+
+auth = (API_USER, API_TOKEN)
+
+def get_last_build_number():
+    url = f'{JOB_API_URL}/api/json'
+    r = requests.get(url, auth=auth)
+    r.raise_for_status()
+    data = r.json()
+    return data['lastBuild']['number']
+
+def get_build_status(build_number):
+    url = f'{JOB_API_URL}/{build_number}/api/json'
+    r = requests.get(url, auth=auth)
+    r.raise_for_status()
+    data = r.json()
+    return data['building'], data.get('result')
+
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import uuid
+from django.core.files.storage import FileSystemStorage
+
+from django.core.files.base import ContentFile
+import mimetypes
+
+
+def proyectoanaliz(request):
+    context = {}
+
+    if request.method == "POST":
+
+        # Lanzar build nuevo
+        r = requests.post(TRIGGER_URL, auth=auth)
+        if r.status_code not in [201, 200]:
+            return HttpResponse(f"Error al lanzar pipeline: {r.status_code}", status=500)
+
+        queue_url = r.headers.get('Location')
+        if not queue_url:
+            return HttpResponse("No se recibió URL de la build lanzada", status=500)
+
+        build_number = None
+        for _ in range(30):
+            queue_api_url = queue_url + "api/json"
+            rq = requests.get(queue_api_url, auth=auth)
+            rq.raise_for_status()
+            data = rq.json()
+            if 'executable' in data and data['executable'] is not None:
+                build_number = data['executable']['number']
+                break
+            time.sleep(10)
+
+        if build_number is None:
+            return HttpResponse("Timeout esperando asignación de build", status=500)
+
+        while True:
+            building, result = get_build_status(build_number)
+            if not building:
+                break
+            time.sleep(10)
+
+        if result != "SUCCESS":
+            return HttpResponse(f"La build terminó con estado {result}", status=500)
+
+        artifact_url = f'{JOB_API_URL}/lastSuccessfulBuild/artifact/reporte_zap.html'
+        r = requests.get(artifact_url, auth=auth)
+        if r.status_code == 200:
+            reports_dir = os.path.join(settings.MEDIA_ROOT, 'reports')
+            os.makedirs(reports_dir, exist_ok=True)
+
+            filename = f'zap_report_{uuid.uuid4().hex}.html'
+            filepath = os.path.join(reports_dir, filename)
+
+            with open(filepath, 'wb') as f:
+                f.write(r.content)
+
+            # Guardar en contexto la URL para descargar el archivo
+            context['download_url'] = f'/data/reports/{filename}'
+            context['visitar_sonar'] = "http://10.30.212.36:9000/dashboard?id=APB2TAL"
+            context['message'] = "¡Pipeline completado exitosamente! Aquí está tu reporte."
+
+        else:
+            context['error'] = "No se encontró el reporte ZAP"
+
+    return render(request, 'proyectoanaliz.html', context)
+
+
 
 import time
 from requests.auth import HTTPBasicAuth
@@ -61,9 +171,6 @@ JOB_NAME = "universal-runner"
 
 def seleccion(request):
     return render(request, 'seleccion.html')
-
-def proyectoanaliz(request):
-    return render(request, 'proyectoanaliz.html')
 
 
 

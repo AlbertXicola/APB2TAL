@@ -18,7 +18,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from archivos import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -26,8 +27,8 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('project/', views.project, name='project'),
     path('proyectos/', views.procesar_repo, name='proyectos'),
-    path('proyectoanaliz/', views.proyectoanaliz, name='proyectoanaliz'),
     path('seleccion/', views.seleccion, name='proyecto-selección'),
+    path('proyectoanaliz/', views.proyectoanaliz, name='proyectoanaliz'),
 
 
     path('administrar/', views.administrar, name='administrar'),
@@ -88,5 +89,8 @@ urlpatterns = [
     path('tasks/<int:task_id>/complete', views.complete_task, name='complete_task'),
     path('tasks/<int:task_id>/delete', views.delete_task, name='delete_task'),
 
-]
+] 
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

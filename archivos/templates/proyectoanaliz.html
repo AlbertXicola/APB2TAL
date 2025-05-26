@@ -159,16 +159,34 @@
             padding-top: 40vh;
         }
     }
+    .test{
+        margin-top:40px;
+    }
 </style>
-
-
-<h2>Proximamente</h2>
-
-
-<div class="sonar-container">
- 
+<div id="overlay" style="display:none;">
+    ⏳ Esperando resultados...<br>
+    Por favor, no cierres ni salgas de esta pestaña.
 </div>
 
+<form method="post" onsubmit="mostrarOverlay()">
+    {% csrf_token %}
+    <button type="submit">Iniciar Pipeline</button>
+</form>
 
+<script>
+    function mostrarOverlay() {
+        document.getElementById("overlay").style.display = "block";
+    }
+</script>
+
+{% if message %}
+    <div class="alert alert-success test">{{ message }}</div>
+    <a href="{{ download_url }}" download>Descargar reporte</a>
+    <a href="{{ visitar_sonar }}" download>Ver reporte Sonar</a>
+{% endif %}
+
+{% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
 
 {% endblock %}
