@@ -61,18 +61,17 @@ pipeline {
                             else
                                 echo "Clonando repositorio..."
                                 git clone https://github.com/AlbertXicola/APB2TAL.git /var/www/APB2TAL
-                                cd /var/www/APB2TAL
+                                cd /var/www/
                             fi
 
                             cd /var/www/APB2TAL
-
-                            if [ ! -d "venv" ]; then
+                            if [ ! -d "env" ]; then
                                 echo "Creando entorno virtual..."
-                                python3.10 -m venv env -m venv venv
+                                python3.10 -m venv env
                             fi
 
-                            source venv/bin/activate
-
+                            source env/bin/activate
+                            cd /var/www/APB2TAL
                             pip install --upgrade pip wheel
                             pip install -r requirements.txt
 
