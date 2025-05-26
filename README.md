@@ -1,4 +1,4 @@
-# APB2TAL 99% Read-me
+# APB2TAL Read-me
 
 - Albert Xicola
 
