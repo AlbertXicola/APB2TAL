@@ -2,66 +2,14 @@
 
 {% block content %}
 
-<main class="container">
+<div class="motivational-container">
+  <h1 class="motivational-text">Your data is safe with us. We guarantee top-level security for all your files.</h1>
+  <p class="description-text">With our advanced encryption and robust security protocols, we protect your sensitive information from unauthorized access. Enjoy peace of mind as you manage your files securely and efficiently.</p>
+</div>
 
-    <section class="hero-section">
-        <div class="hero">
-          <h2 class="hero-title">APB2TAL</h2>
-          <p class="hero-text">
-            ¡Bienvenido a nuestro innovador programa web! Somos una plataforma diseñada para que los usuarios puedan analizar archivos, compartirlos con seguridad y eliminarlos según su conveniencia. Con un enfoque centrado en la seguridad y la atención al cliente, ofrecemos una experiencia integral para la gestión de archivos en línea. Nuestro sitio web garantiza la máxima seguridad en cada paso del proceso. Los usuarios pueden confiar en que sus archivos están protegidos mediante medidas de seguridad avanzadas.
-          </p>
-          
-          <div class="buttons">
-            <a href="/perfil" class="join">Entra!</a>
-          </div>
-        </div>
-        <div class="img">
-          <img src="https://static.vecteezy.com/system/resources/previews/023/258/496/non_2x/digital-data-protection-design-illustration-cyber-security-illustration-background-cloud-computing-network-safety-concept-free-png.png" alt="hero image" />
-        </div>
-      </section>
+<div class="button-container">
+  <a href="/signup" class="button download-button">Let's Start</a>
+  <a href="https://albertxicola.github.io/memoria/" class="button start-button">Project Memory</a>
+</div>
 
-</main>
-
-<style>
-.hero-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  color: white;
-}
-
-.hero {
-  max-width: 100%;
-  text-align: center;
-}
-
-.hero-title {
-  font-size: 3em;
-  margin-bottom: 20px;
-}
-
-.hero-text {
-  font-size: 1em;
-}
-
-.img {
-  margin-left: 50px;
-}
-
-img {
-  max-width: 100%;
-}
-
-@media screen and (max-width: 768px) {
-  .hero-section {
-    flex-direction: column;
-  }
-  
-  .img {
-    margin-left: 0;
-    margin-top: 20px;
-  }
-}
-</style>
 {% endblock %}

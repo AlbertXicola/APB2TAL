@@ -1,47 +1,88 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <style>
     .red-background {
         background-color: rgba(255, 255, 255, 0.089);
-        color: white; /* Cambiar el color del texto a blanco */
+        color: rgb(0, 0, 0);
     }
     
     .red-background label {
-        color: white; /* Cambiar el color del texto de las etiquetas a blanco */
+        color: rgb(0, 0, 0); 
     }
 
-    /* Estilos para el cuadro y el enlace */
     .create-account {
         margin-top: 20px;
         padding: 10px;
-        background-color: rgba(255, 255, 255, 0.089); /* Mismo fondo que el formulario */
+        background-color: rgba(255, 255, 255, 0.089);
         border: 0px solid #ccc;
-        border-radius: 3px;
+        border-radius: 0px;
         text-align: center;
-        color: white;
+        color: rgb(0, 0, 0);
+    }
+
+    section{
+        width: 500px;
+        height: 400px;
+        margin-bottom: 120px;
     }
 
     .create-account a {
-        color: white;
+        color: rgb(0, 0, 0);
         text-decoration: underline;
+    }
+
+    .container1 {
+        font-family: 'Montserrat', sans-serif; 
+        display: flex;
+        flex-direction: column; 
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+    form{
+        border-radius: 0px !important;
+        border: 0px solid #00000000  !important;
+      }
+
+    button{
+        border: 1px solid #00000071  !important;
+        border-radius: 0px !important;
+      }
+
+    button:hover{
+        border: 1px solid #00000000  !important;
+        border-radius: 0px !important;
+        background-color: rgb(255, 255, 255) !important;
+        color: rgb(0, 0, 0);
+      }
+
+    @media (max-width: 645px) {
+        section{
+            width: 350px;
+        }
+    }
+
+    @media (max-width: 450px) {
+        section{
+            height: 300px;
+        }
     }
 </style>
 
-<main class="container">
-    <div class="row">
-        <section class="col-md-4 offset-md-4 mt-5">  
+<main class="container1">
+        <section class="">  
             <form action="/signin/" method="POST" class="card card-body signin-form red-background" id="signin-form">
-               
-                <h1 class="text-center" style="color: white;">Sign in</h1> <!-- Cambiar el color del texto de Signin a blanco -->
+                
+                <h1 class="text-center" style="color: rgb(0, 0, 0);">Login</h1>
                 
                 <small id="error-message" class='error' style='color: red; font-weight: bold;'>{{ error }}</small>
 
-
                 {% csrf_token %}
-             
-                <div class="mb-3">
                 
+                <div class="mb-3">
                     <label for="username">Username:</label>
                     <input type="text" name="username" id="username" class="form-control" placeholder="Write your username">
                     <small id="username-error" class="text-danger"></small>
@@ -52,20 +93,23 @@
                     <input type="password" name="password" id="password" class="form-control" placeholder="Write your password">
                 </div>
 
-                <button class="btn btn-primary" id="signin-button">
-                    Signin
+                <button class="btn " id="signin-button">
+                    Login
                 </button>
+
             </form>
 
-            <!-- Cuadro para crear una cuenta -->
             <div class="create-account">
-                ¿Todavía no tienes cuenta? <a href="/signup/">¡Crea una!</a>
+                Don't have an account yet? <a href="/signup/">¡Create one!</a>
             </div>
+
         </section>
     </div>
 </main>
 
+ 
 <script>
+
     document.addEventListener('DOMContentLoaded', function () {
         const usernameInput = document.getElementById('username');
         const usernameError = document.getElementById('username-error');
@@ -82,12 +126,11 @@
                 signinButton.disabled = false;
             }
         });
-
-        // Ocultar el mensaje de error después de 5 segundos
         setTimeout(function () {
             errorMessage.style.display = 'none';
         }, 4000);
     });
+
 </script>
 
 {% endblock %}

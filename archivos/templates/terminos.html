@@ -1,60 +1,103 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<br>
-<br>
-<br>
-<div style="background-color: #fff; padding: 20px; border-radius: 10px; max-width: 700px; max-height: 500px;margin: 0 auto; overflow: auto;">
-  <h1 style="color: #175d69; font-size: 24px;">Términos y condiciones:</h1>
-  <p style="color: #333; font-size: 14px; line-height: 1.5;">
-    Bienvenido a APB2TAL, un proyecto desarrollado por alumnos de STUCOM. Estos términos y condiciones de uso ("Términos") se aplican al uso de nuestro sitio web y cualquier servicio proporcionado a través de él. Al acceder o utilizar nuestro sitio web, aceptas estos Términos en su totalidad. Si no estás de acuerdo con alguno de estos términos, no utilices nuestro sitio web.
+
+<style>
+
+.terms {
+  margin: auto;
+  max-width: 700px;
+  max-height: 500PX;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: justify;
+
+
+}
+@media (max-width: 768px) {
+  .terms {
+    max-width: 550px;
+
+    margin: auto;
+    margin-top: 100px;
+
+  }
+  body {
+    display: flex !important;
+    flex-direction: column !important; /* Asegúrate de que esté configurado correctamente */
+    min-height: 120vh !important; /* Asegura que el body ocupe al menos toda la altura de la ventana */
+  }
+}
+@media (max-width: 550px) {
+  .terms {
+    max-width: 400px;
+    max-height: 300PX;
+    margin-top: 240px;
+    margin-left: 30px;
+    margin-right: 30px;
+
+  }
+}
+@media (max-width: 370px) {
+  .terms {
+    max-width: 300px;
+    max-height: 300PX;
+    margin-top: 120px;
+
+
+  }
+}
+
+
+</style>
+
+<div class="terms">
+  <h1 style="color: #000000; font-size: 20px;">Terms and Conditions</h1>
+
+  <p style="color: #333; font-size: 11px; line-height: 1.5;">
+
+    1. Use of the Website
+    <br>
+    1.1. By using our website, you agree to comply with these Terms, as well as all applicable laws and regulations.
+    <br>
+    1.2. Do not use our website improperly, including but not limited to: violating intellectual property rights, engaging in illegal activities, transmitting viruses or other malicious codes.
 
     <br><br>
 
-    1. Uso del Sitio Web
+    2. User Content
     <br>
-    1.1. Al utilizar nuestro sitio web, aceptas cumplir con estos Términos, así como con todas las leyes y regulaciones aplicables.
-    <br>
-    1.2. No utilices nuestro sitio web de manera indebida, incluyendo pero no limitado a: violar derechos de propiedad intelectual, realizar actividades ilegales, transmitir virus u otros códigos maliciosos.
+    2.1. By submitting content to our website, you guarantee that you have the necessary rights to do so and that such content does not infringe on the rights of third parties.
 
     <br><br>
 
-    2. Contenido del Usuario
+    3. Intellectual Property
     <br>
-    2.1. Al enviar contenido a nuestro sitio web, garantizas que tienes los derechos necesarios para hacerlo y que dicho contenido no infringe los derechos de terceros.
+    3.1. The content of this website, including but not limited to text, graphics, logos, icons, images, audio clips, digital downloads, data compilations, and software, is the property of APB2TAL.
     <br>
-    2.2. Nos reservamos el derecho de eliminar cualquier contenido que consideremos inapropiado o que viole estos Términos.
+    3.2. You may not copy, reproduce, distribute, transmit, display, sell, license, or otherwise exploit any content from this website without the prior written consent of STUCOM.
 
     <br><br>
 
-    3. Propiedad Intelectual
+    4. Limitation of Liability
     <br>
-    3.1. El contenido de este sitio web, incluyendo pero no limitado a texto, gráficos, logotipos, iconos, imágenes, clips de audio, descargas digitales, compilaciones de datos y software, es propiedad de STUCOM y está protegido por las leyes de propiedad intelectual.
-    <br>
-    3.2. No puedes copiar, reproducir, distribuir, transmitir, mostrar, vender, licenciar o explotar de ninguna otra manera ningún contenido de este sitio web sin el consentimiento previo por escrito de STUCOM.
+    4.1. In no event shall STUCOM be liable to you or any third party for any direct, indirect, incidental, special, or consequential damages arising from the use or inability to use our website.
 
     <br><br>
 
-    4. Limitación de Responsabilidad
+    5. Modifications
     <br>
-    4.1. En ningún caso STUCOM será responsable ante ti o cualquier tercero por cualquier daño directo, indirecto, incidental, especial o consecuente que surja del uso o la imposibilidad de uso de nuestro sitio web.
-    <br>
-    4.2. Este sitio web se proporciona "tal cual" y "según disponibilidad", sin garantías de ningún tipo, ya sean expresas o implícitas.
+    5.1. We reserve the right to modify these Terms at any time. It is your responsibility to periodically review these Terms to stay informed of any changes.
 
     <br><br>
 
-    5. Modificaciones
-    <br>
-    5.1. Nos reservamos el derecho de modificar estos Términos en cualquier momento. Es tu responsabilidad revisar periódicamente estos Términos para estar al tanto de las modificaciones.
-    <br>
-    5.2. El uso continuado de nuestro sitio web después de la publicación de cambios en estos Términos constituirá tu aceptación de dichos cambios.
-
-    <br><br>
-
-    Estos términos y condiciones de uso constituyen el acuerdo completo entre tú y STUCOM con respecto al uso de nuestro sitio web y reemplazan cualquier acuerdo anterior o contemporáneo, ya sea oral o escrito, relacionado con el tema aquí tratado.
+    These terms and conditions of use constitute the entire agreement between you and STUCOM regarding the use of our website and supersede any prior or contemporaneous agreements, whether oral or written, related to the subject matter herein.
   </p>
   <form action="/signup" method="GET">
-    <button type="submit" style="background-color: #175d69; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Aceptar términos</button>
-  </form
+    <button type="submit" style="background-color: #ffffff2d; color: #000000; border: none; padding: 10px 20px; border-radius: 0px; cursor: pointer;">Accept Terms</button>
+  </form>
 </div>
-{% endblock %}
+
+
+{% endblock %}  

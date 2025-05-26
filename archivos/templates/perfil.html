@@ -19,11 +19,7 @@
       </div>
       {% else %}
       <p><strong>Rol:</strong> {% if user.is_staff %} Administrador {% else %} Usuario {% endif %}</p>
-      <p><strong>Edad:</strong>
-        {% if user.edad %}
-          {{ user.edad }} años
-        {% endif %}
-      </p>
+
 
 
       <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
@@ -84,12 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <style>
 .profile-container2 {
-    width: 80%;
+    width: 70%;
     height: 80%;
     margin: 50px auto;
-    background-color: #4e68afe8;
-    border: 2px solid #ffffff00;
-    border-radius: 10px;
+    background: linear-gradient(180deg, #ffffff 10%, #9db5e2 90%);
+    border: 0px solid #ffffff00;
+    border-radius: 0px;
     padding: 30px;
     margin-top: 90px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -113,10 +109,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   .profile-details h2 {
     margin-bottom: 17px;
-    color: #ffffff;
+    color: #000000;
   }
   .profile-details p {
-    color: #ffffff;
+    color: #000000;
     margin-bottom: 15px;
   }
   .social-links {
@@ -125,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   .social-links a {
     text-decoration: none;
-    color: #ffffff;
+    color: #000000;
     margin-right: 15px;
     transition: color 0.3s;
     font-size: 24px;
@@ -135,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   .sidebar ul li.perfil {
-    color: #dee2e6;
+    color: #000000;
     background-color: #6c757d;
     border-radius: 0px;
   }

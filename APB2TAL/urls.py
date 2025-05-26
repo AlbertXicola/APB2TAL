@@ -25,6 +25,10 @@ urlpatterns = [
     path('terminos/', views.terminos, name='terminos'),
     path('about/', views.about, name='about'),
     path('project/', views.project, name='project'),
+    path('proyectos/', views.procesar_repo, name='proyectos'),
+    path('proyectoanaliz/', views.proyectoanaliz, name='proyectoanaliz'),
+    path('seleccion/', views.seleccion, name='proyecto-selección'),
+
 
     path('administrar/', views.administrar, name='administrar'),
     path('administrar/registros_admin/', views.registros_admin, name='registros_admin'),

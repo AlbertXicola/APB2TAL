@@ -1,0 +1,69 @@
+{% extends 'baseusuario.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+
+        .sidebar ul li.analizar2 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+        body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 2rem 1rem;
+        margin: 3rem auto;
+        margin-top: 200px;
+        color: #fff;
+        background-color: #121212;
+    }
+  .btn-cuadrado {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 200px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #00aaff;
+    background-color: #222;
+    box-shadow: 0 0 8px #00aaffaa;
+    border: 1px solid #00aaff;
+    text-shadow: 0 0 8px #00aaff99;
+
+    box-shadow: 0 4px 12px rgba(0, 170, 255, 0.6);
+
+    border-radius: 6px;
+
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  .btn-cuadrado:hover {
+    text-decoration: none;
+  }
+  
+
+  .btn-cuadrado:hover {
+    background-color: #12171d;
+  }
+
+  .contenedor-botones {
+    text-align: center;
+    margin-top: 50px;
+  }
+</style>
+
+<div class="contenedor-botones">
+  <a href="{% url 'proyectos' %}" class="btn-cuadrado">
+    Analisis de código
+  </a>
+
+  <a href="{% url 'proyectoanaliz' %}" class="btn-cuadrado">
+    Analisis proyecto
+  </a>
+
+</div>
+
+{% endblock %}

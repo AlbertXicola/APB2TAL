@@ -26,3 +26,14 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'captcha']
+
+
+class RepoForm(forms.Form):
+    repo_url = forms.URLField(
+        label="URL del repositorio",
+        max_length=200,
+        widget=forms.URLInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'https://github.com/usuario/repositorio.git'
+        })
+    )

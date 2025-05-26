@@ -4,247 +4,480 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APB2TAL</title>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/L9cjtSz/icono.png">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.freepik.com/512/7204/7204056.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Importing Google font - Open Sans */
-        @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+      html, body {
+          height: 100%; /* Hacer que el cuerpo y el html ocupen todo el alto */
+          margin: 0; /* Eliminar márgenes */
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Open Sans", sans-serif;
+      body {
+        display: flex; /* Hacer que el body use flexbox */
+        flex-direction: column; /* Colocar los elementos en columna */
+        font-family: 'Varela Round', sans-serif;
+        justify-content: space-between; /* Distribuye el contenido y el footer */
+
+      }
+      
+      .background {
+        position: fixed; /* Usar fixed para que cubra toda la pantalla */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(270deg, #84dbee, #e78eea); /* Cambiar el ángulo para mayor efecto */
+        background-size: 400% 400%; /* Aumentar el tamaño del fondo para un mejor efecto de movimiento */
+        animation: moveBackground 10s ease infinite; /* Aplicar animación */
+        z-index: -1;
+      }
+
+      @keyframes moveBackground {
+        0% {
+          background-position: 0% 50%; /* Comienza desde la posición inicial */
         }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background: linear-gradient(to bottom, #1f8a9c 23%, #701c91 95%);
+        50% {
+          background-position: 100% 50%; /* Mueve el fondo a la derecha */
         }
-
-        .main-content {
-            flex: 1;
+        100% {
+          background-position: 0% 50%; /* Regresa a la posición inicial */
         }
+      }
 
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+      header {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        background-color: transparent; /* Quitar color de fondo */
+        border: none;            /* Sin bordes */
+        height: 100px;
+        gap: 53%;
+
+      }
+
+      .head a {
+        font-size: 1.8rem;
+        text-decoration: none;
+        color: #000000;
+        font-family: 'Varela Round', sans-serif;
+      }
+
+      .buttons a {
+        font-size: 1rem;
+        text-decoration: none;
+        color: #000000;
+        font-family: 'Varela Round', sans-serif;
+        font-weight: bold;
+        padding: 15px 35px 15px 35px;
+      }
+
+      .signup {
+        border: 1px solid #000000;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 60px;
+      }
+
+
+      @media (max-width: 910px) {
+        header {
+          display: flex;
+          justify-content: center; /* Centrar horizontalmente */
+          align-items: center; /* Centrar verticalmente */
+          background-color: #1f1f1f00;
+          height: 100px;
+          gap: 33%;
         }
-
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 15px;
+        .buttons {
+          display: flex;
+          gap: 30px;
         }
+      }
 
-        .navbar .logo a {
-            font-size: 1.8rem;
-            text-decoration: none;
-            color: #fff;
+      @media (max-width: 768px) {
+        header {
+          display: flex;
+          justify-content: center; /* Centrar horizontalmente */
+          align-items: center; /* Centrar verticalmente */
+          background-color: #1f1f1f00;
+          height: 100px;
+          gap: 23%;
         }
-
-        .navbar .links {
-            display: flex;
-            align-items: center;
-            list-style: none;
-            gap: 35px;
-            margin-left: 120px; /* Ajusta el margen izquierdo para mover los botones a la derecha */
-            position: absolute;
-            left: 350px;
+        .buttons {
+          display: flex;
+          gap: 20px;
         }
-
-        .navbar .links a {
-            font-weight: 500;
-            text-decoration: none;
-            color: #fff;
-            padding: 10px 0;
-            transition: 0.2s ease;
+      }
+      
+      @media (max-width: 550px) {
+        header {
+          display: flex;
+          justify-content: center; /* Centrar horizontalmente */
+          align-items: center; /* Centrar verticalmente */
+          background-color: #1f1f1f00;
+          height: 100px;
+          gap: 8%;
+          margin-top: 0px !important;
         }
-
-        .navbar .links a:hover {
-            color: #47b2e4;
+        .buttons {
+          display: flex;
+          gap: 10px;
         }
-
-        .navbar .buttons {
-            display: flex;
-            align-items: center;
+        .head a {
+          font-size: 1.6rem;
+          text-decoration: none;
+          color: #000000;
+          font-family: 'Varela Round', sans-serif;
         }
-
-        .navbar .buttons a {
-            text-decoration: none;
-            color: #fff;
-            padding: 15px 10px; /* Ajuste el padding para alinear verticalmente con el texto */
-            transition: 0.2s ease;
-        }
-
-        .navbar .buttons .signup {
-            margin-left: 20px; /* Mover el botón Sign Up hacia la derecha */
-            border: 1px solid #fff;
-            padding: 10px 20px;
-            border-radius: 0.375rem;
-            text-align: center;
-            transition: 0.2s ease;
-        }
-
-        .navbar .buttons .signup:hover {
-            background-color: #47b2e4;
-            color: #fff;
-        }
-
-        .hero-section {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            height: 95vh;
-            padding: 0 15px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .hero-section .hero {
-            max-width: 50%;
-            color: #fff;
-        }
-
-        .hero h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #c9c7c7;
-        }
-
-        .hero-section .img img {
-            width: 517px;
-        }
-
-        .hero-section .buttons {
-            margin-top: 40px;
-        }
-
-        .hero-section .buttons a {
-            text-decoration: none;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 0.375rem;
-            font-weight: 600;
-            transition: 0.2s ease;
-            display: inline-block;
-        }
-
-        .hero-section .buttons a:not(:last-child) {
-            margin-right: 15px;
-        }
-
-        .buttons .join {
-            background-color: #47b2e4;
-        }
-
-        .hero-section .buttons .learn {
-            border: 1px solid #fff;
-            border-radius: 0.375rem;
-        }
-
-        .hero-section .buttons a:hover {
-            background-color: #47b2e4;
-        }
-
-        /* Hamburger menu styles */
-        #menu-toggle {
-            display: none;
-        }
-
-        #hamburger-btn {
-            font-size: 1.8rem;
-            color: #fff;
-            cursor: pointer;
-            display: none;
-            order: 1;
-        }
-
-        @media screen and (max-width: 1023px) {
-            .navbar .logo a {
-                font-size: 1.5rem;
-            }
-
-            .links {
-                position: fixed;
-                left: -100%;
-                top: 75px;
-                width: 100%;
-                height: 100vh;
-                padding-top: 50px;
-                background: #175d69;
-                flex-direction: column;
-                transition: 0.3s ease;
-            }
-
-            .hero-section .hero {
-                max-width: 100%;
-                text-align: center;
-            }
-
-            .hero-section img {
-                display: none;
-            }
-
+        .buttons a{
+          font-size: 0.8rem;
+          text-decoration: none;
+          color: #000000;
+          font-family: 'Varela Round', sans-serif;
+          font-weight: bold;
+          padding: 10px 30px 10px 30px;
 
         }
+      }
+      @media (max-width: 370px) {
+        header {
+          display: flex;
+          justify-content: center; /* Centrar horizontalmente */
+          align-items: center; /* Centrar verticalmente */
+          background-color: #1f1f1f00;
+          height: 100px;
+          gap: 7%;
+          margin-top: 0px !important;
+        }
+        .buttons {
+          display: flex;
+          gap: 6px;
+        }
+        .head a {
+          font-size: 1.55rem;
+          text-decoration: none;
+          color: #000000;
+          font-family: 'Varela Round', sans-serif;
+        }
+        .buttons a{
+          font-size: 0.8rem;
+          text-decoration: none;
+          color: #000000;
+          font-family: 'Varela Round', sans-serif;
+          font-weight: bold;
+          padding: 8px 17px 8px 17px;
 
-        .footer {
-            text-align: center;
-            width: 100%;
-            padding: 0px 0;
-            background: #6f1c9000; /* Color de fondo del footer */
-            padding-bottom: 10px;
+        }
+      }
+
+      .footer {
+        background-color: #2c2c2c; /* Fondo oscuro */
+        color: #f1f1f1; /* Texto claro */
+        padding: 10px 0; /* Espaciado arriba y abajo */
+        text-align: center; /* Centrar el contenido */
+        font-size: 10px; /* Tamaño de la fuente */
+        border-top: 1px solid #444; /* Borde superior */
+        width: 100%; /* Asegura que el footer cubra todo el ancho */
+        position: relative; /* Si se necesita para el estilo */
+      }
+
+      .footer p {
+        margin: 0; /* Elimina márgenes */
+        padding: 0; /* Elimina rellenos */
+      }
+
+      .footer a {
+        color: #ffffff; /* Color del enlace */
+        text-decoration: none; /* Quitar subrayado */
+        font-weight: bold; /* Enlace en negrita */
+      }
+
+      .footer a:hover {
+        text-decoration: underline; /* Subrayado al pasar el mouse */ 
+      }
+
+      .motivational-container {
+        display: flex;
+        flex-direction: column; /* Cambia la dirección a columna para tener el texto descriptivo debajo */
+        justify-content: center;
+        align-items: center;
+        min-height: 40vh; /* Ajusta el tamaño mínimo para centrar verticalmente */
+        padding: 0 ; /* Espacio lateral */
+        text-align: center;
+        margin-top: 60px;
+        margin-bottom: 30px;
+      }
+
+      .motivational-text {
+        font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+        font-size: 48px; /* Tamaño de fuente grande */
+        font-weight:500;
+        color: #000000; /* Color oscuro profesional */
+        text-align: center;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+        line-height: 1.3; /* Altura de línea para buena legibilidad */
+        max-width: 600px; /* Ancho máximo para mantener el texto en el centro */
+        margin: 0 auto; /* Centrar el texto horizontalmente */
+      }
+
+      .description-text {
+        font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+        font-size: 15px; /* Tamaño de fuente más pequeño para el texto descriptivo */
+        font-weight: 400; /* Peso normal */
+        color: #34495e; /* Color un poco más claro que el título */
+        line-height: 1.5; /* Altura de línea para buena legibilidad */
+        max-width: 600px; /* Ancho máximo para mantener el texto en el centro */
+        margin-top: 20px; /* Espacio entre el título y la descripción */
+      }
+
+      @media (max-width: 910px) {
+        .motivational-container {
+          margin: 0px;
         }
 
-        .footer p {
-            color: #b4c5c5;
-            font-size: 11px;
-            text-decoration: none;
-            margin-bottom: 0px;
+        .motivational-text {
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 40px; /* Tamaño de fuente grande */
+          font-weight:500;
+          color: #000000; /* Color oscuro profesional */
+          text-align: center;
+          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+          line-height: 1.3; /* Altura de línea para buena legibilidad */
+          max-width: 900px; /* Ancho máximo para mantener el texto en el centro */
+          margin: 0 auto; /* Centrar el texto horizontalmente */
+          max-width: 500px;
         }
+
+        .description-text {
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 19px; /* Tamaño de fuente más pequeño para el texto descriptivo */
+          font-weight: 400; /* Peso normal */
+          color: #34495e; /* Color un poco más claro que el título */
+          line-height: 1.5; /* Altura de línea para buena legibilidad */
+          max-width: 800px; /* Ancho máximo para mantener el texto en el centro */
+          margin-top: 20px; /* Espacio entre el título y la descripción */
+          max-width: 500px;
+        }
+
+        .button-container {
+          display: flex; /* Usar flexbox para alinear los botones */
+          gap: 26px; /* Espacio entre los botones */
+          justify-content: center; /* Centrar botones horizontalmente */
+          width: 100%; /* Ancho total para centrar correctamente */
+          margin-top: 0px; /* Espacio superior para separar de la descripción */
+          margin-bottom: 15%;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .motivational-container {
+          margin: 0px;
+        }
+
+        .motivational-text {
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 38px; /* Tamaño de fuente grande */
+          font-weight:500;
+          color: #000000; /* Color oscuro profesional */
+          text-align: center;
+          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+          line-height: 1.3; /* Altura de línea para buena legibilidad */
+          max-width: 900px; /* Ancho máximo para mantener el texto en el centro */
+          margin: 0 auto; /* Centrar el texto horizontalmente */
+          max-width: 500px;
+        }
+
+        .description-text {
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 15px; /* Tamaño de fuente más pequeño para el texto descriptivo */
+          font-weight: 400; /* Peso normal */
+          color: #34495e; /* Color un poco más claro que el título */
+          line-height: 1.5; /* Altura de línea para buena legibilidad */
+          max-width: 800px; /* Ancho máximo para mantener el texto en el centro */
+          margin-top: 20px; /* Espacio entre el título y la descripción */
+          max-width: 500px;
+        }
+
+        .button-container {
+          display: flex; /* Usar flexbox para alinear los botones */
+          gap: 26px; /* Espacio entre los botones */
+          justify-content: center; /* Centrar botones horizontalmente */
+          width: 100%; /* Ancho total para centrar correctamente */
+          margin-top: 0px; /* Espacio superior para separar de la descripción */
+          margin-bottom: 15%;
+        }
+
+      }
+      @media (max-width: 550px) {
+        .motivational-container {
+          margin: 0px;
+        }
+
+        .motivational-text {
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 28px; /* Tamaño de fuente grande */
+          font-weight:500;
+          color: #000000; /* Color oscuro profesional */
+          text-align: center;
+          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+          line-height: 1.3; /* Altura de línea para buena legibilidad */
+          max-width: 900px; /* Ancho máximo para mantener el texto en el centro */
+          margin: 0 auto; /* Centrar el texto horizontalmente */
+          max-width: 300px;
+        }
+
+        .description-text {
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 11px; /* Tamaño de fuente más pequeño para el texto descriptivo */
+          font-weight: 400; /* Peso normal */
+          color: #34495e; /* Color un poco más claro que el título */
+          line-height: 1.5; /* Altura de línea para buena legibilidad */
+          max-width: 800px; /* Ancho máximo para mantener el texto en el centro */
+          margin-top: 20px; /* Espacio entre el título y la descripción */
+          max-width: 300px;
+        }
+
+        .button-container {
+          display: flex; /* Usar flexbox para alinear los botones */
+          gap: 26px; /* Espacio entre los botones */
+          justify-content: center; /* Centrar botones horizontalmente */
+          width: 100%; /* Ancho total para centrar correctamente */
+          margin-top: 0px; /* Espacio superior para separar de la descripción */
+          margin-bottom: 13%;
+        }
+      }
+      
+      @media (max-width: 370px) {
+        .motivational-container {
+          margin: 0px;
+        }
+
+        .motivational-text {
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 28px; /* Tamaño de fuente grande */
+          font-weight:500;
+          color: #000000; /* Color oscuro profesional */
+          text-align: center;
+          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+          line-height: 1.3; /* Altura de línea para buena legibilidad */
+          max-width: 900px; /* Ancho máximo para mantener el texto en el centro */
+          margin: 0 auto; /* Centrar el texto horizontalmente */
+          max-width: 300px;
+        }
+
+        .description-text {
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 11px; /* Tamaño de fuente más pequeño para el texto descriptivo */
+          font-weight: 400; /* Peso normal */
+          color: #34495e; /* Color un poco más claro que el título */
+          line-height: 1.5; /* Altura de línea para buena legibilidad */
+          max-width: 800px; /* Ancho máximo para mantener el texto en el centro */
+          margin-top: 20px; /* Espacio entre el título y la descripción */
+          max-width: 300px;
+        }
+
+        .button-container {
+          display: flex; /* Usar flexbox para alinear los botones */
+          gap: 26px; /* Espacio entre los botones */
+          justify-content: center; /* Centrar botones horizontalmente */
+          width: 100%; /* Ancho total para centrar correctamente */
+          margin-top: 0px; /* Espacio superior para separar de la descripción */
+          margin-bottom: 15%;
+        }
+        .button {
+          display: inline-block; /* Mostrar como bloque en línea */
+          padding: 12px 24px; /* Espacio interno aumentado */
+          font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+          font-size: 10px !important; /* Tamaño de fuente para los botones */
+          font-weight: 500; /* Peso medio */
+          color: rgb(36, 36, 36); /* Color del texto negro */
+          text-decoration: none; /* Sin subrayado */
+          border-radius: 30px; /* Bordes más redondeados */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para el botón */
+          transition: background-color 0.3s, box-shadow 0.3s; /* Transición suave para el color de fondo y la sombra */
+          padding-top: 14px;
+          margin-bottom: 90px !important;
+        }
+      }
+      .button-container {
+        display: flex; /* Usar flexbox para alinear los botones */
+        gap: 26px; /* Espacio entre los botones */
+        justify-content: center; /* Centrar botones horizontalmente */
+        width: 100%; /* Ancho total para centrar correctamente */
+        margin-bottom: 9%;
+      }
+
+      .button {
+        display: inline-block; /* Mostrar como bloque en línea */
+        padding: 12px 24px; /* Espacio interno aumentado */
+        font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
+        font-size: 14px; /* Tamaño de fuente para los botones */
+        font-weight: 500; /* Peso medio */
+        color: rgb(36, 36, 36); /* Color del texto negro */
+        text-decoration: none; /* Sin subrayado */
+        border-radius: 30px; /* Bordes más redondeados */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para el botón */
+        transition: background-color 0.3s, box-shadow 0.3s; /* Transición suave para el color de fondo y la sombra */
+        padding-top: 14px;
+      }
+
+      .download-button {
+        background-color: white; /* Fondo blanco para el botón de descarga */
+      }
+
+      .start-button {
+        background-color: rgba(255, 255, 255, 0); /* Fondo transparente azul claro para el botón de comienza */
+        border: 1px solid #585858; /* Borde superior */
+
+      }
+
+      .button:hover {
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al pasar el ratón */
+      }
+
+      .download-button:hover {
+        background-color: #f0f0f0; /* Color más claro al pasar el ratón */
+      }
+
+      .start-button:hover {
+        background-color: rgba(52, 152, 219, 0.2); /* Color más fuerte al pasar el ratón */
+      }
+
     </style>
 </head>
+<div class="background"></div> 
+
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <h2 style="margin-top: 8px !important; text-align: left;" class="logo">
-                <img src="https://i.ibb.co/X4cpR8G/logo.png" style="height: 50px; width: 50px;">
-                <a href="/">APB2TAL</a>
-            </h2>
-            <div class="buttons">
-                {% if user.is_authenticated %}
-                <a href="/perfil">Mi Perfil</a>
-                <a href="/signout" class="signup">Cerrar Sessión</a>
-                {% else %}
-                <a href="/signin" class="signin">Login</a>
-                <a href="/signup" class="signup">Registro</a>
-                {% endif %}
-            </div>
-        </nav>
-    </header>
 
-    <div class="main-content">
-        <section class="hero-section" style="padding-top: 90px;">
-            {% block content %}
-            {% endblock %}
-        </section>
+  <header>
+    <div class="head">
+        <a href="/">APB2TAL</a>
     </div>
+    <div class="buttons">
+      {% if user.is_authenticated %}
+      <a href="/perfil">ACCOUNT</a>
+      <a href="/signout" class="signup">SIGNOUT</a>
+      {% else %}
+      <a href="/signin" class="signin">LOGIN</a>
+      <a href="/signup" class="signup">SIGNUP</a>
+      {% endif %}
+    </div>
+  </header>
+  {% block content %}
+    
+  {% endblock %}
 
-    <div class="footer">
-        <p>© 2024 APB2TAL. Todos los derechos reservados. <a href="/terminos" style="color: #b4c5c5; text-decoration: none;">Términos y condiciones</a></p>
-    </div>
+  <div class="footer">
+      <p>© 2024 APB2TAL. All rights reserved. <a href="/terminos">Terms and conditions</a></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

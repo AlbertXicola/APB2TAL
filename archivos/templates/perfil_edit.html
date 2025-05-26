@@ -19,23 +19,17 @@
       </div>
     </div>
 
-    <div style="text-align: center;" id="color-buttons">
-      <button class="color-btn" style="background-color: rgb(207, 79, 79);" data-color="#922B21"></button>
-      <button class="color-btn" style="background-color: rgb(67, 167, 105);" data-color="#138D75"></button>
-      <button class="color-btn" style="background-color: rgba(43, 43, 180, 0.729);" data-color="#4e68afe8"></button>
-      <button class="color-btn" style="background-color: rgb(235, 170, 28);" data-color="#D4AC0D"></button>
-      <button class="color-btn" style="background-color: rgb(207, 34, 207);" data-color="#8E44AD"></button>
-    </div>
-    <form method="post" class="container" onsubmit="return validarCampos()">
+
+    <form method="post" class="container" onsubmit="return validarCampos()" autocomplete="off">
       {% csrf_token %}
       <style>
         .form-label,
         .form-control {
-          color: white !important;
+          color: rgb(0, 0, 0) !important;
         }
         .form-control {
           border: none !important;
-          border-bottom: 1px solid rgba(230, 207, 207, 0.822) !important;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.822) !important;
           background-color: transparent !important;
           border-radius: 0 !important;
         }
@@ -64,21 +58,14 @@
       </div>
       <div class="form-group">
         <label for="password" class="form-label">Cambiar Contraseña:</label>
-        <input type="password" id="password" name="password" class="form-control">
+        <input type="password" id="password" name="password" class="form-control" autocomplete="off">
 
       </div>
-      <div class="form-group">
-        <label for="edad" class="form-label">Edad:</label>
-        <input type="number" id="edad" name="edad" value="{{ request.user.edad }}" class="form-control">
 
-      </div> 
       <div id="error-message" style="color: #921212;"></div> <!-- Aquí se mostrarán los mensajes de error -->
       <br>
 
-      
-
-      <button type="submit" class="btn btn-success mb-3 mt-1"><i class="fas fa-save pr-2 "></i> Save</button>          
-      <br>
+      <button type="submit" class="btn btn-success  mt-1"><i class="fas fa-save pr-2 "></i> Save</button>          
 
     </form>
     
@@ -126,7 +113,6 @@
     const email = document.getElementById('email').value.trim();
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
-    const edad = document.getElementById('edad').value.trim();
     const errorMessage = document.getElementById('error-message');
 
     errorMessage.textContent = ''; // Limpiar mensajes de error anteriores
@@ -158,12 +144,6 @@
     // Validación para la contraseña
     if (password !== '' && (password.length < 8 || !/[A-Z]/.test(password) || !/\d/.test(password))) {
         errorMessage.textContent = 'La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un número.';
-        return false;
-    }
-
-    // Validación para la edad
-    if (isNaN(edad) || parseInt(edad) <= 0) {
-        errorMessage.textContent = 'Por favor, ingrese una edad válida.';
         return false;
     }
 
@@ -219,7 +199,7 @@
   .profile-details input {
     margin: 0;
     background-color: transparent;
-    color: white;
+    color: rgb(0, 0, 0);
     border: none;
     border-bottom: 1px solid white;
     outline: none;
@@ -241,15 +221,16 @@
   }
 
   .profile-container {
-    width: 80%;
+    width: 70%;
     height: 80%;
     margin: 50px auto;
-    background-color: #3657b4;
-    border: 2px solid #ffffff00;
-    border-radius: 10px;
+    background: linear-gradient(180deg, #ffffff 10%, #9db5e2 90%);
+    border: 0px solid #ffffff00;
+    border-radius: 0px;
     padding: 30px;
     margin-top: 90px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px !important;
 }
 
 
@@ -271,11 +252,11 @@
 
   .profile-details h2 {
     margin-bottom: 17px;
-    color: #ffffff;
+    color: #000000;
   }
 
   .profile-details p {
-    color: #ffffff;
+    color: #000000;
     margin-bottom: 15px;
   }
 
@@ -286,7 +267,7 @@
 
   .social-links a {
     text-decoration: none;
-    color: #ffffff;
+    color: #000000;
     margin-right: 15px;
     transition: color 0.3s;
     font-size: 24px;
@@ -297,7 +278,7 @@
   }
   
   .sidebar ul li.perfil {
-    color: #dee2e6;
+    color: #000000;
     background-color: #6c757d;
     border-radius: 0px;
   }
@@ -315,7 +296,7 @@
   }
 
   .waiting-message h4 {
-      color: #ffffff;
+      color: #000000;
   }
 
   /* Ocultar el botón de editar cuando el usuario no está aceptado */

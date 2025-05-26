@@ -29,10 +29,329 @@ import os
 from cryptography.fernet import Fernet
 from datetime import datetime
 import datetime
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+from .forms import RepoForm
+from .utils import *
+import requests
+from django.http import JsonResponse
 
+from django.shortcuts import render
+from django.http import FileResponse
+import os
+import requests
+from django.shortcuts import render
+from django.http import FileResponse
+import requests
+from django.shortcuts import render
+from django.http import FileResponse
+import requests
+from requests.auth import HTTPBasicAuth  # <--- esta línea faltaba
+
+
+
+import time
+from requests.auth import HTTPBasicAuth
+
+JENKINS_URL = "http://10.30.212.36:8080"
+JENKINS_USER = "admin-jenkins"
+JENKINS_TOKEN = "11d5010945658812cf7fa005160d2e2b13"
+JOB_NAME = "universal-runner"
+
+
+def seleccion(request):
+    return render(request, 'seleccion.html')
+
+def proyectoanaliz(request):
+    return render(request, 'proyectoanaliz.html')
+
+
+
+
+import subprocess
+
+def obtener_branch_default(repo_url):
+    try:
+        # Ejecuta git ls-remote para obtener refs/heads/*
+        result = subprocess.run(
+            ["git", "ls-remote", "--symref", repo_url, "HEAD"],
+            capture_output=True, text=True, check=True
+        )
+        # El output contiene una línea como:
+        # ref: refs/heads/main HEAD
+        for line in result.stdout.splitlines():
+            if line.startswith("ref: "):
+                # Ejemplo: "ref: refs/heads/main HEAD"
+                parts = line.split()
+                if len(parts) >= 2:
+                    ref = parts[1]  # refs/heads/main
+                    branch_name = ref.replace("refs/heads/", "")
+                    return branch_name
+        # Si no encontró, retorna 'main' por defecto
+        return "main"
+    except Exception as e:
+        print(f"[WARN] No se pudo obtener branch default: {e}")
+        return "main"
+
+import requests
+from requests.auth import HTTPBasicAuth
+from datetime import datetime
+import time
+
+# Variables globales (deberías tenerlas definidas)
+SONAR_URL = "http://10.30.212.36:9000/"
+SONAR_TOKEN = "squ_8f2a30868e775986e41fa1002349456c58d6e962"
+
+def obtener_informe_sonar(proyecto_key):
+    """
+    Consulta el resumen del análisis de SonarQube para el proyecto dado.
+    Devuelve un string con info relevante (por ejemplo, estado general).
+    """
+    try:
+        url = f"{SONAR_URL}/api/qualitygates/project_status"
+        params = {'projectKey': proyecto_key}
+        resp = requests.get(url, params=params, auth=HTTPBasicAuth(SONAR_TOKEN, ''))
+        resp.raise_for_status()
+        data = resp.json()
+        status = data.get('projectStatus', {}).get('status', 'UNKNOWN')
+        conditions = data.get('projectStatus', {}).get('conditions', [])
+        msg_conditions = "; ".join(
+            [f"{c['metricKey']}: {c['status']}" for c in conditions]
+        )
+        return f"Estado SonarQube: {status}. Condiciones: {msg_conditions}"
+    except Exception as e:
+        return f"No se pudo obtener informe SonarQube: {str(e)}"
+
+
+
+def obtener_metricas_sonar(proyecto_key):
+    """
+    Obtiene métricas clave del proyecto en SonarQube.
+    """
+    try:
+        url = f"{SONAR_URL}/api/measures/component"
+        params = {
+            'component': proyecto_key,
+            'metricKeys': 'bugs,vulnerabilities,code_smells,coverage,duplicated_lines_density,ncloc'
+        }
+        resp = requests.get(url, params=params, auth=HTTPBasicAuth(SONAR_TOKEN, ''))
+        resp.raise_for_status()
+        data = resp.json()
+
+        measures = data.get('component', {}).get('measures', [])
+        resumen = []
+        for m in measures:
+            resumen.append(f"{m['metric']}: {m['value']}")
+        return " | ".join(resumen)
+
+    except Exception as e:
+        return f"No se pudo obtener métricas SonarQube: {str(e)}"
+
+def obtener_informe_completo_sonar(project_key):
+    import requests
+
+    base_url = SONARQUBE_URL
+    auth = (SONAR_USER, SONAR_PASS)
+
+    result = {}
+
+    # Quality Gate
+    try:
+        r = requests.get(f"{base_url}/api/qualitygates/project_status?projectKey={project_key}", auth=auth)
+        r.raise_for_status()
+        result['quality_gate'] = r.json()
+    except Exception as e:
+        result['quality_gate'] = f"Error: {e}"
+
+    # Métricas
+    metrics = "bugs,vulnerabilities,code_smells,coverage,duplicated_lines_density,lines,ncloc"
+    try:
+        r = requests.get(f"{base_url}/api/measures/component?component={project_key}&metricKeys={metrics}", auth=auth)
+        r.raise_for_status()
+        result['metrics'] = r.json()
+    except Exception as e:
+        result['metrics'] = f"Error: {e}"
+
+    # Issues críticos (ejemplo bugs sin resolver, máximo 5)
+    try:
+        r = requests.get(f"{base_url}/api/issues/search?componentKeys={project_key}&types=BUG&resolved=false&ps=5", auth=auth)
+        r.raise_for_status()
+        result['bugs'] = r.json()
+    except Exception as e:
+        result['bugs'] = f"Error: {e}"
+
+    return result
+
+
+import os
+
+def obtener_nombre_repo(repo_url):
+    import os
+    if not repo_url:
+        return "Nombre no disponible"
+    repo_name = os.path.basename(repo_url)
+    if repo_name.endswith('.git'):
+        repo_name = repo_name[:-4]
+    return repo_name
+
+from requests.auth import HTTPBasicAuth
+
+SONAR_USER = 'testuser'
+SONAR_PASS = 'Test12321@aaa'
+SONAR_URL = 'http://10.30.212.36:9000'
+import requests
+
+def obtener_proyecto_sonar(proyecto_key):
+    url = f"{SONAR_URL}/api/measures/component?component={proyecto_key}&metricKeys=bugs,vulnerabilities"
+    resp = requests.get(url, auth=HTTPBasicAuth(SONAR_USER, SONAR_PASS))
+    return resp.json()
+
+
+
+
+
+def procesar_repo(request):
+    context = {}
+    repo_url = request.GET.get('repo_url')
+    branch = request.GET.get('branch')
+    repo_nombre = obtener_nombre_repo(repo_url)
+
+    
+    if repo_url is None:
+        context['status'] = 'error'
+        context['message'] = '❌ No se recibió URL del repositorio.'
+        return render(request, "proyectos.html", context)
+    repo_nombre = obtener_nombre_repo(repo_url)
+    
+    if not branch:
+        branch = obtener_branch_default(repo_url)
+
+    print(f"[DEBUG] branch usado: {branch}")
+
+    if repo_url:
+        try:
+            context['status'] = "ok"
+            context['message'] = "🚀 Disparando pipeline en Jenkins..."
+
+            jenkins_api_url = f"{JENKINS_URL}/job/{JOB_NAME}/buildWithParameters"
+            params = {
+                'GIT_URL': repo_url,
+                'GIT_BRANCH': branch
+            }            
+            headers = {}
+
+            try:
+                crumb_resp = requests.get(
+                    f"{JENKINS_URL}/crumbIssuer/api/json",
+                    auth=HTTPBasicAuth(JENKINS_USER, JENKINS_TOKEN)
+                )
+                crumb_resp.raise_for_status()
+                crumb_data = crumb_resp.json()
+                headers[crumb_data['crumbRequestField']] = crumb_data['crumb']
+                print(f"[DEBUG] Obtenido crumb: {crumb_data['crumb']}")
+            except Exception as e:
+                print(f"[WARN] No se obtuvo crumb: {e}")
+
+            build_resp = requests.post(
+                jenkins_api_url,
+                auth=HTTPBasicAuth(JENKINS_USER, JENKINS_TOKEN),
+                params=params,
+                headers=headers
+            )
+
+            print(f"[DEBUG] Jenkins trigger status: {build_resp.status_code}")
+
+            if build_resp.status_code in [200, 201, 202]:
+                context['message'] += " ✅ Pipeline disparado correctamente."
+
+                queue_url = build_resp.headers.get('Location')
+                print(f"[DEBUG] Jenkins Queue URL: {queue_url}")
+
+                if queue_url:
+                    time.sleep(5)
+                    build_number = None
+                    for _ in range(20):
+                        q_resp = requests.get(queue_url + "api/json", auth=HTTPBasicAuth(JENKINS_USER, JENKINS_TOKEN))
+                        q_data = q_resp.json()
+                        if 'executable' in q_data:
+                            build_number = q_data['executable']['number']
+                            print(f"[DEBUG] Build Number: {build_number}")
+                            break
+                        time.sleep(1)
+
+                    if build_number:
+                        build_info_url = f"{JENKINS_URL}/job/{JOB_NAME}/{build_number}/api/json"
+                        for _ in range(60):
+                            b_resp = requests.get(build_info_url, auth=HTTPBasicAuth(JENKINS_USER, JENKINS_TOKEN))
+                            b_data = b_resp.json()
+                            if not b_data.get("building", True):
+                                result = b_data.get("result", "UNKNOWN")
+                                context['message'] += f" 📄 Resultado del pipeline: {result}."
+                                
+                                # Aquí llamamos a SonarQube solo si la build fue exitosa
+                                if result == "SUCCESS":
+                                    proyecto_key = "jenkinsMaster"
+                                    print(f"[DEBUG] Consultando SonarQube para proyecto: {proyecto_key}")
+                                    informe_sonar = obtener_informe_sonar(proyecto_key)
+                                    metricas = obtener_metricas_sonar(proyecto_key)
+                                    print(f"[DEBUG] Respuesta SonarQube: {informe_sonar}")
+                                    print(f"[DEBUG] Métricas SonarQube: {metricas}")
+
+                                    ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                    print(f"[SonarQube] Repo: {proyecto_key} - Hora: {ahora} - {informe_sonar} - {metricas}")
+
+                                    context['sonar_info'] = informe_sonar
+                                    context['sonar_metrics'] = metricas
+                                    context['proyecto_key'] = repo_nombre
+
+                                    context['hora'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+
+
+                                break
+                            time.sleep(2)
+                    else:
+                        context['message'] += " ⚠️ No se pudo obtener el número de build."
+                else:
+                    context['message'] += " ⚠️ No se encontró ubicación de la build en Jenkins."
+            else:
+                context['status'] = "error"
+                context['message'] += f" ❌ Error llamando a Jenkins: {build_resp.status_code}"
+
+        except Exception as e:
+            context['status'] = "error"
+            context['message'] = f"❌ Error procesando el repositorio: {str(e)}"
+
+    return render(request, "proyectos.html", context)
+
+
+
+
+
+
+
+def trigger_jenkins_pipeline(git_url):
+    jenkins_url = 'http://jenkins-server/job/tu-pipeline/buildWithParameters'
+    user = 'tu_usuario'
+    api_token = 'tu_api_token'
+
+    params = {
+        'GIT_URL': git_url
+    }
+
+    response = requests.post(jenkins_url, params=params, auth=HTTPBasicAuth(user, api_token))
+
+    if response.status_code == 201:
+        print('Pipeline triggered successfully.')
+    else:
+        print(f'Error triggering pipeline: {response.status_code} {response.text}')
 
 def home(request):
     return render(request, 'home.html')
+
+
+
 
 
 from .forms import CustomUserCreationForm  # Asegúrate de importar el formulario personalizado
@@ -120,7 +439,6 @@ def editar_perfil(request):
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        edad = request.POST.get('edad')  # Obtener la edad del formulario
 
         # Obtener el usuario actual
         user = request.user
@@ -132,7 +450,6 @@ def editar_perfil(request):
         user.email = email
         if password:
             user.set_password(password)
-        user.edad = edad
    
         user.save()
 
@@ -287,19 +604,33 @@ def administrar_grupos(request):
 
 
 @accepted_user_required
+@user_passes_test(is_staff)
+@login_required
+def proyectos(request):
+
+    return render(request, 'proyectos.html')
+
+
+
+# Conexión a MongoDB 
+from pymongo import MongoClient
+client = MongoClient('localhost', 27018)
+db = client['django_db']
+
+collection = db['logs']
+
+
+@accepted_user_required
 @login_required
 def registros(request):
     # Obtener el ID del usuario actual
     user_id = request.user.id
-    
-    client = MongoClient('localhost', 27018) 
-    db = client['django'] 
-    collection = db['Logs'] 
-    
+    print(user_id)
     # Filtrar los registros por el ID del usuario actual
     mensaje = list(collection.find({"user_id": user_id}))
-    
-    client.close()
+    print(mensaje)
+    print("mensaje")
+
     return render(request, 'mis_registros.html', {'logs_mongo': mensaje})
 
 
@@ -307,12 +638,11 @@ def registros(request):
 @accepted_user_required
 @login_required
 def registros_admin(request):
-    client = MongoClient('localhost', 27018) 
-    db = client['django'] 
-    collection = db['Logs'] 
+    
+ 
     mensaje = list(collection.find({}))  # Retrieve all logs
-    client.close()
     return render(request, 'logs_admin.html', {'logs_mongo': mensaje})
+
 
 
 from django.contrib.auth.models import Group
@@ -535,7 +865,8 @@ def archivos_analiz(request):
                 if not adquisicion.objects.filter(archivo=archivo_existente, user=request.user).exists():
                     # El usuario no está en la tabla de adquisición para este archivo, así que creamos un nuevo registro
                     adquisicion.objects.create(archivo=archivo_existente, user=request.user, group=None)
-   
+                collection.insert_one(archivo_mongo)
+
                 
             else:
                 # Generar el nombre de la carpeta utilizando el hash del archivo y el nombre de usuario
@@ -659,15 +990,14 @@ def archivos_analiz(request):
 
                     nuevo_path = "hecho"
                     print("Moviendo carpeta en HECHO ...")
+                    print("Ruta de la carpeta destino:", ruta_carpeta)
                     print("TODO CORRECTO!")
+                    
+                    
+                    
                     print("=========== SCAN FINALIZADO (" + current_time + ") ===========")
                     print("       ")
-                    # Establecer conexión con la base de datos MongoDB
-                    client = MongoClient('localhost', 27018)
-                    db = client['django']
-                    collection = db['Logs']
-
-                    # Crear el texto del análisis
+                    
                     texto_analisis = f"El usuario '{request.user.username}' ha analizado el archivo '{nombre_archivo}'"
 
                     # Crear el documento a insertar en la colección
@@ -678,7 +1008,14 @@ def archivos_analiz(request):
                         "mensaje": texto_analisis
                     }
 
-                    collection.insert_one(archivo_mongo)
+                    try:
+
+                        collection.insert_one(archivo_mongo)
+
+                        print("Documento insertado en MongoDB Atlas exitosamente!")
+                    except Exception as e:
+                        print("Error al insertar documento en MongoDB Atlas:", e)
+                        
                     if malicious >= 1:
                         # Eliminar la carpeta si hay al menos 1 positivo
                         print("Eliminando carpeta por tener al menos 1 positivo...")
@@ -707,6 +1044,7 @@ def archivos_analiz(request):
         
     # Devolver la respuesta HTML
     return render(request, 'archivos_analiz.html')
+      
 
 
 
@@ -724,10 +1062,6 @@ def archivos(request):
     
     return render(request, 'archivos.html', {'registros': registros})
 
-
-client = MongoClient('localhost', 27018)
-db = client['django']
-collection = db['Logs']
 
 
 
@@ -755,7 +1089,6 @@ def eliminar_archivo(request, archivo_id):
     registro_adquisicion.delete()
 
 
-    # Crear el texto del análisis
     texto_analisis = f"El usuario '{request.user.username}' ha eliminado el archivo '{archivo.nombre_archivo}'"
 
     # Crear el documento a insertar en la colección
@@ -765,12 +1098,17 @@ def eliminar_archivo(request, archivo_id):
         "mensaje": texto_analisis
     }
 
-    collection.insert_one(archivo_mongo)
-    
 
+    try:
+
+        collection.insert_one(archivo_mongo)
+
+        print("Documento insertado en MongoDB Atlas exitosamente!")
+    except Exception as e:
+        print("Error al insertar documento en MongoDB Atlas:", e)
+        
     # Después de eliminar, redirigir a la página de archivos
     return redirect('archivos')
-
 
 @csrf_protect
 @accepted_user_required
@@ -783,6 +1121,8 @@ def descargar_archivo(request, archivo_id):
         if adquisicion.objects.filter(archivo=archivo, user=request.user).exists():
             # Obtener la ruta del archivo en el sistema de archivos
             ruta_archivo = os.path.join(settings.MEDIA_ROOT2, archivo.id_APB2TAL, archivo.nombre_archivo)
+            # Imprimir la ruta del archivo
+            print("Ruta del archivo:", ruta_archivo)
             
             # Cargar la clave y desencriptar el contenido
             clave = cargar_clave()
@@ -904,24 +1244,34 @@ def compartir_archivo(request, archivo_id):
 
     
 
-# Crear el documento a insertar en la colección
         archivo_mongo = {
             "hora": hora_actual,
             "user_id": request.user.id,
             "mensaje": texto_analisis
         }
+        
+        try:
+            collection.insert_one(archivo_mongo)
+            print("Documento insertado en MongoDB Atlas exitosamente!")
 
-        collection.insert_one(archivo_mongo)
+            messages.success(request, 'Archivo compartido exitosamente.')
+
+            return redirect('archivos')
+        except Exception as e:
+            print("Error al insertar documento en MongoDB Atlas:", e)
+
+            messages.error(request, 'Error al compartir el archivo. Por favor, inténtelo de nuevo.')
+
+            return redirect('archivos')
+        else:
+            pass
     
-        # Mensaje de éxito
         messages.success(request, 'Archivo compartido exitosamente.')
 
-        # Redireccionar a alguna página, por ejemplo, a la página de archivos
         return redirect('archivos')
     else:
-        # Si la solicitud no es POST, renderizar nuevamente el formulario o redireccionar según tu lógica
         pass
-
+    
 @csrf_protect
 @accepted_user_required
 @login_required
@@ -1109,4 +1459,3 @@ def descargar_archivo_grupo(request, group_name, archivo_id):
     response['Content-Disposition'] = f'attachment; filename="{archivo.nombre_archivo}"'
 
     return response
-

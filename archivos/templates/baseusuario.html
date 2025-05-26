@@ -42,16 +42,45 @@
     
         /* Estilo personalizado para la barra de navegación */
         .sidebar {
-            height: 100%;
+            height: 140%;
             width: 290px;
             position: fixed;
             top: 0;
             left: 0;
+            padding-bottom: 50px;
             background-color: #343a40;
             padding-top: 20px;
-            transition: background-color 0.3s, color 0.3s, transform 0.1s; /* Agrega la transición solo para el modo oscuro */
-
+            transition: background-color 0.3s, color 0.3s, transform 0.1s;
+            
+            overflow-y: auto;       /* <-- Agregado */
+            max-height: 100vh;      /* <-- Agregado */
         }
+
+                /* Scrollbar personalizada para Webkit (Chrome, Safari, Edge) */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #343a40; /* color del fondo de la barra */
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #6c757d; /* color del scroll */
+            border-radius: 10px;
+            border: 2px solid #343a40; /* espacio entre el scroll y el borde */
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background-color: #adb5bd; /* color al pasar el mouse */
+        }
+
+        /* Estilos para Firefox */
+        .sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: #6c757d #343a40;
+        }
+
         .sidebar ul li {
             padding: 20px 15px;
             border-bottom: 0px solid rgba(0, 0, 0, 0);
@@ -166,7 +195,7 @@
         .dark-mode-toggle {
             position: fixed;
             bottom: 20px;
-            left: 20px;
+            left: 220px;
             z-index: 1000;
             background-color: #ffffff;
             color: #343a40;
@@ -357,7 +386,7 @@
             
             {% if user.is_authenticated %}
                 <button id="theme-toggle-btn" class="dark-mode-toggle"><i class="fas fa-sun"></i></button>
-                <div class="imagenlogo" style="display: flex; justify-content: center; align-items: center; margin-bottom: 50px; margin-top: 20px;">
+                <div class="imagenlogo" style="display: flex; justify-content: center; align-items: center; margin-bottom: 30px; margin-top: 20px;">
                     <img src="https://i.ibb.co/X4cpR8G/logo.png" style="width: 50px; height: 50px;" alt="Logo">
                     <h1 style="margin: 0;"><strong><a style="color: #fff;">APB2TAL</a></strong></h1>
                 </div>
@@ -380,6 +409,7 @@
                 {% if user.is_accepted %}
                 <li class="archivos1"><a href="/archivos"><i class="fas fa-file fa-lg"></i> <span>‎ Mis archivos</span></a></li>
                 <li class="analizar1"><a href="/archivos/analizar"><i class="fas fa-upload fa-lg"></i> <span>Subir archivos</span></a></li>
+                <li class="analizar2"><a href="/seleccion"><i class="fa-brands fa-github"></i></i> <span>Proyectos</span></a></li>
                 <li class="Compartidos1"><a href="/compartido"><i class="fas fa-share fa-lg"></i> <span>Compartidos</span></a></li>
                 <li class="misgrupos1"><a href="/grupos"><i class="fas fa-users fa-lg"></i> <span>Grupos</span></a></li>
                 <li class="registros1"><a href="/registros"><i class="fas fa-clipboard fa-lg">  </i>  <span> ‎ ‎ Registros</span></a></li>

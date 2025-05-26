@@ -1,0 +1,174 @@
+{% extends 'baseusuario.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+
+        .sidebar ul li.analizar2 {
+        color: #dee2e6;
+        background-color: #6c757d;
+        border-radius: 0px;
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 2rem 1rem;
+        max-width: 600px;
+        margin: 3rem auto;
+        margin-top: 300px;
+        color: #fff;
+        position: relative;
+        background-color: #121212;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: 700;
+        font-size: 2rem;
+        color: #00aaff;
+        text-shadow: 0 0 8px #00aaff99;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    input[type="text"] {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border: 1px solid #444;
+        border-radius: 6px;
+        background-color: #222;
+        color: #fff;
+        transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+        outline: none;
+        border-color: #00aaff;
+        box-shadow: 0 0 8px #00aaffaa;
+        background-color: #333;
+    }
+
+    button[type="submit"], button[type="button"] {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        background-color: #00aaff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+        font-weight: 600;
+    }
+
+    button[type="submit"]:hover,
+    button[type="button"]:hover {
+        background-color: #0088cc;
+    }
+
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.75);
+        color: #00aaff;
+        font-size: 1.4rem;
+        font-weight: 600;
+        text-align: center;
+        padding-top: 45vh;
+        line-height: 2rem;
+        user-select: none;
+    }
+
+    .sonar-container {
+        margin-top: 2.5rem;
+        background: linear-gradient(135deg, #0a1624, #152e46);
+        padding: 1.5rem 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 170, 255, 0.6);
+        color: #e0f7ff;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .sonar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #00aaff;
+        padding-bottom: 0.5rem;
+    }
+
+    .sonar-header h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #00cfff;
+        text-shadow: 0 0 6px #00cfffaa;
+    }
+
+    .sonar-header time {
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: #88dfffcc;
+        font-family: 'Segoe UI Mono', Consolas, monospace;
+    }
+
+    .sonar-section {
+        margin-top: 1rem;
+    }
+
+    .sonar-section h4 {
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #55bbff;
+        text-shadow: 0 0 4px #55bbffbb;
+    }
+
+    .sonar-section pre {
+        background-color: #0e2340;
+        padding: 1rem;
+        border-radius: 8px;
+        font-family: 'Segoe UI Mono', Consolas, monospace;
+        font-size: 1rem;
+        white-space: pre-wrap;
+        color: #a0eaff;
+        box-shadow: inset 0 0 10px #0088cc88;
+        margin: 0;
+    }
+
+    @media (max-width: 400px) {
+        body {
+            padding: 1rem;
+            max-width: 100%;
+            margin: 2rem 0.5rem;
+        }
+
+        #overlay {
+            font-size: 1rem;
+            padding-top: 40vh;
+        }
+    }
+</style>
+
+
+<h2>Proximamente</h2>
+
+
+<div class="sonar-container">
+ 
+</div>
+
+
+
+{% endblock %}
