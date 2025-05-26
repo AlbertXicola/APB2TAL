@@ -4,7 +4,7 @@ pipeline {
     environment {
         SONARQUBE_SERVER = 'SonarQube'
         SONAR_AUTH_TOKEN = credentials('sonarqube-token')
-        PATH = "/opt/sonar-scanner/bin:${env.PATH}" 
+        PATH = "/opt/sonar-scanner/bin:${env.PATH}"
     }
 
     stages {
@@ -46,7 +46,7 @@ pipeline {
                         echo "Verificando clave SSH"
                         ssh-add -l
 
-                        ssh -o StrictHostKeyChecking=no root@10.30.212.36 << 'EOF'
+                        ssh -o StrictHostKeyChecking=no root@10.30.212.36 <<EOF
                             set -e
 
                             echo "=== INICIANDO DESPLIEGUE EN SERVIDOR REMOTO ==="
@@ -61,21 +61,31 @@ pipeline {
                             else
                                 echo "Clonando repositorio..."
                                 git clone https://github.com/AlbertXicola/APB2TAL.git /var/www/APB2TAL
-                                cd /var/www/
                             fi
 
                             cd /var/www/APB2TAL
+
                             if [ ! -d "env" ]; then
                                 echo "Creando entorno virtual..."
                                 python3.10 -m venv env
                             fi
 
                             source env/bin/activate
-                            cd /var/www/APB2TAL
                             pip install --upgrade pip wheel
                             pip install -r requirements.txt
 
                             python manage.py migrate
+
+                            echo "Verificando si el puerto 80 está en uso..."
+                            PID=$(sudo lsof -t -i :80)
+                            if [ -n "$PID" ]; then
+                                echo "Matando proceso en el puerto 80 (PID $PID)"
+                                sudo kill -9 $PID
+                            else
+                                echo "Puerto 80 libre."
+                            fi
+
+                            echo "Levantando servidor..."
                             sudo nohup python3 manage.py runserver 0.0.0.0:80 | sudo tee /var/www/server.log > /dev/null 2>&1 &
 
                             echo "=== DESPLIEGUE COMPLETADO ==="
