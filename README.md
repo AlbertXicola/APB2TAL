@@ -1,9 +1,6 @@
-# APB2TAL 99% Read-me
+# APB2TAL Read-me
 
-## Integrantes
 - Albert Xicola
-- Pau Cañadillas
-- Max Thomas
 
 ## Requisitos Previos
 
