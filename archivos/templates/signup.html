@@ -1,88 +1,170 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <style>
     .red-background {
         background-color: rgba(255, 255, 255, 0.089);
-        color: white; /* Cambiar el color del texto a blanco */
+        color: rgb(0, 0, 0);
     }
 
-    /* Estilos para el cuadro de registro */
     .signup-form {
-        background-color: rgba(255, 255, 255, 0.089); /* Mismo fondo que el formulario */
-        color: white; /* Cambiar el color del texto a blanco */
+        background-color: rgba(255, 255, 255, 0.089); 
+        color: rgb(0, 0, 0); 
     }
 
-    /* Estilo para los términos y condiciones */
     #acceptTerms {
-        color: white; /* Cambiar el color del texto a blanco */
+        color: rgb(0, 0, 0);
     }
-    .footer {
-                padding-top: 40px !important; /* Ajusta este valor según sea necesario */
-            }
+      section{
+        width: 500px;
+        height: 400px;
+        margin-bottom: 120px;
+    }
+
+    .create-account a {
+        color: rgb(0, 0, 0);
+        text-decoration: underline;
+    }
+
+    .container1 {
+        font-family: 'Montserrat', sans-serif;
+        display: flex;
+        flex-direction: column; 
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+    form{
+        border-radius: 0px !important;
+        border: 0px solid #00000000  !important;
+    }
+
+    button{
+        border: 1px solid #00000071  !important;
+        border-radius: 0px !important;
+    }
+
+    button:hover{
+        border: 1px solid #00000000  !important;
+        border-radius: 0px !important;
+        background-color: rgb(255, 255, 255) !important;
+        color: rgb(0, 0, 0);
+    }
+
+    @media (max-width: 645px) {
+                .mb-3
+        {
+                margin-bottom: 3px !important;
+        }
+        section{
+            width: 350px;
+        }
+        .small-input {
+            font-size: 9px; /* Tamaño de fuente */
+            padding: 6px;    /* Espaciado interno */
+            height: 20px;
+        }
+    }
+    @media (max-width: 550px) {
+        .mb-3
+        {
+                margin-bottom: 3px !important;
+        }
+        section{
+            margin-bottom: 130px;
+        }
+        .small-input {
+            font-size: 9px; /* Tamaño de fuente */
+            padding: 5px;    /* Espaciado interno */
+            height: 20px;
+        }
+        .small-input2 {
+            font-size: 9px; /* Tamaño de fuente */
+            padding-left: 4px;    /* Espaciado interno */
+            padding-right: 4px;    /* Espaciado interno */
+            padding-top: 0px;
+            padding-bottom: 0px;
+            height: 20px;
+        }
+        label{
+            font-size: 9px; /* Tamaño de fuente */
+
+        }
+        .text-danger{
+            font-size: 9px; /* Tamaño de fuente */
+        }
+        .alert-danger{
+            font-size: 9px; /* Tamaño de fuente */
+        }
+
+    }
+
+    
+
+
 </style>
-<main class="container">
-    <div class="row">
-        <div class="col-md-4 offset-md-4 mt-5">
-            <form id="signupForm" action="/signup/" method="POST" class="card card-body signup-form" onsubmit="return validateForm()">
-                <h1 class="text-center">Sign up</h1>
-                <span class="text-danger" style="font-weight: bold;">{{ error }}</span>
+<main class="container1">
+    <section class="">  
+        <form id="signupForm" action="/signup/" method="POST" class="card card-body signup-form" onsubmit="return validateForm()">
+            <h1 class="text-center">Sign up</h1>
+            <span class="text-danger" style="font-weight: bold;">{{ error }}</span>
 
-                {% csrf_token %}
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" class="form-control small-input" placeholder="Write your username" required>
+                <span id="username-error" class="text-danger"></span>
+                <span id="username-warning" class="text-danger" style="display:none;">Special characters are not allowed except underscore (_)</span>
+            </div>
+            <div class="mb-3">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" class="form-control small-input" placeholder="Write your email" required>
+                <span id="email-error" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="first_name">First name:</label>
+                <input type="text" name="first_name" id="first_name" class="form-control small-input" placeholder="Write your First name" required>
+                <span id="first-name-error" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="last_name">Last name:</label>
+                <input type="text" name="last_name" id="last_name" class="form-control small-input" placeholder="Write your last name" required>
+                <span id="last-name-error" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="password1">Password:</label>
+                <div class="input-group">
+                    <input type="password" name="password1" id="password1" class="form-control small-input" placeholder="Write your password" required>
+                    <button type="button" class="btn btn-outline-secondary small-input2" id="showPassword1">Show</button>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password2">Confirm your password:</label>
+                <div class="input-group">
+                    <input type="password" name="password2" id="password2" class="form-control small-input" placeholder="Confirm your password" required>
+                    <button type="button" class="btn btn-outline-secondary small-input2 " id="showPassword2">Show</button>
+                </div>
+            </div><!--
+            <div class="mt-2 d-flex justify-content-center">
                 <div class="mb-3">
-                    <label for="username">Username:</label>
-                    <input type="text" name="username" id="username" class="form-control" placeholder="Write your username" required>
-                    <span id="username-error" class="text-danger"></span>
-                    <span id="username-warning" class="text-danger" style="display:none;">Special characters are not allowed except underscore (_)</span>
+                    {{ form.captcha }}
                 </div>
-                <div class="mb-3">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Write your email" required>
-                    <span id="email-error" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="first_name">First name:</label>
-                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Write your First name" required>
-                    <span id="first-name-error" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="last_name">Last name:</label>
-                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Write your last name" required>
-                    <span id="last-name-error" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="password1">Password:</label>
-                    <div class="input-group">
-                        <input type="password" name="password1" id="password1" class="form-control" placeholder="Write your password" required>
-                        <button type="button" class="btn btn-outline-secondary" id="showPassword1">Show</button>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="password2">Confirm your password:</label>
-                    <div class="input-group">
-                        <input type="password" name="password2" id="password2" class="form-control" placeholder="Confirm your password" required>
-                        <button type="button" class="btn btn-outline-secondary" id="showPassword2">Show</button>
-                    </div>
-                </div>
-                <div class="mt-2 d-flex justify-content-center">
-                    <div class="mb-3">
-                        {{ form.captcha }}
-                    </div>
-                </div>
-                
-
-                <div class="create-account text-center" style="padding-bottom: 10px;">
-                    <label for="acceptTerms">Acepta nuestros <a href="/terminos" id="acceptTerms">términos y condiciones</a></label>
-                </div>
-                <div id="error-msg" class="alert alert-danger" style="display:none;"></div>
-                <button type="submit" class="btn btn-primary">Signup</button>
-            </form>
-        </div>
+            </div>
+            -->
+            <div class="create-account text-center" style="padding-bottom: 10px;">
+                <label for="acceptTerms">Accept  our <a href="/terminos" id="acceptTerms">terms & condicions</a></label>
+            </div>
+            <div id="error-msg" class="alert alert-danger" style="display:none;"></div>
+            <button type="submit" class="btn ">Signup</button>
+        </form>
     </div>
 </main>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<!--<script src="https://www.google.com/recaptcha/api.js" async defer></script>-->
 <script>
     $(document).ready(function(){
         $('#username').keyup(function(){
@@ -163,7 +245,7 @@
         var password1 = document.getElementById("password1").value;
         var password2 = document.getElementById("password2").value;
         var errorMsg = document.getElementById("error-msg");
-        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^_+={}\[\]|:;"'<>,./~`-])[A-Za-z\d@$!%*?&#^_+={}\[\]|:;"'<>,./~`-]{8,}$/;
 
         if (username.match(/[^\w]/)) {
             document.getElementById("username-warning").style.display = "block";

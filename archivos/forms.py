@@ -25,7 +25,8 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'captcha']
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        #fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'captcha']
 
 
 class RepoForm(forms.Form):

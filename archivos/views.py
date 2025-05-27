@@ -3,12 +3,25 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.models import Group
+from django.core.files.uploadedfile import UploadedFile
+from django.core.files.storage import FileSystemStorage
+from django.views.decorators.csrf import csrf_protect
+from django.core.files.storage import default_storage
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.base import ContentFile
 from django.http import HttpResponse, Http404
+from pymongo.mongo_client import MongoClient
+from django.contrib.auth.models import Group
+from .forms import CustomUserCreationForm
+from pymongo.server_api import ServerApi
+from requests.auth import HTTPBasicAuth
 from cryptography.fernet import Fernet
+from django.http import HttpResponse
+from django.http import FileResponse
 from django.db import IntegrityError
 from .models import Task, Compartido
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.contrib import messages
 from django.utils import timezone
 from django.conf import settings
@@ -16,54 +29,34 @@ from .models import adquisicion
 from pymongo import MongoClient
 from datetime import datetime
 from .forms import TaskForm
-from django.views.decorators.csrf import csrf_protect
 from .models import Archivo
-from .models import  *
-import requests
-from django.core.files.uploadedfile import UploadedFile
-import hashlib
-import shutil
-import time
-import os
-import os
-from cryptography.fernet import Fernet
-from datetime import datetime
-import datetime
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 from .forms import RepoForm
+from .models import  *
 from .utils import *
+import subprocess
+import mimetypes
 import requests
-from django.http import JsonResponse
-
-from django.shortcuts import render
-from django.http import FileResponse
+import hashlib
+import random
+import string
+import shutil
+import uuid
+import time
 import os
-import requests
-from django.shortcuts import render
-from django.http import FileResponse
-import requests
-from django.shortcuts import render
-from django.http import FileResponse
-import requests
-from requests.auth import HTTPBasicAuth  # <--- esta línea faltaba
 
 
-from django.shortcuts import render
-import requests
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+def accepted_user_required(view_func):
+    decorated_view_func = user_passes_test(
+        lambda user: user.is_authenticated and user.is_accepted,
+        login_url='/perfil'  # Redirige a la página de perfil si el usuario no tiene is_accepted
+    )(view_func)
+    return decorated_view_func
+    
+def is_staff(user):
+    return user.is_authenticated and user.is_staff
 
-from django.http import JsonResponse
 
-import requests
-import time
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import requests
-import time
-from django.shortcuts import render
-from django.http import HttpResponse
+
 
 JENKINS_URL = 'http://10.30.212.36:8080'
 JOB_NAME = 'Pipeline_SonarQube'
@@ -71,7 +64,6 @@ TRIGGER_URL = f'{JENKINS_URL}/job/{JOB_NAME}/build?token=mi_token_seguro'
 API_USER = 'admin-jenkins'
 API_TOKEN = '1147a292f0559733a360e43466040414f9'
 
-# Jenkins API base url para job
 JOB_API_URL = f'{JENKINS_URL}/job/{JOB_NAME}'
 
 auth = (API_USER, API_TOKEN)
@@ -90,15 +82,10 @@ def get_build_status(build_number):
     data = r.json()
     return data['building'], data.get('result')
 
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-import uuid
-from django.core.files.storage import FileSystemStorage
 
-from django.core.files.base import ContentFile
-import mimetypes
-
-
+@accepted_user_required
+@user_passes_test(is_staff)
+@login_required
 def proyectoanaliz(request):
     context = {}
 
@@ -153,29 +140,23 @@ def proyectoanaliz(request):
             context['visitar_sonar'] = "http://10.30.212.36:9000/dashboard?id=APB2TAL"
             context['message'] = "¡Pipeline completado exitosamente! Aquí está tu reporte."
 
+
         else:
             context['error'] = "No se encontró el reporte ZAP"
 
     return render(request, 'proyectoanaliz.html', context)
 
-
-
-import time
-from requests.auth import HTTPBasicAuth
-
-JENKINS_URL = "http://10.30.212.36:8080"
+URL = "http://10.30.212.36:8080"
 JENKINS_USER = "admin-jenkins"
 JENKINS_TOKEN = "11d5010945658812cf7fa005160d2e2b13"
 JOB_NAME = "universal-runner"
 
 
+@login_required
 def seleccion(request):
     return render(request, 'seleccion.html')
 
 
-
-
-import subprocess
 
 def obtener_branch_default(repo_url):
     try:
@@ -200,12 +181,7 @@ def obtener_branch_default(repo_url):
         print(f"[WARN] No se pudo obtener branch default: {e}")
         return "main"
 
-import requests
-from requests.auth import HTTPBasicAuth
-from datetime import datetime
-import time
 
-# Variables globales (deberías tenerlas definidas)
 SONAR_URL = "http://10.30.212.36:9000/"
 SONAR_TOKEN = "squ_8f2a30868e775986e41fa1002349456c58d6e962"
 
@@ -290,7 +266,6 @@ def obtener_informe_completo_sonar(project_key):
     return result
 
 
-import os
 
 def obtener_nombre_repo(repo_url):
     import os
@@ -301,12 +276,10 @@ def obtener_nombre_repo(repo_url):
         repo_name = repo_name[:-4]
     return repo_name
 
-from requests.auth import HTTPBasicAuth
 
-SONAR_USER = 'testuser'
-SONAR_PASS = 'Test12321@aaa'
+SONAR_USER = 'admin'
+SONAR_PASS = 'Sonargrupo5.'
 SONAR_URL = 'http://10.30.212.36:9000'
-import requests
 
 def obtener_proyecto_sonar(proyecto_key):
     url = f"{SONAR_URL}/api/measures/component?component={proyecto_key}&metricKeys=bugs,vulnerabilities"
@@ -315,8 +288,31 @@ def obtener_proyecto_sonar(proyecto_key):
 
 
 
+import random
+import string
+
+def generar_contrasena(longitud=12):
+    caracteres = string.ascii_letters + string.digits + "!@#$%^&*()"
+    return ''.join(random.choice(caracteres) for _ in range(longitud))
+
+def cambiar_contrasena_sonarqube(login_usuario, nueva_contrasena, admin_user, admin_pass, sonar_url):
+    url = f"{sonar_url}/api/users/change_password"
+    data = {
+        "login": login_usuario,
+        "password": nueva_contrasena
+    }
+
+    resp = requests.post(url, auth=HTTPBasicAuth(admin_user, admin_pass), data=data)
+    if resp.status_code == 204:
+        return True
+    else:
+        print(f"[ERROR] No se pudo cambiar la contraseña. Código: {resp.status_code}, Detalle: {resp.text}")
+        return False
 
 
+
+
+@login_required
 def procesar_repo(request):
     context = {}
     repo_url = request.GET.get('repo_url')
@@ -410,9 +406,23 @@ def procesar_repo(request):
                                     context['sonar_info'] = informe_sonar
                                     context['sonar_metrics'] = metricas
                                     context['proyecto_key'] = repo_nombre
+                                    context['visitar_sonar'] = "http://10.30.212.36:9000/dashboard?id=jenkinsMaster"
+
 
                                     context['hora'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+                                    # Cambiar contraseña del usuario compartido en SonarQube
+                                    nuevo_pass = generar_contrasena()
+                                    usuario_sonar = "User_Report2m5c"
+                                    admin_sonar = "admin"
+                                    admin_sonar_pass = "Sonargrupo5."
+                                    sonarqube_url = "http://10.30.212.36:9000"
+
+                                    if cambiar_contrasena_sonarqube(usuario_sonar, nuevo_pass, admin_sonar, admin_sonar_pass, sonarqube_url):
+                                        context['nueva_contrasena'] = nuevo_pass
+                                        context['mensaje_contraseña'] = f"🔐 Usuario:    {usuario_sonar} Contraseña:    {nuevo_pass}"
+                                    else:
+                                        context['mensaje_contraseña'] = "⚠️ Error al cambiar la contraseña del usuario compartido."
 
 
 
@@ -431,10 +441,6 @@ def procesar_repo(request):
             context['message'] = f"❌ Error procesando el repositorio: {str(e)}"
 
     return render(request, "proyectos.html", context)
-
-
-
-
 
 
 
@@ -457,11 +463,6 @@ def trigger_jenkins_pipeline(git_url):
 def home(request):
     return render(request, 'home.html')
 
-
-
-
-
-from .forms import CustomUserCreationForm  # Asegúrate de importar el formulario personalizado
 
 def signup(request):
     if request.method == 'GET':
@@ -527,7 +528,6 @@ def accepted_user_required(view_func):
         login_url='/perfil'  # Redirige a la página de perfil si el usuario no tiene is_accepted
     )(view_func)
     return decorated_view_func
-
 
 
 
@@ -645,12 +645,6 @@ def delete_task(request, task_id):
     if request.method == 'POST':
         task.delete()
         return redirect('tasks')
-    
-    
-    
-def is_staff(user):
-    return user.is_authenticated and user.is_staff
-
 
 @accepted_user_required
 @user_passes_test(is_staff, login_url='/')
@@ -1566,3 +1560,7 @@ def descargar_archivo_grupo(request, group_name, archivo_id):
     response['Content-Disposition'] = f'attachment; filename="{archivo.nombre_archivo}"'
 
     return response
+
+
+
+

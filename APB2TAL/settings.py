@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-q5*^#dv=3m7cu(dsojv-lrr*lfdk!2hu2=7@ob%!m$59*7hg)e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", "a33d-213-96-26-94.ngrok-free.app"]
 
 AUTH_USER_MODEL = 'archivos.CustomUser'
 
@@ -145,7 +145,10 @@ LOGIN_URL = '/signin'
 
 MEDIA_URL = '/data/'
 
+STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
 #AVATAR_STORAGE_DIR = 'avatars/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
@@ -156,3 +159,7 @@ MEDIA_ROOT2 = os.path.join(BASE_DIR, 'hecho')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://a33d-213-96-26-94.ngrok-free.app",
+]

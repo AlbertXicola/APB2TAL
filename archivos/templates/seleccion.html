@@ -12,7 +12,7 @@
         body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         padding: 2rem 1rem;
-        margin: 3rem auto;
+        margin: 5rem auto !important;
         margin-top: 200px;
         color: #fff;
         background-color: #121212;
@@ -60,9 +60,15 @@
     Analisis de código
   </a>
 
-  <a href="{% url 'proyectoanaliz' %}" class="btn-cuadrado">
-    Analisis proyecto
+  {% if user.is_superuser %}
+    <a href="{% url 'proyectoanaliz' %}" class="btn-cuadrado">
+      Analisis proyecto
+    </a>
+  {% endif %}
+  <a href="{% url 'proyecto-selección' %}" class="btn-cuadrado">
+    Próximamente...
   </a>
+
 
 </div>
 
