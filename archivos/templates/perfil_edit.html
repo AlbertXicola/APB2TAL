@@ -25,11 +25,12 @@
       <style>
         .form-label,
         .form-control {
-          color: rgb(0, 0, 0) !important;
+          color: rgb(255, 255, 255) !important;
+          font-size: 13px;
         }
         .form-control {
           border: none !important;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.822) !important;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.822) !important;
           background-color: transparent !important;
           border-radius: 0 !important;
         }
@@ -65,7 +66,7 @@
       <div id="error-message" style="color: #921212;"></div> <!-- Aquí se mostrarán los mensajes de error -->
       <br>
 
-      <button type="submit" class="btn btn-success  mt-1"><i class="fas fa-save pr-2 "></i> Save</button>          
+      <button type="submit" class="edit"><i class="fas fa-save pr-2 "></i> Save</button>          
 
     </form>
     
@@ -172,8 +173,32 @@
 </script>
 
 <style>
+    .edit{
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00cfff;
+    background-color: transparent;
+    border: 1px solid #00cfff66;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+    .edit:hover {
+        background-color: #00cfff22;
+                text-decoration: none;
+                  color: #00cfff;
+
+    }
   .container{
     padding-left: 0px;
+    margin-left: 30px;
+    padding-right: 60px !important;
+
+
   }
 
   .image-edit-section {
@@ -223,14 +248,13 @@
   .profile-container {
     width: 70%;
     height: 80%;
+    color: #00aaff;
+    background: linear-gradient(145deg, #121212, #1e1e1e);
+    box-shadow: 0 0 25px rgba(0, 170, 255, 0.25);
     margin: 50px auto;
-    background: linear-gradient(180deg, #ffffff 10%, #9db5e2 90%);
-    border: 0px solid #ffffff00;
-    border-radius: 0px;
+    border-radius: 10px;
     padding: 30px;
     margin-top: 90px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px !important;
 }
 
 
@@ -239,8 +263,8 @@
   }
 
   .profile-picture img {
-    width: 180px;
-    height: 180px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     border: 6px solid #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -278,9 +302,9 @@
   }
   
   .sidebar ul li.perfil {
-    color: #000000;
-    background-color: #6c757d;
-    border-radius: 0px;
+        background-color: #007bff33;
+        border-left: 5px solid rgb(0, 89, 172);
+        color: #fff;
   }
 
   p.buenas{
@@ -307,6 +331,15 @@
       background-color: #b2dafa;
       border-radius: 0px;
   }
+    @media (max-width: 700px) {
+      .container{
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        padding-right: 0px !important;
+
+  }
+
+      }
 </style>
 
 {% endblock %}

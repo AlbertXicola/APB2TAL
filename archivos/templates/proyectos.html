@@ -47,8 +47,8 @@
         font-size: 2.2rem;
         font-weight: bold;
         margin-bottom: 2rem;
-        color: #00cfff;
-        text-shadow: 0 0 12px #00cfff99;
+        color: #00aaff;
+        text-shadow: 0 0 7px #00cfff99;
         letter-spacing: 1px;
     }
 
@@ -155,12 +155,16 @@
             font-size: 1rem;
         }
     }
-
+  .dark-mode .sidebar ul li.perfil {
+      background-color: #b2dafa;
+      border-radius: 0px;
+  }
     .sidebar ul li.analizar2 {
-        color: #dee2e6;
-        background-color: #6c757d;
-        border-radius: 0px;
+        background-color: #007bff33;
+        border-left: 5px solid rgb(0, 89, 172);
+        color: #fff;
     }
+
     .form-group {
         display: flex;
         flex-direction: column;
@@ -274,7 +278,7 @@
 
     <a href="{% url 'proyecto-selección' %}" class="back-button">← Volver</a>
 
-    <h2>Analizar Proyecto</h2>
+    <h2>Analizar Repositorio</h2>
 
     
     <form method="get" action="/proyectos/" onsubmit="mostrarOverlay()">

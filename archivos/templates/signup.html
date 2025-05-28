@@ -3,28 +3,45 @@
 <style>
     .red-background {
         background-color: rgba(255, 255, 255, 0.089);
-        color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
     }
 
     .signup-form {
         background-color: rgba(255, 255, 255, 0.089); 
-        color: rgb(0, 0, 0); 
+        color: rgb(255, 255, 255); 
+        margin-top: 30px;
     }
 
     #acceptTerms {
-        color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
     }
       section{
         width: 500px;
-        height: 400px;
-        margin-bottom: 120px;
-    }
+        margin-bottom: 75px;
 
+    }
+    .btn{
+        color:#00cfff !important;
+    }
     .create-account a {
         color: rgb(0, 0, 0);
         text-decoration: underline;
     }
+    .small-input{
+        border-radius: 0px !important;
+        background-color: rgba(255, 255, 255, 0.11);
+        border: 0px solid #00000066  !important;
+        color: aliceblue;
 
+    }
+    .small-input::placeholder{
+        
+        color: aliceblue;
+
+    }
+
+
+    
     .container1 {
         font-family: 'Montserrat', sans-serif;
         display: flex;
@@ -34,24 +51,25 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-bottom: 40px;
       }
 
     form{
         border-radius: 0px !important;
-        border: 0px solid #00000000  !important;
+        border: 0px solid #ffffff00  !important;
     }
 
     button{
-        border: 1px solid #00000071  !important;
+        border: 1px solid #00cfff66  !important;
+        box-shadow: 0 0 13px rgba(0, 170, 255, 0.521);
+
         border-radius: 0px !important;
     }
 
     button:hover{
-        border: 1px solid #00000000  !important;
-        border-radius: 0px !important;
-        background-color: rgb(255, 255, 255) !important;
-        color: rgb(0, 0, 0);
+        border: 1px solid #ffffff  !important;
+        color: aliceblue !important;
+
+ 
     }
 
     @media (max-width: 645px) {
@@ -74,7 +92,7 @@
                 margin-bottom: 3px !important;
         }
         section{
-            margin-bottom: 130px;
+            margin-bottom: 90px;
         }
         .small-input {
             font-size: 9px; /* Tamaño de fuente */
@@ -114,37 +132,37 @@
 
             {% csrf_token %}
             <div class="mb-3">
-                <label for="username">Username:</label>
-                <input type="text" name="username" id="username" class="form-control small-input" placeholder="Write your username" required>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" class="form-control small-input" equired>
                 <span id="username-error" class="text-danger"></span>
                 <span id="username-warning" class="text-danger" style="display:none;">Special characters are not allowed except underscore (_)</span>
             </div>
             <div class="mb-3">
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" class="form-control small-input" placeholder="Write your email" required>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control small-input"required>
                 <span id="email-error" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label for="first_name">First name:</label>
-                <input type="text" name="first_name" id="first_name" class="form-control small-input" placeholder="Write your First name" required>
+                <label for="first_name">First name</label>
+                <input type="text" name="first_name" id="first_name" class="form-control small-input"  required>
                 <span id="first-name-error" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label for="last_name">Last name:</label>
-                <input type="text" name="last_name" id="last_name" class="form-control small-input" placeholder="Write your last name" required>
+                <label for="last_name">Last name</label>
+                <input type="text" name="last_name" id="last_name" class="form-control small-input" required>
                 <span id="last-name-error" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label for="password1">Password:</label>
+                <label for="password1">Password</label>
                 <div class="input-group">
-                    <input type="password" name="password1" id="password1" class="form-control small-input" placeholder="Write your password" required>
+                    <input type="password" name="password1" id="password1" class="form-control small-input"  required>
                     <button type="button" class="btn btn-outline-secondary small-input2" id="showPassword1">Show</button>
                 </div>
             </div>
             <div class="mb-3">
-                <label for="password2">Confirm your password:</label>
+                <label for="password2">Confirm your password</label>
                 <div class="input-group">
-                    <input type="password" name="password2" id="password2" class="form-control small-input" placeholder="Confirm your password" required>
+                    <input type="password" name="password2" id="password2" class="form-control small-input"  required>
                     <button type="button" class="btn btn-outline-secondary small-input2 " id="showPassword2">Show</button>
                 </div>
             </div><!--

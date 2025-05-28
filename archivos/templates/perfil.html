@@ -24,7 +24,7 @@
 
       <p><strong>Se unió el:</strong> {{ user.date_joined }}</p>
 
-      <a href="/perfil/editar" class="btn btn-secondary mb-3"><i class="fas fa-edit"></i> Editar</a>      
+      <a href="/perfil/editar" class="edit"><i class="fas fa-edit"></i> Editar</a>      
       {% endif %}
       
     </div>
@@ -82,17 +82,35 @@ document.addEventListener('DOMContentLoaded', function() {
 .profile-container2 {
     width: 70%;
     height: 80%;
+    color: #00aaff;
+    background: linear-gradient(145deg, #121212, #1e1e1e);
+    box-shadow: 0 0 25px rgba(0, 170, 255, 0.25);
     margin: 50px auto;
-    background: linear-gradient(180deg, #ffffff 10%, #9db5e2 90%);
-    border: 0px solid #ffffff00;
-    border-radius: 0px;
+    border-radius: 10px;
     padding: 30px;
     margin-top: 90px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
+  .edit{
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00cfff;
+    background-color: transparent;
+    border: 1px solid #00cfff66;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+    .edit:hover {
+        background-color: #00cfff22;
+                text-decoration: none;
+                  color: #00cfff;
 
-
+    }
   .profile-picture {
     text-align: center;
   }
@@ -108,12 +126,19 @@ document.addEventListener('DOMContentLoaded', function() {
     margin-left: 30px;
   }
   .profile-details h2 {
-    margin-bottom: 17px;
-    color: #000000;
+       
+        font-size: 2.2rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        color: #00aaff;
+        text-shadow: 0 0 1px #00cfff99;
+        letter-spacing: 1px;
+    
   }
   .profile-details p {
-    color: #000000;
+    color: #ffffff;
     margin-bottom: 15px;
+    font-size: 14px;
   }
   .social-links {
     margin-top: 30px;
@@ -130,11 +155,11 @@ document.addEventListener('DOMContentLoaded', function() {
     color: #007bff;
   }
   
-  .sidebar ul li.perfil {
-    color: #000000;
-    background-color: #6c757d;
-    border-radius: 0px;
-  }
+.sidebar ul li.perfil {
+        background-color: #007bff33;
+        border-left: 5px solid rgb(0, 89, 172);
+        color: #fff;
+}
   p.buenas{
     margin-bottom: 0px !important;
   }

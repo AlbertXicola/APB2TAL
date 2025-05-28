@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APB2TAL</title>
+    <title>SentinelFile</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.freepik.com/512/7204/7204056.png">
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/XktgCTmT/morgana-1-removebg-preview.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -23,30 +23,55 @@
         justify-content: space-between; /* Distribuye el contenido y el footer */
 
       }
-      
       .background {
-        position: fixed; /* Usar fixed para que cubra toda la pantalla */
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(270deg, #84dbee, #e78eea); /* Cambiar el ángulo para mayor efecto */
-        background-size: 400% 400%; /* Aumentar el tamaño del fondo para un mejor efecto de movimiento */
-        animation: moveBackground 10s ease infinite; /* Aplicar animación */
+        background: linear-gradient(270deg, #0f0f0f, #0f0f0f);
         z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
       }
 
-      @keyframes moveBackground {
-        0% {
-          background-position: 0% 50%; /* Comienza desde la posición inicial */
-        }
-        50% {
-          background-position: 100% 50%; /* Mueve el fondo a la derecha */
-        }
-        100% {
-          background-position: 0% 50%; /* Regresa a la posición inicial */
-        }
-      }
+/* Capa animada aparte */
+.background::before {
+  content: "";
+
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: radial-gradient(circle at 20% 50%, #0055cc, transparent 10%),
+              radial-gradient(circle at 50% 50%, #0055cc8a, transparent 10%),
+              radial-gradient(circle at 80% 50%, #0067f8ee, transparent 10%);
+              
+  background-blend-mode: screen;
+  animation: pulseGlow 10s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(1%, -0.5%) scale(1.005);
+  }
+  50% {
+    transform: translate(-1%, 1%) scale(1.01);
+  }
+  75% {
+    transform: translate(0.5%, -1%) scale(1.003);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+
+
 
       header {
         display: flex;
@@ -55,28 +80,38 @@
         background-color: transparent; /* Quitar color de fondo */
         border: none;            /* Sin bordes */
         height: 100px;
-        gap: 53%;
+        gap: 40%;
 
       }
 
       .head a {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         text-decoration: none;
-        color: #000000;
+        color: #ffffff;
+        
         font-family: 'Varela Round', sans-serif;
+        margin-top: 10px !important;
       }
 
       .buttons a {
         font-size: 1rem;
         text-decoration: none;
-        color: #000000;
+        color: #00cfff;
         font-family: 'Varela Round', sans-serif;
         font-weight: bold;
         padding: 15px 35px 15px 35px;
       }
 
       .signup {
-        border: 1px solid #000000;
+        border: 1px solid #ffffff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: 0 0 13px rgba(0, 170, 255, 0.521);
+        color: #00cfff;
+        background-color: transparent;
+        border: 1px solid #00cfff66;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;     
       }
 
       .buttons {
@@ -122,7 +157,7 @@
           align-items: center; /* Centrar verticalmente */
           background-color: #1f1f1f00;
           height: 100px;
-          gap: 8%;
+          gap: 10%;
           margin-top: 0px !important;
         }
         .buttons {
@@ -132,13 +167,13 @@
         .head a {
           font-size: 1.6rem;
           text-decoration: none;
-          color: #000000;
+          color: #ffffff;
           font-family: 'Varela Round', sans-serif;
         }
         .buttons a{
           font-size: 0.8rem;
           text-decoration: none;
-          color: #000000;
+          color: #00cfff;
           font-family: 'Varela Round', sans-serif;
           font-weight: bold;
           padding: 10px 30px 10px 30px;
@@ -152,7 +187,7 @@
           align-items: center; /* Centrar verticalmente */
           background-color: #1f1f1f00;
           height: 100px;
-          gap: 7%;
+          gap: 5% !important;
           margin-top: 0px !important;
         }
         .buttons {
@@ -162,13 +197,13 @@
         .head a {
           font-size: 1.55rem;
           text-decoration: none;
-          color: #000000;
+          color: #ffffff;
           font-family: 'Varela Round', sans-serif;
         }
         .buttons a{
           font-size: 0.8rem;
           text-decoration: none;
-          color: #000000;
+          color: #00cfff;
           font-family: 'Varela Round', sans-serif;
           font-weight: bold;
           padding: 8px 17px 8px 17px;
@@ -218,9 +253,9 @@
         font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
         font-size: 48px; /* Tamaño de fuente grande */
         font-weight:500;
-        color: #000000; /* Color oscuro profesional */
+        color: #ffffff; /* Color oscuro profesional */
         text-align: center;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+        text-shadow: 2px 2px 5px rgba(194, 194, 194, 0.932); /* Sombra sutil */
         line-height: 1.3; /* Altura de línea para buena legibilidad */
         max-width: 600px; /* Ancho máximo para mantener el texto en el centro */
         margin: 0 auto; /* Centrar el texto horizontalmente */
@@ -230,7 +265,7 @@
         font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
         font-size: 15px; /* Tamaño de fuente más pequeño para el texto descriptivo */
         font-weight: 400; /* Peso normal */
-        color: #34495e; /* Color un poco más claro que el título */
+        color: #e4e5e6; /* Color un poco más claro que el título */
         line-height: 1.5; /* Altura de línea para buena legibilidad */
         max-width: 600px; /* Ancho máximo para mantener el texto en el centro */
         margin-top: 20px; /* Espacio entre el título y la descripción */
@@ -245,7 +280,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 40px; /* Tamaño de fuente grande */
           font-weight:500;
-          color: #000000; /* Color oscuro profesional */
+          color: #ffffff; /* Color oscuro profesional */
           text-align: center;
           text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
           line-height: 1.3; /* Altura de línea para buena legibilidad */
@@ -258,7 +293,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 19px; /* Tamaño de fuente más pequeño para el texto descriptivo */
           font-weight: 400; /* Peso normal */
-          color: #34495e; /* Color un poco más claro que el título */
+          color: #dfdfdf; /* Color un poco más claro que el título */
           line-height: 1.5; /* Altura de línea para buena legibilidad */
           max-width: 800px; /* Ancho máximo para mantener el texto en el centro */
           margin-top: 20px; /* Espacio entre el título y la descripción */
@@ -267,7 +302,7 @@
 
         .button-container {
           display: flex; /* Usar flexbox para alinear los botones */
-          gap: 26px; /* Espacio entre los botones */
+          gap: 70px; /* Espacio entre los botones */
           justify-content: center; /* Centrar botones horizontalmente */
           width: 100%; /* Ancho total para centrar correctamente */
           margin-top: 0px; /* Espacio superior para separar de la descripción */
@@ -284,7 +319,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 38px; /* Tamaño de fuente grande */
           font-weight:500;
-          color: #000000; /* Color oscuro profesional */
+          color: #ffffff; /* Color oscuro profesional */
           text-align: center;
           text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
           line-height: 1.3; /* Altura de línea para buena legibilidad */
@@ -297,7 +332,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 15px; /* Tamaño de fuente más pequeño para el texto descriptivo */
           font-weight: 400; /* Peso normal */
-          color: #34495e; /* Color un poco más claro que el título */
+          color: #c4c4c4; /* Color un poco más claro que el título */
           line-height: 1.5; /* Altura de línea para buena legibilidad */
           max-width: 800px; /* Ancho máximo para mantener el texto en el centro */
           margin-top: 20px; /* Espacio entre el título y la descripción */
@@ -306,7 +341,7 @@
 
         .button-container {
           display: flex; /* Usar flexbox para alinear los botones */
-          gap: 26px; /* Espacio entre los botones */
+          gap: 26px !important; /* Espacio entre los botones */
           justify-content: center; /* Centrar botones horizontalmente */
           width: 100%; /* Ancho total para centrar correctamente */
           margin-top: 0px; /* Espacio superior para separar de la descripción */
@@ -323,7 +358,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 28px; /* Tamaño de fuente grande */
           font-weight:500;
-          color: #000000; /* Color oscuro profesional */
+          color: #ffffff; /* Color oscuro profesional */
           text-align: center;
           text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
           line-height: 1.3; /* Altura de línea para buena legibilidad */
@@ -336,7 +371,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 11px; /* Tamaño de fuente más pequeño para el texto descriptivo */
           font-weight: 400; /* Peso normal */
-          color: #34495e; /* Color un poco más claro que el título */
+          color: #cfcfcf; /* Color un poco más claro que el título */
           line-height: 1.5; /* Altura de línea para buena legibilidad */
           max-width: 800px; /* Ancho máximo para mantener el texto en el centro */
           margin-top: 20px; /* Espacio entre el título y la descripción */
@@ -351,6 +386,10 @@
           margin-top: 0px; /* Espacio superior para separar de la descripción */
           margin-bottom: 13%;
         }
+        .buttons a{
+          padding-right:5px !important ;
+          padding-left:5px !important ;
+        }
       }
       
       @media (max-width: 370px) {
@@ -362,7 +401,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 28px; /* Tamaño de fuente grande */
           font-weight:500;
-          color: #000000; /* Color oscuro profesional */
+          color: #ffffff; /* Color oscuro profesional */
           text-align: center;
           text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
           line-height: 1.3; /* Altura de línea para buena legibilidad */
@@ -375,7 +414,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 11px; /* Tamaño de fuente más pequeño para el texto descriptivo */
           font-weight: 400; /* Peso normal */
-          color: #34495e; /* Color un poco más claro que el título */
+          color: #b3b3b3; /* Color un poco más claro que el título */
           line-height: 1.5; /* Altura de línea para buena legibilidad */
           max-width: 800px; /* Ancho máximo para mantener el texto en el centro */
           margin-top: 20px; /* Espacio entre el título y la descripción */
@@ -396,7 +435,7 @@
           font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
           font-size: 10px !important; /* Tamaño de fuente para los botones */
           font-weight: 500; /* Peso medio */
-          color: rgb(36, 36, 36); /* Color del texto negro */
+          color: rgb(255, 255, 255); /* Color del texto negro */
           text-decoration: none; /* Sin subrayado */
           border-radius: 30px; /* Bordes más redondeados */
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para el botón */
@@ -407,7 +446,7 @@
       }
       .button-container {
         display: flex; /* Usar flexbox para alinear los botones */
-        gap: 26px; /* Espacio entre los botones */
+        gap: 100px; /* Espacio entre los botones */
         justify-content: center; /* Centrar botones horizontalmente */
         width: 100%; /* Ancho total para centrar correctamente */
         margin-bottom: 9%;
@@ -419,7 +458,7 @@
         font-family: 'Montserrat', sans-serif; /* Fuente Montserrat */
         font-size: 14px; /* Tamaño de fuente para los botones */
         font-weight: 500; /* Peso medio */
-        color: rgb(36, 36, 36); /* Color del texto negro */
+        color: rgb(255, 255, 255); /* Color del texto negro */
         text-decoration: none; /* Sin subrayado */
         border-radius: 30px; /* Bordes más redondeados */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para el botón */
@@ -428,12 +467,27 @@
       }
 
       .download-button {
-        background-color: white; /* Fondo blanco para el botón de descarga */
-      }
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #00aaff, #0066ff);
+        border: none;
+        border-radius: 30px;
+        box-shadow: 0 0 13px rgba(0, 170, 255, 0.521);
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;     
+       }
 
       .start-button {
-        background-color: rgba(255, 255, 255, 0); /* Fondo transparente azul claro para el botón de comienza */
-        border: 1px solid #585858; /* Borde superior */
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: 0 0 13px rgba(0, 170, 255, 0.521);
+        color: #00cfff;
+        background-color: transparent;
+        border: 1px solid #00cfff66;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;     
 
       }
 
@@ -442,26 +496,28 @@
       }
 
       .download-button:hover {
-        background-color: #f0f0f0; /* Color más claro al pasar el ratón */
-      }
+        background: linear-gradient(135deg, #0099dd, #0055cc);
+        transform: scale(1.03);      }
 
       .start-button:hover {
-        background-color: rgba(52, 152, 219, 0.2); /* Color más fuerte al pasar el ratón */
-      }
+        background-color: #00cfff22;
+                text-decoration: none;      }
 
     </style>
 </head>
-<div class="background"></div> 
+<div class="background"></div>
 
 <body>
 
   <header>
     <div class="head">
-        <a href="/">APB2TAL</a>
+        <img src="https://i.ibb.co/XktgCTmT/morgana-1-removebg-preview.png" style="margin-bottom: 10px; width: 45px; height: 45px; ;"  alt="Logo">
+
+        <a href="/"><strong style="font-weight: 600; margin-top: 90px">Sentinel</strong><span style="font-weight: 350;">File</span></a>
     </div>
     <div class="buttons">
       {% if user.is_authenticated %}
-      <a href="/perfil">ACCOUNT</a>
+      <a class="min" href="/perfil">ACCOUNT</a>
       <a href="/signout" class="signup">SIGNOUT</a>
       {% else %}
       <a href="/signin" class="signin">LOGIN</a>

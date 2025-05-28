@@ -3,11 +3,14 @@
 {% load static %}
 
 <style>
-
+  .dark-mode .sidebar ul li.perfil {
+      background-color: #b2dafa;
+      border-radius: 0px;
+  }
         .sidebar ul li.analizar2 {
-        color: #dee2e6;
-        background-color: #6c757d;
-        border-radius: 0px;
+          background-color: #007bff33;
+          border-left: 5px solid rgb(0, 89, 172);
+          color: #fff;
     }
         body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,34 +18,34 @@
         margin: 5rem auto !important;
         margin-top: 200px;
         color: #fff;
-        background-color: #121212;
+        background-color: #0F0F0F;
     }
-  .btn-cuadrado {
-    display: inline-block;
-    width: 200px;
-    height: 200px;
-    margin: 20px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 200px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #00aaff;
-    background-color: #222;
-    box-shadow: 0 0 8px #00aaffaa;
-    border: 1px solid #00aaff;
-    text-shadow: 0 0 8px #00aaff99;
+    .btn-cuadrado {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      padding: 2.2rem;
+      margin: 2.5rem auto;
+      border-radius: 10px;
 
-    box-shadow: 0 4px 12px rgba(0, 170, 255, 0.6);
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #00aaff;
+      background: linear-gradient(145deg, #121212, #1e1e1e);
+      box-shadow: 0 0 13px rgba(0, 170, 255, 0.521);
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.2s;
+  
+    }
 
-    border-radius: 6px;
+    .btn-cuadrado:hover {
+      background-color: #00cfff22;
+      transform: scale(1.02);
+      text-decoration: none;
+    }
 
-    text-decoration: none;
-    transition: background-color 0.3s;
-  }
-  .btn-cuadrado:hover {
-    text-decoration: none;
-  }
   
 
   .btn-cuadrado:hover {
@@ -56,12 +59,18 @@
 </style>
 
 <div class="contenedor-botones">
+
   <a href="{% url 'proyectos' %}" class="btn-cuadrado">
+        <i class="fab fa-github" style="margin-right: 7px; color: white !important;"></i>
+
     Analisis de código
   </a>
 
   {% if user.is_superuser %}
+
     <a href="{% url 'proyectoanaliz' %}" class="btn-cuadrado">
+                            <img src="https://i.ibb.co/XktgCTmT/morgana-1-removebg-preview.png" style="width: 30px; height: 30px;" alt="Logo">
+
       Analisis proyecto
     </a>
   {% endif %}
