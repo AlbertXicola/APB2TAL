@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-q5*^#dv=3m7cu(dsojv-lrr*lfdk!2hu2=7@ob%!m$59*7hg)e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*", "a33d-213-96-26-94.ngrok-free.app"]
+ALLOWED_HOSTS = ["*", "a33d-213-96-26-94.ngrok-free.app", "https://99b0-213-96-26-94.ngrok-free.app"]
 
 AUTH_USER_MODEL = 'archivos.CustomUser'
 
@@ -161,5 +161,7 @@ MEDIA_ROOT2 = os.path.join(BASE_DIR, 'hecho')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://a33d-213-96-26-94.ngrok-free.app",
+    "https://a33d-213-96-26-94.ngrok-free.app"
+    "https://bf06-213-96-26-94.ngrok-free.app",
+    "https://b08b-213-96-26-94.ngrok-free.app",
 ]
